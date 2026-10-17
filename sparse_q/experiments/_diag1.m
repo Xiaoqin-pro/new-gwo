@@ -1,0 +1,13 @@
+cd('D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\data\cec2017');
+addpath('D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\src','D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\src');
+fid=9; D=30; budget=3000;
+rng(261013000+fid*10000+3001,'twister'); pool=-100+200*rand(50,D);
+st=struct('initialPopulation',pool,'lowerBound',-100*ones(1,D),'upperBound',100*ones(1,D),'maxEvaluations',budget);
+f=@(x)CEC2017Function(x,fid);
+a=st; a.mode='sparse'; a.K=50; a.screenPolicy='random';
+b=st; b.mode='sparse'; b.K=50; b.screenPolicy='strat'; b.quotaPolicy='fixed'; b.quotaFixed=0.25; b.g1Share=2/3; b.stratG1='random'; b.stratE='random';
+[BA,TA,iA]=SGWO(f,a,[],50,3001+1000000);
+[BB,TB,iB]=SGWO(f,b,[],50,3001+1000000);
+fprintf('S1   gen1 src counts [G1 G2 E] = [%d %d %d], best=%.6g\n',iA.Gen1SrcCounts,BA.Cost);
+fprintf('strat gen1 src counts [G1 G2 E] = [%d %d %d], best=%.6g\n',iB.Gen1SrcCounts,BB.Cost);
+fprintf('equalT=%d\n',isequal(TA,TB));

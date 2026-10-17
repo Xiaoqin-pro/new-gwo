@@ -1,0 +1,15 @@
+# ===== regenerable raw artifacts (kept locally, not uploaded) =====
+**/results/**/runs/
+
+# ===== third-party cloned repos (kept locally; sources cited in docs) =====
+sparse_q/refs/RL-LGWO/
+sparse_q/refs/DMSGWO/
+sparse_q/refs/MELGWO/
+
+# ===== caches / editor / OS junk =====
+__pycache__/
+*.pyc
+*.asv
+*.m~ 
+Thumbs.db
+Desktop.ini

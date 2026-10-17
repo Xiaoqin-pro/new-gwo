@@ -1,0 +1,161 @@
+function result=runner_sgwo(job)
+%RUNNER_SGWO  One independent run for the sparse_q branch -> record.
+%   Same protocol as the frozen project (init-seed pool, FE probe, 4 workers):
+%     initSeed   = 261013000 + fid*10000 + seed
+%     searchSeed = seed + 1000000
+%     initial pool = -100 + 200*rand(50,D) after rng(initSeed,'twister')
+%   Algorithms: SGWO (new, sparse_q/src), ANGWO / GWO (frozen, read-only calls).
+%   job fields: algorithm, label, fid, D, seed, maxFE, N, state (SGWO overrides),
+%               useProbe (default true)
+persistent readyPaths
+cfg=newgwo_config();
+sqRoot=fullfile(cfg.root,'sparse_q');
+if isempty(readyPaths)
+    addpath(fullfile(cfg.root,'src'));            % frozen EvalProbe/trace_metrics/GWO/ANGWO
+    addpath(fullfile(cfg.root,'experiments'));    % (read-only scaffold)
+    addpath(fullfile(cfg.root,'data','cec2017'));
+    addpath(fullfile(sqRoot,'src'));
+    addpath(fullfile(cfg.wolfDir,'src'));            % IGWO（审计只读对照）
+    addpath(fullfile(sqRoot,'src'),'-begin');     % our new algorithm wins conflicts
+    readyPaths=true;
+end
+cd(cfg.cecDir);
+
+fid=job.fid; D=job.D; budget=job.maxFE; N=job.N;
+job.seedInit=261013000+fid*10000+job.seed;
+job.seedSearch=job.seed+1000000;
+rng(job.seedInit,'twister');
+pool=-100+200*rand(50,D);
+if N>50, pool=[pool; -100+200*rand(N-50,D)]; end
+state=struct('initialPopulation',pool(1:N,:), ...
+    'lowerBound',-100*ones(1,D),'upperBound',100*ones(1,D), ...
+    'maxEvaluations',budget);
+if isfield(job,'state') && ~isempty(job.state)
+    fn=fieldnames(job.state);
+    for k=1:numel(fn)
+        if ~isempty(job.state.(fn{k})), state.(fn{k})=job.state.(fn{k}); end
+    end
+end
+
+useProbe=true; if isfield(job,'useProbe'), useProbe=logical(job.useProbe); end
+probe=[]; fraw=@(x)CEC2017Function(x,fid);
+if useProbe
+    probe=EvalProbe(state.lowerBound,state.upperBound,budget,job.seed+51,5,200);
+    f=@(x)probe.evaluate(fraw,x);
+    state.probe=probe;
+else
+    f=fraw;
+end
+
+t0=tic;
+switch job.algorithm
+    case 'SGWO'
+        [Best,T,info]=SGWO(f,state,[],N,job.seedSearch);
+    case 'ANGWO'
+        [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
+    case 'DMSGWO'
+        [Best,T,info]=DMSGWO_CEC(f,state,[],N,job.seedSearch);
+    case 'RLGWO'
+        [Best,T,info]=RLGWO_CEC(f,state,[],N,job.seedSearch);
+    case 'IGWO'
+        [Best,T,info]=IGWO(f,state,[],N,job.seedSearch);
+    case 'GWO'
+        [Best,T,info]=GWO(f,state,[],N,job.seedSearch);     % frozen, read-only
+    otherwise
+        error('runner_sgwo:unknownAlgorithm','Unknown algorithm: %s',job.algorithm);
+end
+seconds=toc(t0);
+
+if useProbe
+    assert(info.Evaluations==probe.fe,'runner_sgwo:FEaudit','FE mismatch: alg=%d probe=%d',info.Evaluations,probe.fe);
+    assert(probe.fe==budget,'runner_sgwo:Budget','Expected %d FE, probe counted %d.',budget,probe.fe);
+else
+    assert(info.Evaluations==budget,'runner_sgwo:Budget','Expected %d FE, got %d.',budget,info.Evaluations);
+end
+assert(abs(T(end)-Best.Cost)<=1e-9*max(1,abs(Best.Cost)),'runner_sgwo:TraceEnd','T(end) ~= Best.Cost.');
+
+W=max(50,round(0.01*budget));
+M=trace_metrics(T,budget,W);
+NV=noveltyStats(probe,W,budget,T);
+idx=unique(round(logspace(0,log10(budget),500)));
+idx=idx(idx>=1 & idx<=budget);
+
+% ---- SGWO-specific summary ----
+S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',NaN, ...
+    'ArchiveSize',NaN,'QuotaAct1Pct',NaN,'QuotaAct2Pct',NaN,'QuotaAct3Pct',NaN, ...
+    'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
+if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
+    qt=info.QuotaTrace;
+    S.K=info.K;
+    S.NCandidateGenerated=info.NCandidateGenerated;
+    S.NDistanceOps=info.NDistanceOps;
+    S.NArchiveInserts=info.NArchiveInserts;
+    S.ArchiveSize=info.ArchiveSize;
+    na=numel(info.QActionCounts);
+    S.QActionCounts=info.QActionCounts; S.QStateVisits=info.QStateVisits; S.QTable=info.QTable;
+    if isfield(info,'QuotaTrace'), S.QuotaTrace=info.QuotaTrace; end
+    if na>=3 && ~isempty(qt)
+        nz=qt(:,3)>0;
+        if any(nz)
+            acts=qt(nz,3);
+            S.QuotaAct1Pct=mean(acts==1); S.QuotaAct2Pct=mean(acts==2); S.QuotaAct3Pct=mean(acts==3);
+        end
+    end
+    if ~isempty(qt)
+        S.RewardMean=mean(qt(:,5));
+        S.GBWindowPct=mean(qt(:,6)>0);
+    end
+end
+
+if isfield(job,'label') && ~isempty(job.label), label=job.label; else, label=job.algorithm; end
+if isfield(info,'Rounds'), rounds=info.Rounds; else, rounds=NaN; end
+if useProbe, pfe=probe.fe; ndist=probe.nDistanceOps; else, pfe=budget; ndist=NaN; end
+
+result=struct('Algorithm',label,'Family',job.algorithm,'FunctionID',fid,'D',D,'Seed',job.seed, ...
+    'Status','ok','Message','', ...
+    'BestCost',Best.Cost,'BestVector',Best.Vector, ...
+    'Evaluations',info.Evaluations,'ProbeFE',pfe, ...
+    'Rounds',rounds,'Seconds',seconds, ...
+    'NDistanceProbe',ndist, ...
+    'SearchSeed',job.seedSearch,'InitSeed',job.seedInit, ...
+    'Metrics',M,'Novelty',NV,'SGWO',S, ...
+    'TraceFE',idx,'Trace',T(idx));
+end
+
+% ==================== helpers ====================
+function NV=noveltyStats(probe,W,budget,T)
+NV=struct('Mean',NaN,'Median',NaN,'NSamples',0,'NovelRate',NaN, ...
+    'UsefulNovelRate',NaN,'StrictNovelImprove',NaN, ...
+    'NovRateQ',nan(1,4),'WindowMean',nan(1,100),'WindowNovRate',nan(1,100));
+if isempty(probe) || isempty(probe.novVal), return; end
+nv=probe.novVal; nfe=probe.novFe;
+tau=0.01;
+NV.NSamples=numel(nv);
+NV.Mean=mean(nv); NV.Median=median(nv);
+novel=nv>=tau;
+NV.NovelRate=mean(novel);
+impr=find(T(2:end)<T(1:end-1))+1;
+NV.StrictNovelImprove=sum(novel & ismember(nfe,impr));
+used=false(size(nv));
+for k=1:numel(impr)
+    im=impr(k);
+    cand=find(novel & nfe>=im-W & nfe<im);
+    if ~isempty(cand), used(cand(end))=true; end
+end
+if any(novel), NV.UsefulNovelRate=sum(used)/sum(novel); end
+q=floor(linspace(1,budget+1,5));
+for k=1:4
+    sel=nfe>=q(k) & nfe<q(k+1);
+    if any(sel), NV.NovRateQ(k)=mean(nv(sel)>=tau); end
+end
+edges=round(linspace(1,budget+1,101));
+for w=1:100
+    sel=nfe>=edges(w) & nfe<edges(w+1);
+    if any(sel)
+        NV.WindowMean(w)=mean(nv(sel));
+        NV.WindowNovRate(w)=mean(nv(sel)>=tau);
+    end
+end
+end
+
+

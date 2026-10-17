@@ -1,0 +1,9 @@
+Algorithm,Family,SourceType,PaperDOI,CodePath,CodeSHA256,EntryPoint,Population,MaxFEs,VersionAudit,CanCompare,Notes
+GWO,GWO,original,,,,,,100000,pending,no,initial reference only
+I-GWO,GWO,author-source-required,,,,,,100000,pending,no,verify elite/history and boundary corrections
+HIDMS-PSO,PSO,local-authenticated,,,,,,100000,pending,no,strong comparator
+HCLPSO,PSO,local-authenticated,,,,,,100000,pending,no,strong comparator
+DMS-PSO,PSO,local-authenticated,,,,,,100000,pending,no,strong comparator
+SAQ-CSO,CSO,local-authenticated,,,,,,100000,pending,no,strong comparator
+L-SHADE,DE,author-source-preferred,,,,,,100000,pending,no,if available
+RASE-GWO,GWO,prior-external-only,,,,,,100000,pending,no,never use as new method implementation

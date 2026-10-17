@@ -1,0 +1,10 @@
+{函数或变量 'newgwo_config' 无法识别。
+
+出错 run_batch_sq (第 10 行)
+cfg=newgwo_config();
+    ^^^^^^^^^^^^^^^
+出错 screen13_recent (第 20 行)
+out=run_batch_sq('recent',algs,funcs,seeds,D,maxFE,opt);
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+ERROR: MATLAB error Exit Status: 0x00000001

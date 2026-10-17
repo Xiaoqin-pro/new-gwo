@@ -1,0 +1,2414 @@
+{
+ "Q-learning grey wolf optimizer adaptive": [
+  {
+   "title": [
+    "An adaptive hybrid grey wolf optimizer and teaching-learning-based optimization algorithm for team formation optimization problems"
+   ],
+   "author": [
+    {
+     "given": "Md. Abdul",
+     "family": "Kader",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Kamal Z.",
+     "family": "Zamli",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Zalili B.",
+     "family": "Musa",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Mizanur",
+     "family": "Rahman",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00009-3",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Optimized finite impulse response adaptive noise cancellation for improved photoplethysmography signal enhancement using the grey wolf optimizer"
+   ],
+   "author": [
+    {
+     "given": "Madhava R.",
+     "family": "Alla",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Chandan",
+     "family": "Nayak",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00003-2",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Comparative performance analysis of binary grey wolf optimizer and teaching-learning-based algorithm for the traveling salesman problem"
+   ],
+   "author": [
+    {
+     "given": "Wonseh",
+     "family": "Mulbah",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Navneet",
+     "family": "Himanshu",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00002-0",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Adaptive Q-Learning Grey Wolf Optimizer for UAV Path Planning"
+   ],
+   "author": [
+    {
+     "ORCID": "https://orcid.org/0000-0003-3375-0927",
+     "authenticated-orcid": false,
+     "given": "Golam Moktader",
+     "family": "Nayeem",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "School of Computer Science and Engineering, University of Electronic Science and Technology of China, Chengdu 610056, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Mingyu",
+     "family": "Fan",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "School of Computer Science and Engineering, University of Electronic Science and Technology of China, Chengdu 610056, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Golam Moktader",
+     "family": "Daiyan",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "Department of Information and Communication Technology, Mawlana Bhashani Science and Technology University, Tangail 1902, Bangladesh"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025,
+      3,
+      25
+     ]
+    ]
+   },
+   "container-title": [
+    "Drones"
+   ],
+   "DOI": "10.3390/drones9040246",
+   "is-referenced-by-count": 27
+  },
+  {
+   "title": [
+    "Predictive bridge deterioration modeling with a hybrid stochastic paint optimizer, grey wolf optimizer, and extreme learning machine algorithm"
+   ],
+   "author": [
+    {
+     "given": "Nima",
+     "family": "Khodadadi",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "El-Sayed M.",
+     "family": "El-Kenawy",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Benyamin",
+     "family": "Abdollahzadeh",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Antonio",
+     "family": "Nanni",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Khalid M.",
+     "family": "Mosalam",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00025-1",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Bibliometric analysis of the grey wolf optimizer"
+   ],
+   "author": [
+    {
+     "given": "Ahmet",
+     "family": "Akkaya",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Cemil",
+     "family": "Közkurt",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Rafet",
+     "family": "Durgut",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00004-4",
+   "is-referenced-by-count": 0
+  }
+ ],
+ "improved grey wolf optimizer dimension learning Nadimi-Shahraki": [
+  {
+   "title": [
+    "Grey wolf optimizer: mathematical principles, computational complexity, convergence proof, and performance analysis"
+   ],
+   "author": [
+    {
+     "given": "Hoda",
+     "family": "Zamani",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Mohammad H.",
+     "family": "Nadimi-Shahraki",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00017-2",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "An improved grey wolf optimizer for solving engineering problems"
+   ],
+   "author": [
+    {
+     "given": "Mohammad H.",
+     "family": "Nadimi-Shahraki",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-8872-8455",
+     "authenticated-orcid": false,
+     "given": "Shokooh",
+     "family": "Taghian",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-1443-9458",
+     "authenticated-orcid": false,
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2021,
+      3
+     ]
+    ]
+   },
+   "container-title": [
+    "Expert Systems with Applications"
+   ],
+   "DOI": "10.1016/j.eswa.2020.113917",
+   "is-referenced-by-count": 1069
+  },
+  {
+   "title": [
+    "Discrete Improved Grey Wolf Optimizer for Community Detection"
+   ],
+   "author": [
+    {
+     "ORCID": "https://orcid.org/0000-0002-0135-1115",
+     "authenticated-orcid": false,
+     "given": "Mohammad H.",
+     "family": "Nadimi-Shahraki",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Ebrahim",
+     "family": "Moeini",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Shokooh",
+     "family": "Taghian",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2023,
+      5,
+      18
+     ]
+    ]
+   },
+   "container-title": [
+    "Journal of Bionic Engineering"
+   ],
+   "DOI": "10.1007/s42235-023-00387-1",
+   "is-referenced-by-count": 36
+  },
+  {
+   "title": [
+    "R-GWO: Representative-based grey wolf optimizer for solving engineering problems"
+   ],
+   "author": [
+    {
+     "given": "Mahdis",
+     "family": "Banaie-Dezfouli",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-0135-1115",
+     "authenticated-orcid": false,
+     "given": "Mohammad H.",
+     "family": "Nadimi-Shahraki",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Zahra",
+     "family": "Beheshti",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2021,
+      7
+     ]
+    ]
+   },
+   "container-title": [
+    "Applied Soft Computing"
+   ],
+   "DOI": "10.1016/j.asoc.2021.107328",
+   "is-referenced-by-count": 86
+  },
+  {
+   "title": [
+    "GGWO: Gaze cues learning-based grey wolf optimizer and its applications for solving engineering problems"
+   ],
+   "author": [
+    {
+     "given": "Mohammad H.",
+     "family": "Nadimi-Shahraki",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Shokooh",
+     "family": "Taghian",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Hoda",
+     "family": "Zamani",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Ardeshir",
+     "family": "Bahreininejad",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2022,
+      5
+     ]
+    ]
+   },
+   "container-title": [
+    "Journal of Computational Science"
+   ],
+   "DOI": "10.1016/j.jocs.2022.101636",
+   "is-referenced-by-count": 117
+  },
+  {
+   "title": [
+    "BE-GWO: Binary extremum-based grey wolf optimizer for discrete optimization problems"
+   ],
+   "author": [
+    {
+     "given": "Mahdis",
+     "family": "Banaie-Dezfouli",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-0135-1115",
+     "authenticated-orcid": false,
+     "given": "Mohammad H.",
+     "family": "Nadimi-Shahraki",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Zahra",
+     "family": "Beheshti",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2023,
+      10
+     ]
+    ]
+   },
+   "container-title": [
+    "Applied Soft Computing"
+   ],
+   "DOI": "10.1016/j.asoc.2023.110583",
+   "is-referenced-by-count": 41
+  }
+ ],
+ "dynamic multi-strategy grey wolf optimizer": [
+  {
+   "title": [
+    "Dynamic multi-strategy Grey Wolf optimizer and its applications"
+   ],
+   "author": [
+    {
+     "given": "Yueqi",
+     "family": "Wang",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Jiazhi",
+     "family": "Song",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Haiyan",
+     "family": "Zhao",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Jingqing",
+     "family": "Jiang",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026,
+      5,
+      22
+     ]
+    ]
+   },
+   "container-title": [
+    "Scientific Reports"
+   ],
+   "DOI": "10.1038/s41598-026-54428-w",
+   "is-referenced-by-count": 1
+  },
+  {
+   "title": [
+    "Adaptive Multi-Strategy Grey Wolf Optimizer with Reinforcement Learning for Multi-Objective Precision Irrigation Optimization"
+   ],
+   "author": [
+    {
+     "given": "Guangluan",
+     "family": "Yin",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "School of Information, Yongzhou Vocational Technical College, Yongzhou 425000, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0009-0000-8035-5626",
+     "authenticated-orcid": false,
+     "given": "Wuke",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "School of Computer and Electrical Engineering, Hunan University of Arts and Science, Changde 415000, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0003-0396-4836",
+     "authenticated-orcid": false,
+     "given": "Qi",
+     "family": "Xiong",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "School of Automation Science and Engineering, Xi’an Jiaotong University, Xi’an 710049, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026,
+      2,
+      24
+     ]
+    ]
+   },
+   "container-title": [
+    "Algorithms"
+   ],
+   "DOI": "10.3390/a19030168",
+   "is-referenced-by-count": 2
+  },
+  {
+   "title": [
+    "Multi-Objective Grey Wolf Optimizer Based on Improved Head Wolf Selection Strategy"
+   ],
+   "author": [
+    {
+     "given": "Zhaojun",
+     "family": "Zhang",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "Jiangsu Normal University,School of Electrical Engineering and Automation,Xuzhou,Jiangsu,P. R. China,221116"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Tao",
+     "family": "Xu",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "Jiangsu Normal University,School of Electrical Engineering and Automation,Xuzhou,Jiangsu,P. R. China,221116"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Kuansheng",
+     "family": "Zou",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "Jiangsu Normal University,School of Electrical Engineering and Automation,Xuzhou,Jiangsu,P. R. China,221116"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Simeng",
+     "family": "Tan",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "Jiangsu Normal University,School of Electrical Engineering and Automation,Xuzhou,Jiangsu,P. R. China,221116"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Zhenzhen",
+     "family": "Sun",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "Jiangsu Normal University,School of Mathematics and Statistics,Xuzhou,Jiangsu,P. R. China,221116"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2024,
+      7,
+      28
+     ]
+    ]
+   },
+   "container-title": [
+    "2024 43rd Chinese Control Conference (CCC)"
+   ],
+   "DOI": "10.23919/ccc63176.2024.10662658",
+   "is-referenced-by-count": 8
+  },
+  {
+   "title": [
+    "Magnetic targets positioning method based on multi-strategy improved Grey Wolf optimizer"
+   ],
+   "author": [
+    {
+     "given": "Binjie",
+     "family": "Lu",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Zongji",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Xiaobing",
+     "family": "Zhang",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025,
+      5,
+      2
+     ]
+    ]
+   },
+   "container-title": [
+    "Scientific Reports"
+   ],
+   "DOI": "10.1038/s41598-025-00451-2",
+   "is-referenced-by-count": 5
+  },
+  {
+   "title": [
+    "Bibliometric analysis of the grey wolf optimizer"
+   ],
+   "author": [
+    {
+     "given": "Ahmet",
+     "family": "Akkaya",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Cemil",
+     "family": "Közkurt",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Rafet",
+     "family": "Durgut",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00004-4",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "A Reinforcement-Learning-Driven Multi-Strategy Spherical-Vector Grey Wolf Optimizer for UAV 3D Path Planning"
+   ],
+   "author": [
+    {
+     "given": "Anna",
+     "family": "Li",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "School of Mathematics and Science, Hebei GEO University, Shijiazhuang 050031, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Yanqiang",
+     "family": "Yang",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "School of Mathematics and Science, Hebei GEO University, Shijiazhuang 050031, China"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026,
+      7,
+      5
+     ]
+    ]
+   },
+   "container-title": [
+    "Biomimetics"
+   ],
+   "DOI": "10.3390/biomimetics11070470",
+   "is-referenced-by-count": 0
+  }
+ ],
+ "reinforcement learning leadership grey wolf optimizer": [
+  {
+   "title": [
+    "Enhancing Leadership-Based Metaheuristics Using Reinforcement Learning: A Case Study in Grey Wolf Optimizer"
+   ],
+   "author": [
+    {
+     "given": "Afifeh",
+     "family": "Maleki",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Mehdy",
+     "family": "Roayaei",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025
+     ]
+    ]
+   },
+   "DOI": "10.2139/ssrn.5196138",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Enhancing leadership-based metaheuristics using reinforcement learning: A case study in grey wolf optimizer"
+   ],
+   "author": [
+    {
+     "given": "Afifeh",
+     "family": "Maleki",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0001-9843-5886",
+     "authenticated-orcid": false,
+     "given": "Mehdy",
+     "family": "Roayaei",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025,
+      11
+     ]
+    ]
+   },
+   "container-title": [
+    "Knowledge-Based Systems"
+   ],
+   "DOI": "10.1016/j.knosys.2025.114471",
+   "is-referenced-by-count": 5
+  },
+  {
+   "title": [
+    "Reinforcement learning-based comprehensive learning grey wolf optimizer for feature selection"
+   ],
+   "author": [
+    {
+     "given": "Zhengpeng",
+     "family": "Hu",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Xiaobing",
+     "family": "Yu",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2023,
+      12
+     ]
+    ]
+   },
+   "container-title": [
+    "Applied Soft Computing"
+   ],
+   "DOI": "10.1016/j.asoc.2023.110959",
+   "is-referenced-by-count": 25
+  },
+  {
+   "title": [
+    "Comparative performance analysis of binary grey wolf optimizer and teaching-learning-based algorithm for the traveling salesman problem"
+   ],
+   "author": [
+    {
+     "given": "Wonseh",
+     "family": "Mulbah",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Navneet",
+     "family": "Himanshu",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00002-0",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Using Reinforcement Learning to Boost Grey Wolf Optimizer for Influence Maximization in Social Networks"
+   ],
+   "author": [
+    {
+     "ORCID": "https://orcid.org/0000-0001-9843-5886",
+     "authenticated-orcid": false,
+     "given": "Mehdy",
+     "family": "Roayaei",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026,
+      2,
+      6
+     ]
+    ]
+   },
+   "container-title": [
+    "SN Computer Science"
+   ],
+   "DOI": "10.1007/s42979-026-04770-7",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "A Hybrid Grey Wolf Optimizer Using Opposition-Based Learning, Sine Cosine Algorithm and Reinforcement Learning for Reliable Scheduling and Resource Allocation"
+   ],
+   "author": [
+    {
+     "given": "Man",
+     "family": "ZHAO",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Rui",
+     "family": "Hou",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Hui",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Min",
+     "family": "Ren",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2023
+     ]
+    ]
+   },
+   "DOI": "10.2139/ssrn.4374576",
+   "is-referenced-by-count": 1
+  }
+ ],
+ "multiple populations grey wolf optimizer dimension learning Laplace mutation": [
+  {
+   "title": [
+    "Multi-population dynamic grey wolf optimizer based on dimension learning and Laplace Mutation for global optimization"
+   ],
+   "author": [
+    {
+     "ORCID": "https://orcid.org/0000-0002-7082-2478",
+     "authenticated-orcid": false,
+     "given": "Zhendong",
+     "family": "Wang",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0009-0004-5873-9358",
+     "authenticated-orcid": false,
+     "given": "Lei",
+     "family": "Shu",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-0794-7040",
+     "authenticated-orcid": false,
+     "given": "Shuxin",
+     "family": "Yang",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0009-0008-3266-9186",
+     "authenticated-orcid": false,
+     "given": "Zhiyuan",
+     "family": "Zeng",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-3820-8128",
+     "authenticated-orcid": false,
+     "given": "Daojing",
+     "family": "He",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-8524-229X",
+     "authenticated-orcid": false,
+     "given": "Sammy",
+     "family": "Chan",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025,
+      3
+     ]
+    ]
+   },
+   "container-title": [
+    "Expert Systems with Applications"
+   ],
+   "DOI": "10.1016/j.eswa.2024.125863",
+   "is-referenced-by-count": 22
+  },
+  {
+   "title": [
+    "Comparative performance analysis of binary grey wolf optimizer and teaching-learning-based algorithm for the traveling salesman problem"
+   ],
+   "author": [
+    {
+     "given": "Wonseh",
+     "family": "Mulbah",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Navneet",
+     "family": "Himanshu",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00002-0",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Parameter Extraction of Photovoltaic Cells and Modules Using Grey Wolf Optimizer with Dimension Learning-Based Hunting Search Strategy"
+   ],
+   "author": [
+    {
+     "given": "Mehmet",
+     "family": "Yesilbudak",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "Department of Electrical and Electronics Engineering, Faculty of Engineering and Architecture, Nevsehir Haci Bektas Veli University, Nevsehir 50300, Turkey"
+      }
+     ],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2021,
+      9,
+      12
+     ]
+    ]
+   },
+   "container-title": [
+    "Energies"
+   ],
+   "DOI": "10.3390/en14185735",
+   "is-referenced-by-count": 29
+  },
+  {
+   "title": [
+    "Lx-Gwo: An Improved Grey Wolf Optimizer Algorithm Based Laplace Crossover for Optimization Problems"
+   ],
+   "author": [
+    {
+     "given": "Seyed Taha",
+     "family": "Mousavi nasab",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Javad",
+     "family": "Vahidi",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Seyedali",
+     "family": "Mirjalili",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2023
+     ]
+    ]
+   },
+   "DOI": "10.2139/ssrn.4674433",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Predictive bridge deterioration modeling with a hybrid stochastic paint optimizer, grey wolf optimizer, and extreme learning machine algorithm"
+   ],
+   "author": [
+    {
+     "given": "Nima",
+     "family": "Khodadadi",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "El-Sayed M.",
+     "family": "El-Kenawy",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Benyamin",
+     "family": "Abdollahzadeh",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Antonio",
+     "family": "Nanni",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Khalid M.",
+     "family": "Mosalam",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2026
+     ]
+    ]
+   },
+   "container-title": [
+    "Grey Wolf Optimizer"
+   ],
+   "DOI": "10.1016/b978-0-443-36624-6.00025-1",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Double-Swarm Grey Wolf Optimizer with Covariance and Dimension Learning for Engineering Optimization Problems"
+   ],
+   "author": [
+    {
+     "given": "Shuidong",
+     "family": "Ma",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "College of Continuing Education, North China University of Science and Technology, Tangshan 063210, China"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Miao",
+     "family": "Xu",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "Key Lab of Intelligent Data Information Processing and Control of Hebei Province, Key Lab of Intelligent Motion Control System of Tangshan City, Tangshan University, Tangshan 063000, China"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Xiaodong",
+     "family": "Zhao",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "School of Mathematics and Statistics, Taishan University, Tai’an 271000, China"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Xiaodong",
+     "family": "Yan",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "College of Artificial Intelligence, North China University of Science and Technology, Tangshan 063210, China"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025,
+      11,
+      27
+     ]
+    ]
+   },
+   "container-title": [
+    "Symmetry"
+   ],
+   "DOI": "10.3390/sym17122030",
+   "is-referenced-by-count": 1
+  }
+ ],
+ "strengthened grey wolf optimization AutoML": [],
+ "sparse evaluation expensive optimization particle swarm screening": [
+  {
+   "title": [
+    "Grid Classification-Based Surrogate-Assisted Particle Swarm Optimization for Expensive Multiobjective Optimization_supp1-3340678.pdf"
+   ],
+   "author": [
+    {
+     "given": "Zhi-Hui",
+     "family": "Zhan",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      null
+     ]
+    ]
+   },
+   "DOI": "10.1109/tevc.2023.3340678/mm1",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "An Adaptive Surrogate-Assisted Particle Swarm Optimization for Expensive Problems"
+   ],
+   "author": [
+    {
+     "given": "Xuemei",
+     "family": "Li",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "East-China Institute of Technology: East China University of Science and Technology"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Shaojun",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "East China University of Science and Technology"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2021,
+      4,
+      13
+     ]
+    ]
+   },
+   "DOI": "10.21203/rs.3.rs-410841/v1",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Sparse Based Particle Swarm Optimization Algorithm"
+   ],
+   "author": [
+    {
+     "given": "Lalit",
+     "family": "Kumar",
+     "sequence": "first",
+     "affiliation": [
+      {
+       "name": "MANIT: Maulana Azad National Institute of Technology"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Manish",
+     "family": "Pandey",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "MANIT: Maulana Azad National Institute of Technology"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0001-5346-7008",
+     "authenticated-orcid": false,
+     "given": "Mitul Kumar",
+     "family": "Ahirwal",
+     "sequence": "additional",
+     "affiliation": [
+      {
+       "name": "MANIT: Maulana Azad National Institute of Technology"
+      }
+     ],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2021,
+      5,
+      11
+     ]
+    ]
+   },
+   "DOI": "10.21203/rs.3.rs-253771/v1",
+   "is-referenced-by-count": 4
+  },
+  {
+   "title": [
+    "Sequential approximation optimization assisted particle swarm optimization for expensive problems"
+   ],
+   "author": [
+    {
+     "given": "Xiwen",
+     "family": "Cai",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0002-1485-0722",
+     "authenticated-orcid": false,
+     "given": "Liang",
+     "family": "Gao",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Fan",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2019,
+      10
+     ]
+    ]
+   },
+   "container-title": [
+    "Applied Soft Computing"
+   ],
+   "DOI": "10.1016/j.asoc.2019.105659",
+   "is-referenced-by-count": 33
+  },
+  {
+   "title": [
+    "A Sparse Recovery Algorithm Based on Particle Swarm Optimization"
+   ],
+   "author": [
+    {
+     "given": "Lu-feng",
+     "family": "Liu",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Xin-peng",
+     "family": "Du",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Li-zhi",
+     "family": "Cheng",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2014,
+      2,
+      21
+     ]
+    ]
+   },
+   "container-title": [
+    "Journal of Electronics &amp; Information Technology"
+   ],
+   "DOI": "10.3724/sp.j.1146.2012.01397",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Surrogate-Assisted Particle Swarm Optimizer with Adaptive Multi-Subspace Search and Surrogate-Assisted Crossover for Large-Scale Expensive Optimization"
+   ],
+   "author": [
+    {
+     "given": "Xiaoliang",
+     "family": "Ma",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Kefei",
+     "family": "Du",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2025
+     ]
+    ]
+   },
+   "DOI": "10.2139/ssrn.5173642",
+   "is-referenced-by-count": 0
+  }
+ ],
+ "heterogeneous comprehensive learning particle swarm optimization": [
+  {
+   "title": [
+    "Heterogeneous Pbest-Guided Comprehensive Learning Particle Swarm Optimization Algorithm with Dynamic Crossover and Intergroup Perturbation Strategies"
+   ],
+   "author": [
+    {
+     "given": "Xiaoding",
+     "family": "Meng",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0003-4542-4686",
+     "authenticated-orcid": true,
+     "given": "Hecheng",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2023
+     ]
+    ]
+   },
+   "DOI": "10.2139/ssrn.4327155",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Heterogeneous comprehensive learning particle swarm optimization with enhanced exploration and exploitation"
+   ],
+   "author": [
+    {
+     "given": "Nandar",
+     "family": "Lynn",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Ponnuthurai Nagaratnam",
+     "family": "Suganthan",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2015,
+      10
+     ]
+    ]
+   },
+   "container-title": [
+    "Swarm and Evolutionary Computation"
+   ],
+   "DOI": "10.1016/j.swevo.2015.05.002",
+   "is-referenced-by-count": 503
+  },
+  {
+   "title": [
+    "Heterogeneous pbest-guided comprehensive learning particle swarm optimization"
+   ],
+   "author": [
+    {
+     "given": "Xiaoding",
+     "family": "Meng",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "ORCID": "https://orcid.org/0000-0003-4542-4686",
+     "authenticated-orcid": false,
+     "given": "Hecheng",
+     "family": "Li",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2024,
+      9
+     ]
+    ]
+   },
+   "container-title": [
+    "Applied Soft Computing"
+   ],
+   "DOI": "10.1016/j.asoc.2024.111874",
+   "is-referenced-by-count": 22
+  },
+  {
+   "title": [
+    "Saturated control design of a quadrotor with heterogeneous comprehensive learning particle swarm optimization"
+   ],
+   "author": [
+    {
+     "given": "Jia-Jun",
+     "family": "Wang",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    },
+    {
+     "given": "Guang-Yu",
+     "family": "Liu",
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "vocabulary": "crossref",
+       "role": "author"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      2019,
+      5
+     ]
+    ]
+   },
+   "container-title": [
+    "Swarm and Evolutionary Computation"
+   ],
+   "DOI": "10.1016/j.swevo.2019.02.008",
+   "is-referenced-by-count": 26
+  },
+  {
+   "title": [
+    "Simultaneous size and shape structural optimization using enhanced comprehensive learning particle swarm optimization"
+   ],
+   "author": [
+    {
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Soviphou",
+     "family": "Muong",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      null
+     ]
+    ]
+   },
+   "DOI": "10.58837/chula.the.2021.87",
+   "is-referenced-by-count": 0
+  },
+  {
+   "title": [
+    "Structural optimization under limited natural frequency constraints using comprehensive learning phasor particle swarm optimization"
+   ],
+   "author": [
+    {
+     "sequence": "additional",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    },
+    {
+     "given": "Ei",
+     "family": "Pyone",
+     "sequence": "first",
+     "affiliation": [],
+     "role": [
+      {
+       "role": "author",
+       "vocabulary": "crossref"
+      }
+     ]
+    }
+   ],
+   "issued": {
+    "date-parts": [
+     [
+      null
+     ]
+    ]
+   },
+   "DOI": "10.58837/chula.the.2021.86",
+   "is-referenced-by-count": 0
+  }
+ ]
+}
