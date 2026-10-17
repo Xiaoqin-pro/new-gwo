@@ -35,7 +35,7 @@ for t=1:maxIter
             Delta=struct('Cost',v,'Vector',X(i,:));
         end
     end
-    a=2-t*(2/maxIter);
+    a=2-(t-1)*(2/maxIter);   % 作者 t 从 0 起（range(max_iter)），对齐调度
     % ---- 位置更新 ----
     for i=1:N
         X1=vecComp(a,X(i,:),mean_pos,Alpha.Vector,lb,ub);
