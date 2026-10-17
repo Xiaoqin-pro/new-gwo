@@ -3,3 +3,7 @@
 已连接到具有 4 个工作进程的并行池。
 [NEW-GWO] Local parallel pool confirmed: 4 workers.
 [NEW-GWO] 4-worker pool; 2610 total; 0 done; 2610 pending; output=D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\new3_20261017_100728
+[NEW-GWO] done=2610 failed=0 missing=0 workers=4
+[collect_sq] D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\new3_20261017_100728: 2610 ok / 0 failed / 2610 total
+[run_batch_sq] results: D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\new3_20261017_100728
+D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\new3_20261017_100728
