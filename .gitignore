@@ -1,10 +1,10 @@
 # ===== regenerable raw artifacts (kept locally, not uploaded) =====
 **/results/**/runs/
 
-# ===== third-party cloned repos (kept locally; sources cited in docs) =====
-sparse_q/refs/RL-LGWO/
-sparse_q/refs/DMSGWO/
-sparse_q/refs/MELGWO/
+# ===== third-party cloned repos: source code uploaded for reproduction review;
+#       exclude VCS dirs, heavy helpers (data.pkl ~23.5MB), caches =====
+sparse_q/refs/*/.git/
+sparse_q/refs/RL-LGWO/cec2017/
 
 # ===== caches / editor / OS junk =====
 __pycache__/
