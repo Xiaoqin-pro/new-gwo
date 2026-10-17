@@ -44,6 +44,7 @@ opt=struct( ...
     'archiveCap',24, 'dSepFrac',0.02, ...
     'succCap',25, 'stagnFrac',0.02, 'stagnBoost',0, 'boostThreshFrac',0.02, ...
     'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, ...
+    'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'farReserve',0, 'farMinDist',0.15, 'farE',0);
 fn=fieldnames(state);
 for k=1:numel(fn)
@@ -51,6 +52,9 @@ for k=1:numel(fn)
         opt.(fn{k})=state.(fn{k});
     end
 end
+isRandDir=strcmp(opt.sdirSource,'random');
+recG1 = ~strcmp(opt.sdirSource,'g2e') && ~isRandDir;
+recG2E= ~strcmp(opt.sdirSource,'g1')  && ~isRandDir;
 
 X=state.initialPopulation;
 [N0,D]=size(X);
@@ -162,7 +166,15 @@ while fe<budget
         X2=Beta.Vector -A2.*abs(C2.*Beta.Vector -Xv(i,:));
         X3=Delta.Vector-A3.*abs(C3.*Delta.Vector-Xv(i,:));
         xg=(X1+X2+X3)/3;
-        if opt.succSteer>0 && sdirN>0 && rand(sAux)<opt.succSteer
+        if isRandDir
+            if opt.succSteer>0 && rand(sAux)<opt.succSteer
+                sd=randn(1,D); nrm=norm(sd);
+                if nrm>0
+                    stepv=norm(xg-Xv(i,:));
+                    xg=xg+opt.steerLambda*(sd/nrm)*stepv;   % 等长随机方向对照（非方向信息）
+                end
+            end
+        elseif opt.succSteer>0 && sdirN>0 && rand(sAux)<opt.succSteer
             j=randi(sAux,sdirN);
             sd=sdir(j,:); nrm=norm(sd);
             if nrm>0
@@ -242,9 +254,11 @@ while fe<budget
                 recImp=true;
                 d=norm(y-ref);
                 if numel(succ)<opt.succCap, succ(end+1,1)=d; else, succPtr=mod(succPtr,opt.succCap)+1; succ(succPtr)=d; end
-                sdirPtr=mod(sdirPtr,opt.succDirCap)+1;
-                sdirN=min(sdirN+1,opt.succDirCap);
-                sdir(sdirPtr,:)=y-ref;
+                if recG1
+                    sdirPtr=mod(sdirPtr,opt.succDirCap)+1;
+                    sdirN=min(sdirN+1,opt.succDirCap);
+                    sdir(sdirPtr,:)=y-ref;
+                end
             end
             Xv(i,:)=y; fv(i)=v;
             gensSince(i)=0;
@@ -256,9 +270,11 @@ while fe<budget
                 recImp=true;
                 d=norm(y-ref);
                 if numel(succ)<opt.succCap, succ(end+1,1)=d; else, succPtr=mod(succPtr,opt.succCap)+1; succ(succPtr)=d; end
-                sdirPtr=mod(sdirPtr,opt.succDirCap)+1;
-                sdirN=min(sdirN+1,opt.succDirCap);
-                sdir(sdirPtr,:)=y-ref;
+                if recG2E
+                    sdirPtr=mod(sdirPtr,opt.succDirCap)+1;
+                    sdirN=min(sdirN+1,opt.succDirCap);
+                    sdir(sdirPtr,:)=y-ref;
+                end
             end
         end
 

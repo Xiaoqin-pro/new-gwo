@@ -1,0 +1,9 @@
+[run_batch_sq] sq14: 5 alg x 8 fn x 10 seeds = 400 runs
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+已连接到具有 4 个工作进程的并行池。
+[NEW-GWO] Local parallel pool confirmed: 4 workers.
+[NEW-GWO] 4-worker pool; 400 total; 0 done; 400 pending; output=D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\sq14_20261017_044506
+[NEW-GWO] done=400 failed=0 missing=0 workers=4
+[collect_sq] D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\sq14_20261017_044506: 400 ok / 0 failed / 400 total
+[run_batch_sq] results: D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\sq14_20261017_044506
+D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\sq14_20261017_044506
