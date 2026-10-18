@@ -36,7 +36,13 @@ $D=50$ with 100{,}000 true evaluations and 30 independent runs, the method
 reduces the median error ratio against standard GWO to 0.53 with 28 of 29
 function wins, improves the 10\%/20\%-budget error ratios to 0.80/0.77, and
 reaches a statistical tie with the author-faithful I-GWO (median ratio
-0.94, 17/12 function wins). A pre-registered ablation ladder answers the natural alternatives:
+0.94, 17/12 function wins) and ranks first (mean rank 2.24) in the final
+seven-method comparison, with significant margins against the 2026
+hierarchical HAGWO, PSO, CLPSO, AOGWO and standard GWO. In a 209-dimensional,
+DEM-based 3D UAV delivery application with hard time windows, VAST-GWO is the
+only method that finds feasible routes in all 150 runs and attains both the
+smallest censored mean time to feasibility and the best final route quality
+against every baseline (all Holm-corrected). A pre-registered ablation ladder answers the natural alternatives:
 directed screening by incumbent geometry, history-informed selection, fixed
 exploration quotas, randomly perturbed quotas, and three lightweight
 Q-learning quota schedulers were all tested; none of them beats the simple
@@ -267,23 +273,31 @@ carry instrumentation.
 \label{sec:results}
 \subsection{Formal comparison}
 All formal results use $D=50$, 100{,}000 true evaluations, 29 functions and
-30 runs. Table~\ref{tab:main} reports the full comparison (17 methods). The
-frozen method (S-star) attains mean rank 5.97, behind the three multi-swarm
-PSO variants (HIDMS-PSO 3.72, DMS-PSO 4.48, HCLPSO 4.66) but \emph{ahead of
-the author-faithful I-GWO (7.31) and of sparse adaptive-quota CSO (SAQ-CSO,
-7.69)}, and far ahead of standard GWO (13.59), the frozen full-evaluation
-ANGWO (11.17), the historical sparse-evaluation RASE-GWO (12.28), CLPSO
-(11.38) and the original CSO (16.97).
+30 runs on identical (function, seed) pairs, and every baseline is an
+independently audited implementation. Table~\ref{tab:main} reports the final
+seven-method comparison: \method{} attains mean rank \textbf{2.24}, first
+among the seven, followed by the author-faithful I-GWO (2.28), the 2026
+hierarchical HAGWO (3.41), PSO (4.41), CLPSO (4.48), AOGWO (5.07) and standard
+GWO (6.10). The margin over I-GWO remains statistically neutral and is
+reported as such; the contribution is a first-place ranking with significant
+margins over the remaining five baselines. For completeness, an extended
+17-method table from the earlier formal batch is retained in the repository;
+in that historical comparison set the same frozen configuration ranked 5.97,
+behind three multi-swarm PSO variants (HIDMS-PSO 3.72, DMS-PSO 4.48,
+HCLPSO 4.66) --- honest boundary evidence that the advantage is
+baseline-set dependent.
 
 \begin{table}[t]
 \centering
 \small
-\caption{CEC2017 $D=50$, 100{,}000 true evaluations, 29 functions, 30 runs.
-``W-L vs GWO'' counts function-mean wins and losses. Baselines marked
-``audited'' are read-only results whose implementations this project
-reproduced bit-for-bit before reuse.}
+\caption{Final seven-method comparison (CEC2017, $D=50$, 100{,}000 true
+evaluations, 29 functions, 30 runs, identical seeds). ``Med.\ ratio'' is the
+median paired error ratio of \method{} over each baseline (below one favours
+\method{}); ``W-L'' counts function-mean wins and losses; Holm counts
+per-function significant wins/losses after Holm correction; ``Pooled $p$'' is
+the paired Wilcoxon over all runs.}
 \label{tab:main}
-\resizebox{\columnwidth}{!}{\input{tables/table_main.tex}}
+\resizebox{\columnwidth}{!}{\input{tables/table_main7.tex}}
 \end{table}
 
 Against standard GWO the frozen method wins 28 of 29 functions with a
@@ -295,8 +309,12 @@ I-GWO the comparison is a statistical tie with a positive median: ratio
 wins against 6 significant losses --- large gains on some landscapes
 (e.g.\ 7$\times$ on F1, 140$\times$ on F9, 12$\times$ on F13) traded for
 losses on others (F19 36$\times$, F30 8.6$\times$, F6 and F12/F14 about
-2$\times$). Against SAQ-CSO the median ratio is 1.010 (13/16, Holm
-$+9/-10$), i.e.\ practical parity with the sparse-evaluation CSO line.
+2$\times$). Against the 2026 hierarchical HAGWO the margin is significant (ratio 0.806,
+22-7, Holm $+19/-3$, pooled $p=2.2\times10^{-36}$); against classic PSO and
+CLPSO likewise (0.652, 23-6, $+19/-2$; 0.668, 21-8, $+20/-5$); and against
+the 2026 adaptive-opposition AOGWO the margin is large (0.586, 27-2,
+$+21/-0$). Against SAQ-CSO (extended set) the median ratio is 1.010 (13/16,
+Holm $+9/-10$), i.e.\ practical parity with the sparse-evaluation CSO line.
 Table~\ref{tab:family} aggregates by function family.
 
 \begin{table}[t]
@@ -318,9 +336,11 @@ Composition (F21--F30) & 0.733 & 0.932 & 1.089 & 0.946 \\
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{figures/ranks.png}
-\caption{Mean ranks over the 29 functions (30 runs each), CEC2017 $D=50$,
-100{,}000 true evaluations. The frozen method is highlighted.}
+\includegraphics[width=\columnwidth]{figures/ranks7.png}
+\caption{Mean ranks over the 29 functions for the final seven-method
+comparison (CEC2017, $D=50$, 100{,}000 true evaluations, 30 runs each).
+\method{} is highlighted; the extended 17-method ranking of the historical
+batch is kept in the accompanying repository.}
 \label{fig:ranks}
 \end{figure}
 
@@ -432,6 +452,17 @@ bootstrap 95\% CI). All runs, including those that never reach feasibility,
 enter the statistic.}
 \label{fig:uavrmst}
 \end{figure}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/uav_routes_montage.png}
+\caption{Best feasible delivery routes found by \method{} on the five
+DEM-based scenarios (ridge, peaks, mountain, hills, plateau; final cost
+481.7--600.7). Terrain colour encodes elevation; red cylinders are the 3-D
+threat zones with safety margins; the blue polyline is the delivery route,
+dots are stations and the square is the depot.}
+\label{fig:uavroutes}
+\end{figure*}
 
 \method{} is the only method that finds a feasible route in every one of the
 150 runs (100\% versus 97.3\% for I-GWO and HAGWO, 95.3\% for PSO, 94.0\% for

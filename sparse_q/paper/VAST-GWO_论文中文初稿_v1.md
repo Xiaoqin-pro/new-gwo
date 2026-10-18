@@ -334,7 +334,17 @@ mountain、丘陵 hills、高原 plateau）构建三维无人机配送问题：�
 * 分地图：VAST-GWO 在 5/5 张地图的可行 Cost 中位比上优于 GWO、PSO、CLPSO，4/5 优于
   I-GWO 与 HAGWO（ridge 与 HAGWO 打平/持平）。
 
-### 6.4 如实说明
+### 6.4 VAST-GWO 在五张地图上的最优可行航迹
+
+![五张地图最优可行航迹](../results/uav_formal_N50_30k/figures/route_montage.png)
+
+（上：ridge / peaks / mountain / hills / plateau；取 VAST-GWO 在每图的最优可行运行，
+最终 Cost 481.7–600.7。颜色=地形高度；红色圆柱=三维威胁区（含安全裕度）；蓝线=配送
+航迹；圆点=站点；方框=仓库。单图原图见 `results/uav_formal_N50_30k/figures/route_<map>.png`，
+生成脚本 `app_uav3d/make_uav_routes.m`。）
+
+
+### 6.5 如实说明
 
 1. **PSO 早期可行更快**（2k 时 12% vs 6%；有条件首次可行中位 5357 vs 6314 FE），但其
    RMST（8138）与最终质量（766.4 vs 667.4）均劣于 VAST-GWO，且 7/150 次未找到可行解；
@@ -343,7 +353,8 @@ mountain、丘陵 hills、高原 plateau）构建三维无人机配送问题：�
    计算；在双方均成功的 146 对上 VAST-GWO 显著更优（中位比 0.967、rb=0.19、Holm
    p=0.0458），且可行率更高（100% vs 97.3%）。论文同时报告两项口径，不择其一。
 3. 2k–20k 均为 30k 协议内的检查点，**不等价于独立的短期预算运行**。
-4. 图件：`results/uav_formal_N50_30k/figures/feasibility_curve.png`（累计可行率，
+4. 图件：`results/uav_formal_N50_30k/figures/route_montage.png`（五图最优航迹，第 6.4 节）、
+   `feasibility_curve.png`（累计可行率，
    主证据之一）、`rmst_bar.png`（RMST 与置信区间）、`final_cost_box.png`（可行 Cost
    箱线，与表中 `CkptBestFeasCost_5` 逐位一致）、`first_feasible_ecdf.png`（有条件补充图）。
 
@@ -385,6 +396,8 @@ HAGWO 显著占优；消融实验表明**已验证的多区域档案是主要性
 * 代码与实验记录：仓库 `new-gwo`（`sparse_q/` 分支）：`src/SGWO.m`（冻结实现）、
   `src/SGWO_ABLATION.m`（消融实现，A3 与冻结版逐位一致）、`experiments/registry.csv`
   （全部批次/单变量/负结果决策日志）、`reports/EXPERIMENT_REPORT_zh.md`（完整报告）。
+* 应用复现：`app_uav3d/`（模型/数据/驱动/见证/审计）；批次 `results/uav_formal_N50_30k`
+  （900/900 ok，`analysis_report.txt` v2 截尾统计）；航迹图 `make_uav_routes.m`。
 * 批次与数据：主表 `results/final_20261016_215309`（17 基线汇总）；七算法新增臂
   `results/new3_*`、`results/pso_*`、`results/clpso_*`；消融 `results/ablcore_*`；
   方向审计 `results/finalaud_*`。每个批次目录含 manifest/provenance 与 `runs.csv`。
