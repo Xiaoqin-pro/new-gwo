@@ -4,6 +4,7 @@
 状态说明：本文数字全部来自本仓库实验记录（`sparse_q/reports/EXPERIMENT_REPORT_zh.md`、
 `sparse_q/experiments/registry.csv`、各批次 `results/*/runs.csv`），可按批次号追溯；
 应用章节（三维无人机路径规划）已完成：第 6 章（900/900 次正式实验，含截尾统计修订）。
+**英文正式稿 v1 已完成**：`文章\VAST-GWO_EN\main.tex`（IEEEtran，8 页，27 条参考文献，含框架图/排名图/来源归因图/应用三图；仓库镜像 `sparse_q/paper/en_manuscript_v1/`）。
 
 ---
 
