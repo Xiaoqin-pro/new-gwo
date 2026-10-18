@@ -8,7 +8,7 @@ try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception: pass
 SQ = r"D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q"
 RNG = np.random.default_rng(20261017)
-MAIN = {"PSO(classic)":"PSO","CLPSO(2006)":"CLPSO","GWO":"GWO","IGWO":"IGWO",
+MAIN = {"PSO(classic)":"PSO","CLPSO":"CLPSO","GWO":"GWO","IGWO":"IGWO",
         "S-star":"VAST-GWO(V1)","HAGWO":"HAGWO(2026)","AOGWO":"AOGWO(2026)"}
 
 def holm(p):
