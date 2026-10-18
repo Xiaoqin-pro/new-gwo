@@ -2,3 +2,6 @@
 已连接到具有 4 个工作进程的并行池。
 [NEW-GWO] Local parallel pool confirmed: 4 workers.
 [NEW-GWO] 4-worker pool; 900 total; 0 done; 900 pending; output=D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\uav_formal_N50_30k
+[NEW-GWO] done=900 failed=0 missing=0 workers=4
+[uav_batch] raw_runs.csv: 900 行 -> D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\uav_formal_N50_30k
+D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\uav_formal_N50_30k
