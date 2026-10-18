@@ -4,14 +4,20 @@ function out = uav_batch(algorithms,mapIDs,repeats,pop,maxFE,outDir)
 %   同一 outDir 重跑 = 续跑（runBatch4 只补缺失/失败作业）。
 here=fileparts(mfilename('fullpath')); sq=fileparts(here);
 if nargin<1 || isempty(algorithms)
-    algorithms={'VAST-GWO','GWO','IGWO','PSO','CLPSO','HAGWO','AOGWO'};
+    algorithms={'VAST-GWO','GWO','IGWO','HAGWO','PSO','CLPSO'};   % 正式集（预注册）
 end
 if nargin<2 || isempty(mapIDs), mapIDs=1:5; end
 if nargin<3 || isempty(repeats), repeats=101:130; end
-if nargin<4 || isempty(pop), pop=60; end
+if nargin<4 || isempty(pop), pop=50; end
 if nargin<5 || isempty(maxFE), maxFE=30000; end
 if nargin<6 || isempty(outDir)
     outDir=fullfile(sq,'results',sprintf('uav_%s',datestr(now,'yyyymmdd_HHMMSS')));
+end
+% ---- 启动检查：与预注册协议一致（防止误批量）----
+assert(pop==50,'formal pre-registration: population must be 50.');
+assert(~isempty(maxFE) && maxFE>=5000,'maxFE must be >= 5000.');
+if maxFE~=30000
+    fprintf('[uav_batch] NOTE: maxFE=%d deviates from the frozen 30,000-FE protocol (dev ok).\n',maxFE);
 end
 seedBase=20271004; searchSeedOffset=100000;
 jobs=struct('algorithm',{},'mapID',{},'repeat',{},'pop',{},'maxFE',{}, ...

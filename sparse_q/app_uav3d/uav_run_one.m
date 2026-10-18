@@ -22,12 +22,15 @@ algState=struct('initialPopulation',initPop,'lowerBound',zeros(1,D), ...
 % VAST-A0 = 应用层机制臂：G2/E 关闭（GWO-only 稀疏池），用于检验档案机制贡献。
 switch upper(algoName)
     case 'VAST-GWO'
+        assert(pop==50,'VAST-GWO 预设要求 N=50（冻结配置）。');
         algFcn=@SGWO; algState.mode='sparse'; algState.K=10;
         algState.nG2=12; algState.nE=38; algState.screenPolicy='random';
     case 'VAST-A0'
+        assert(pop==50,'VAST-A0 预设要求 N=50。');
         algFcn=@SGWO_ABLATION; algState.mode='sparse'; algState.K=10;
         algState.ablateG2=1; algState.ablateE=1; algState.screenPolicy='random';
     case 'VAST-N60'
+        assert(pop==60,'VAST-N60 预设要求 N=60。');
         algFcn=@SGWO; algState.mode='sparse'; algState.K=10;
         algState.nG2=14; algState.nE=46; algState.screenPolicy='random';
     case 'GWO',    algFcn=@GWO;
@@ -60,6 +63,22 @@ record=struct('Terrain',model.terrainName,'Scenario','N20','Stations',model.nOrd
     'BestCost',Best.Cost,'BestVector',Best.Vector);
 idx=unique(round(logspace(0,log10(maxEval),500))); idx=idx(idx>=1 & idx<=maxEval);
 record.TraceFE=idx; record.Trace=T(idx);   % 轻量轨迹（500 点）随记录返回
+% ---- 预注册 FE 检查点（2k/5k/10k/20k/30k；预算不足则为 NaN）----
+ck=[2000 5000 10000 20000 30000]; nC=numel(ck);
+record.CkptFE=ck;
+record.CkptHadFeasible=nan(1,nC); record.CkptBestFeasCost=nan(1,nC);
+record.CkptBestFeasDistance=nan(1,nC); record.CkptBestFeasWaiting=nan(1,nC);
+record.CkptBestPenalized=nan(1,nC);
+for q=1:nC
+    ci=find(trk.ckptFE==ck(q),1);
+    if ~isempty(ci) && ck(q)<=maxEval
+        record.CkptHadFeasible(q)=trk.ckptHadFeasible(ci);
+        record.CkptBestFeasCost(q)=trk.ckptBestFeasCost(ci);
+        record.CkptBestFeasDistance(q)=trk.ckptBestFeasDistance(ci);
+        record.CkptBestFeasWaiting(q)=trk.ckptBestFeasWaiting(ci);
+        record.CkptBestPenalized(q)=trk.ckptBestPenalized(ci);
+    end
+end
 if nargin>=4 && ~isempty(outDir)
     rel=fullfile('runs',model.terrainName,sprintf('%s_r%03d.mat',algoName,repeat));
     f=fullfile(outDir,rel); folder=fileparts(f);
