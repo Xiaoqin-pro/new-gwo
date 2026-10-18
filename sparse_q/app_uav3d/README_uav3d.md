@@ -53,7 +53,8 @@ ref_legacy/                                  9.29 原版算法与 main.m（对�
 
 * **VAST 配置显式化**（`uav_run_one.m` 预设）：`VAST-GWO` = N=50、G1/G2/E=**50/12/38**、
   K=10（与 CEC 冻结版逐参数一致，推荐）；`VAST-N60` = 60/14/46（比例缩放备选）；
-  `VAST-A0` = 关闭 G2/E 的 GWO-only 稀疏池（机制对照臂）。
+  `VAST-A0` = 关闭 G2/E 的 GWO-only 稀疏池（消融预设；**用户决定：不进 UAV 正式档**，
+  机制归因以 CEC 消融章节为准，该预设保留备用）。
 * **严格 FE 审计**：`uav_fitness_tracker` 拒绝预算外调用；`uav_run_one` 断言
   `trk.feCount == maxEval`（与 CEC 探针同标准）。
 * **五图可行解见证**：`data/witness/witness_v1.mat`（GWO@10k FE；mountain/plateau 升到
