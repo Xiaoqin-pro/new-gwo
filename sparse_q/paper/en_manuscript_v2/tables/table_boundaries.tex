@@ -1,0 +1,12 @@
+\begin{tabular}{p{4.6cm}p{4.2cm}p{2.6cm}p{4.0cm}}
+\toprule
+Hypothesis & Control & Median ratio & Verdict \\
+\midrule
+Screening the best-looking candidates beats random allocation & Directed screening by proximity to $\alpha$ and archive credit (S2) & 1.394 vs uniform & Rejected; it starves the GWO route of evaluations \\
+Stratified or informed allocation beats a uniform draw & Informed-in-strata, pool-ratio and trend-informed allocation & 1.528 / 1.255 / 1.348 & Rejected \\
+A fixed exploration quota manages the budget better than the pool share & Fixed quota at 0.25 / 0.50 / 0.75 & 1.070 / 1.064 / 1.672 & Rejected; raising the quota above the pool share is harmful \\
+Reinforcement learning schedules the budget better than the best fixed policy & Three Q-learning quota schedulers (zero, tuned and prior-initialised) & 0.988--1.130 vs best fixed; 0.748--0.870 vs random quota & Rejected as a contribution; always at or below the best fixed policy \\
+A stagnation-triggered radius boost restores progress & Shell radius multiplied by three after stagnation & 1.204 & Rejected \\
+Reusing verified successful directions adds information beyond extra perturbation & Steering along the mean recent successful direction & 0.897 vs frozen; 0.988 vs equal-magnitude random directions ($p=0.155$) & Rejected; the random control reproduces the gain \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,18 @@
+\begin{tabular}{p{4.4cm}p{3.6cm}p{7.0cm}}
+\toprule
+Quantity & Value & Role in the model \\
+\midrule
+Decision vector & 209 dimensions & 20 ranking values for the visiting order $+$ 189 control offsets (21 legs $\times$ 3 control points $\times$ 3 offsets) \\
+Map extent & $100\times100$ units & Horizontal extent of each terrain tile; depot at $(40,50)$ \\
+Terrain & Copernicus GLO-90, five tiles & Ridge, peaks, mountain, hills and plateau; bilinear interpolation on a $51\times51$ grid \\
+Delivery points & 20 per map & Fixed station coordinates; five-digit hard time windows per station \\
+Cruise speed & 10 units per time unit & Converts leg length to arrival time \\
+Service height & 16 m above ground & Station altitude; depot altitude follows the terrain \\
+Terrain clearance & 4 m & Minimum vertical separation between route and terrain along each leg \\
+Threat zones & 3 cylinders per map & Radius plus 2 m safety margin; vertical extent from terrain base to a specified ceiling \\
+Operating ceiling & 42 m & Maximum flight altitude \\
+Climb / turn limits & $35^\circ$ / $120^\circ$ & Maximum flight-path angle and heading change within a leg \\
+Objective weights & 1 / 0.05 / 2 & Distance, waiting time and smoothness terms in Eq.~\eqref{eq:uavobj} \\
+Penalties & $10^5+10^3\Delta t$ / $10^5+10^4\Delta g$ & Time-window lateness and geometric violations, respectively \\
+\bottomrule
+\end{tabular}

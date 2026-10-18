@@ -1,0 +1,11 @@
+\begin{tabular}{p{1.2cm}p{4.0cm}p{3.4cm}p{6.4cm}}
+\toprule
+Arm & Candidate pool (equal total $M=100$) & Mechanism under test & Rationale \\
+\midrule
+A0 & 100 GWO leader moves & Sparse evaluation alone & Isolates the effect of evaluating only $K$ of $M$ candidates \\
+A1 & 50 GWO moves $+$ 50 $\alpha$-shells & Leader-centred refinement & Tests whether local refinement around $\alpha$ can replace multi-region memory \\
+A2 & 50 GWO moves $+$ 50 archive candidates & Verified multi-region archive & Isolates the archive without the $\alpha$-shell route \\
+A3 & 50 GWO moves $+$ 12 $\alpha$-shells $+$ 38 archive candidates & Full \method{} & Reference configuration \\
+A5 & 50 GWO moves $+$ 12 $\alpha$-shells $+$ 38 single-centre draws around $\alpha$ & Archive replaced by a single centre with identical slots, scale and acceptance rule & Tests whether several regions, rather than extra perturbation, produce the gain \\
+\bottomrule
+\end{tabular}

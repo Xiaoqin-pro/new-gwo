@@ -1,0 +1,12 @@
+\begin{tabular}{p{1.7cm}p{5.4cm}p{7.9cm}}
+\toprule
+Method & Source of the implementation & Configuration under the common protocol \\
+\midrule
+GWO & Original formulation, reimplemented and audited against the published equations \citep{mirjalili2014gwo} & $N=50$; whole pack evaluated once per iteration; linearly decreasing $a$; canonical boundary clamping \\
+I-GWO & Published improved GWO \citep{nadimi2021igwo} & $N=50$; dimension-wise opposition-based initialization, nonlinear control parameter and dynamic position update as published \\
+HAGWO & Author MATLAB code (commit bdfda96), hierarchical adversarial GWO \citep{su2026hagwo} & $N=50$; dynamic three-layer division, elite refinement, L\'evy perturbation and adversarial escape retained; per-iteration fitness reused instead of re-evaluated \\
+PSO & Classic inertia-weight particle swarm \citep{kennedy1995pso,shi1998modified} & $N=50$; $w$ decreasing linearly from 0.9 to 0.4; $c_1=c_2=2$; $v_{\max}=0.2\,(\mathrm{ub}-\mathrm{lb})$ \\
+CLPSO & TEC2006 author code package \citep{liang2006clpso} & $N=50$; $P_c$ schedule, five-stagnation refresh, $c=1.49445$; out-of-range positions are not re-evaluated, as in the original code \\
+AOGWO & Author MATLAB code (commit 4122cef), adaptive oppositional GWO \citep{khalid2026aogwo} & $N=50$; oppositional initialization, cosine-adaptive $a$, decaying jump rate with L\'evy perturbation and selective opposition retained; search domain adapted to $[-100,100]^D$ \\
+\bottomrule
+\end{tabular}

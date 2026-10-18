@@ -1,0 +1,24 @@
+\begin{tabular}{p{2.6cm}p{4.0cm}p{4.0cm}p{4.6cm}}
+\toprule
+Family & What is changed & Typical mechanisms & What remains unaddressed \\
+\midrule
+Operator-level GWO variants & The movement or update equation &
+Differential evolution and elimination; mutation with evolutionary population
+dynamics; teaching--learning and beetle-antennae hybrids; self-repulsion &
+The evaluation budget is not treated as a design variable; every individual is
+usually evaluated each generation \\
+Learning-driven GWO variants & The control policy of the search &
+Reinforcement or Q-learning selection of strategies, leaders or quotas &
+Gains are attributed to the scheduler, and simple matched controls (uniform or
+fixed allocation) are rarely reported \\
+Memory and archive mechanisms & What the search remembers &
+Elite memories, cross-search memories, two-archive structures &
+Memory stores candidates of mixed provenance; archives act as reservoirs rather
+than as direct generators of new candidates \\
+Budget-aware and surrogate methods & How evaluations are allocated or modelled &
+Multi-model surrogates, infill criteria, surrogate-assisted evolutionary
+optimization &
+Requires a surrogate per problem; reported savings depend on model quality and
+are not directly comparable to a fixed true-evaluation budget \\
+\bottomrule
+\end{tabular}
