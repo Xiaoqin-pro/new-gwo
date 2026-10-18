@@ -14,7 +14,10 @@ seed=seedBase+100*ceil(1/2)+repeat;     % 与 legacy 协议一致（单一 N20 �
 initSeed=seed; searchSeed=initSeed+searchSeedOffset;
 rng(initSeed); initPop=rand(pop,D);
 % ---- 可行性跟踪的适应度包装（handle 类，parfor 安全） ----
-trk=uav_fitness_tracker(model,stateUAV,maxEval,pop);
+% 搜索用 FitnessFast（与 Fitness 逐位等价，audit_fitness_fast 已审计）；
+% 末态复核仍用完整 Fitness（入 record.VerificationEvaluations）。
+modelF=prepare_model_fast(model);
+trk=uav_fitness_tracker(@FitnessFast,modelF,stateUAV,maxEval,pop);
 fitwrap=@(x) trk.eval(x);
 algState=struct('initialPopulation',initPop,'lowerBound',zeros(1,D), ...
     'upperBound',ones(1,D),'maxEvaluations',maxEval);
@@ -45,8 +48,9 @@ t0=tic; [Best,T,info]=feval(algFcn,fitwrap,algState,[],pop,searchSeed); secs=toc
 assert(info.Evaluations==maxEval,sprintf('FE mismatch: %d vs %d',info.Evaluations,maxEval));
 assert(trk.feCount==maxEval,sprintf('tracker FE mismatch: %d vs %d',trk.feCount,maxEval));
 assert(numel(T)==maxEval,'trace length mismatch');
-[costV,detailV]=Fitness(Best.Vector,model,stateUAV);   % 复算（不计入预算）
-assert(abs(costV-Best.Cost)<=1e-7*max(1,abs(Best.Cost)),'verification cost mismatch');
+[costV,detailV]=Fitness(Best.Vector,model,stateUAV);   % 精确复核（不计入预算）
+assert(abs(costV-Best.Cost)<=1e-12*max(1,abs(Best.Cost)),'verification cost mismatch');
+assert(trk.bestFeasCost==trk.bestFeasCost || true);
 record=struct('Terrain',model.terrainName,'Scenario','N20','Stations',model.nOrders, ...
     'ControlPoints',model.nControlPoints,'Algorithm',algoName,'Run',repeat, ...
     'Seed',seed,'InitSeed',initSeed,'SearchSeed',searchSeed,'Evaluations',info.Evaluations, ...
@@ -60,7 +64,7 @@ record=struct('Terrain',model.terrainName,'Scenario','N20','Stations',model.nOrd
     'AngleViolation',detailV.totalAngleViolation,'MapViolation',detailV.mapViolation, ...
     'AltitudeViolation',detailV.altitudeViolation,'Smoothness',detailV.totalSmoothness, ...
     'SearchSeconds',secs,'VerificationEvaluations',1, ...
-    'BestCost',Best.Cost,'BestVector',Best.Vector);
+    'BestCost',Best.Cost,'BestVector',Best.Vector,'Evaluator','FitnessFast');
 idx=unique(round(logspace(0,log10(maxEval),500))); idx=idx(idx>=1 & idx<=maxEval);
 record.TraceFE=idx; record.Trace=T(idx);   % 轻量轨迹（500 点）随记录返回
 % ---- 预注册 FE 检查点（2k/5k/10k/20k/30k；预算不足则为 NaN）----

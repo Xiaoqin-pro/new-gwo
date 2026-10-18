@@ -61,6 +61,12 @@ ref_legacy/                                  9.29 原版算法与 main.m（对�
   30k；含 209 维决策向量与全部指标）；`verify_witness.m` 用本目录代码独立重算并逐项
   比对（已通过：五图 cost/可行/距离全部一致）。生成脚本：`make_witness.m`。
   旧实例记录 `legacy_v3_tight/` 与 `v6_*_witness.csv` 仅存档（属不同参数版本）。
+* **评价加速（P1）**：`FitnessFast.m` = `Fitness.m` 的逐行等价版本（唯一改动：
+  每条航段的 `interp2` → 预建 `griddedInterpolant`，`prepare_model_fast` 一次构建）。
+  **等价审计** `audit_fitness_fast.m`：五图 4010 例（随机/见证±1e-3/边界/端点）
+  `maxCostRel = 0`（逐位一致）、GWO-1000FE 轨迹 maxdiff = 0。搜索路径改用
+  FitnessFast，末态复核仍用完整 `Fitness`（1e-12 断言）。单线程 8.87→3.39 ms/评价
+  （**2.62×**）；4-worker 实测 711 evals/s → 正式档 900 次×30k FE ≈ **10.6 h**。
 * **实验规划**：见 `PLAN_uav3d.md`（三条可证伪假设、三层指标、统计口径、阶段与时间预算）。
 
 ## 5. 运行

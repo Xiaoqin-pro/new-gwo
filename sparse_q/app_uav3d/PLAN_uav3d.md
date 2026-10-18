@@ -66,9 +66,10 @@
 * [已做] FE 严格审计：tracker 拒绝超预算调用；`trk.feCount==maxEval` 断言。
 * [已做] 五图见证：`data/witness/witness_v1.mat`（GWO@10k/30k 生成，含决策向量与
   指标）+ `verify_witness.m` 独立重算（重评后逐项一致才通过）。
-* [待做] **Fitness 加速**：剖析热点（209 维解码 / 逐段插值 / 碰撞）→ 严格等价
-  （≤1e-12，随机 500 点+见证+边界）快速版，目标 9–10ms → ≤5ms；再做 4-worker
-  吞吐基准（short-burst 实测 runs/hour）。
+* [已做] **Fitness 加速（P1）**：profiler 定位 `interp2`（51%）→ `FitnessFast.m`
+  （griddedInterpolant 预建；其余逐行不变）；等价审计 4010 例 maxCostRel=0、
+  GWO-1000FE 轨迹一致；单线程 **2.62×**（8.87→3.39 ms/eval）；4-worker 实测
+  711 evals/s → 正式档约 **10.6 h**。搜索用 Fast、末态用完整版复核。
 * [待记录] 转弯角模型假设：现行 Fitness 在单航段折线内计算转弯角，**站点处衔接角
   未独立约束**——论文明确为模型假设；若补充，作为统一模型修订并重验见证。
 
