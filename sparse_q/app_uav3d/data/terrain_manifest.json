@@ -1,0 +1,163 @@
+{
+  "accessDate": "2026-10-03",
+  "source": "Copernicus DEM GLO-90 DSM, AWS public 2021 release",
+  "maps": [
+    {
+      "terrainType": 1,
+      "name": "ridge",
+      "label": "山脊沟谷型",
+      "tile": "N36_00_E113_00",
+      "rowLimits": [
+        100,
+        400
+      ],
+      "colLimits": [
+        300,
+        600
+      ],
+      "rawMinMeters": 597.854736328125,
+      "rawMaxMeters": 2002.09130859375,
+      "rawReliefMeters": 1404.236572265625,
+      "modelMin": 0.003343119733250144,
+      "modelMax": 14.73849709274922,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        36.6675,
+        36.9175
+      ],
+      "longitudeLimits": [
+        113.24916666666667,
+        113.49916666666667
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N36_00_E113_00_DEM/Copernicus_DSM_COG_30_N36_00_E113_00_DEM.tif",
+      "sourceSHA256": "ec49c2213b6cee3434261b359eff632b29a160f164950ed61e898e6dcc9db025",
+      "matSHA256": "086e8ccac3136b6a900c28f6ad9ede0ec6af071401f5eb9b65125467aca0a80b",
+      "independentReconstructionError": 0.0
+    },
+    {
+      "terrainType": 2,
+      "name": "peaks",
+      "label": "多峰起伏型",
+      "tile": "N27_00_E117_00",
+      "rowLimits": [
+        100,
+        400
+      ],
+      "colLimits": [
+        900,
+        1200
+      ],
+      "rawMinMeters": 180.5,
+      "rawMaxMeters": 2154.4814453125,
+      "rawReliefMeters": 1973.9814453125,
+      "modelMin": 0.02653763261122595,
+      "modelMax": 20.43858491443136,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        27.6675,
+        27.9175
+      ],
+      "longitudeLimits": [
+        117.74916666666667,
+        117.99916666666667
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N27_00_E117_00_DEM/Copernicus_DSM_COG_30_N27_00_E117_00_DEM.tif",
+      "sourceSHA256": "65817774ecf76a9e56ff8bfc8ea76a78989172c0bbef84950bb75085ccc5b2d1",
+      "matSHA256": "46ebda541b76fd1122c1bd4c1a4d64664ecd448fe7cd7a845c064c64f501b32a",
+      "independentReconstructionError": 0.0
+    },
+    {
+      "terrainType": 3,
+      "name": "mountain",
+      "label": "秦岭复合山地",
+      "tile": "N33_00_E107_00",
+      "rowLimits": [
+        150,
+        450
+      ],
+      "colLimits": [
+        600,
+        900
+      ],
+      "rawMinMeters": 1164.1771240234375,
+      "rawMaxMeters": 3048.2939453125,
+      "rawReliefMeters": 1884.1168212890625,
+      "modelMin": 0.17588826723707027,
+      "modelMax": 19.91371641209393,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        33.62583333333333,
+        33.87583333333333
+      ],
+      "longitudeLimits": [
+        107.49916666666667,
+        107.74916666666667
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N33_00_E107_00_DEM/Copernicus_DSM_COG_30_N33_00_E107_00_DEM.tif",
+      "sourceSHA256": "7b4720c08fdad994ddddcf1ad49f2846b205ca910fd318d3cdcb4ce09eda675b",
+      "matSHA256": "4fec4f76557721362b044b0b9aeb85b15d39b0c7656bd5dce690da78f5a92bc2",
+      "independentReconstructionError": 0.0
+    },
+    {
+      "terrainType": 4,
+      "name": "hills",
+      "label": "丘陵型",
+      "tile": "N31_00_E119_00",
+      "rowLimits": [
+        900,
+        1200
+      ],
+      "colLimits": [
+        500,
+        800
+      ],
+      "rawMinMeters": 6.5,
+      "rawMaxMeters": 576.9873657226562,
+      "rawReliefMeters": 570.4873657226562,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        31.00083333333333,
+        31.25083333333333
+      ],
+      "longitudeLimits": [
+        119.41583333333333,
+        119.66583333333333
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N31_00_E119_00_DEM/Copernicus_DSM_COG_30_N31_00_E119_00_DEM.tif",
+      "sourceSHA256": "142708cd374fe1b6d458441ed3f62a88e8afe124f49fb503c6c0f8189106480f",
+      "matSHA256": "73fafd2fff75d6e2495d290c17bddc74a1a29d0fae83ed7f8df952b38acc5b5",
+      "independentReconstructionError": null
+    },
+    {
+      "terrainType": 5,
+      "name": "plateau",
+      "label": "高原山地型",
+      "tile": "N34_00_E109_00",
+      "rowLimits": [
+        700,
+        1000
+      ],
+      "colLimits": [
+        500,
+        800
+      ],
+      "rawMinMeters": 413.2582092285156,
+      "rawMaxMeters": 2305.482421875,
+      "rawReliefMeters": 1892.2242431640625,
+      "heightScale": 0.01061505304449038,
+      "latitudeLimits": [
+        34.1675,
+        34.4175
+      ],
+      "longitudeLimits": [
+        109.41583333333333,
+        109.66583333333333
+      ],
+      "sourceURL": "https://copernicus-dem-90m.s3.amazonaws.com/Copernicus_DSM_COG_30_N34_00_E109_00_DEM/Copernicus_DSM_COG_30_N34_00_E109_00_DEM.tif",
+      "sourceSHA256": "81862980d1c806a514d383f04b5091cb1077abb6b70ddef1258e02b923092da6",
+      "matSHA256": "2d75f1249e2afcc09c620056b91d4b02419048552b928f2cf871da157c55bdcd",
+      "independentReconstructionError": null
+    }
+  ],
+  "validation": "Existing three maps retained; hills and plateau added from the same Copernicus GLO-90 workflow. The active N20/K=3 candidate has a feasible reference route on all five maps; see results/diagnostics/v6_bands_witness.csv."
+}
