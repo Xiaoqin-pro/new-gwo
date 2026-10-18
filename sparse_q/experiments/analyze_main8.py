@@ -8,7 +8,7 @@ try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception: pass
 SQ = r"D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q"
 RNG = np.random.default_rng(20261017)
-MAIN = {"PSO(classic)":"PSO(classic)","CLPSO":"CLPSO","GWO":"GWO","IGWO":"IGWO",
+MAIN = {"PSO(classic)":"PSO(classic)","CLPSO(2006)":"CLPSO(2006)","GWO":"GWO","IGWO":"IGWO",
         "S-star":"VAST-GWO(V1)","HAGWO":"HAGWO(2026)","AOGWO":"AOGWO(2026)"}
 
 def holm(p):
@@ -43,7 +43,7 @@ def main():
     base=pd.read_csv(os.path.join(SQ,"results","final_20261016_215309","merged_runs.csv"), low_memory=False)
     base=base[base.Status=="ok"]
     parts=[]
-    for pat,n in [("new3_*",2610),("pso_*",870)]:
+    for pat,n in [("new3_*",2610),("pso_*",870),("clpso_*",870)]:
         cands=[d for d in sorted(glob.glob(os.path.join(SQ,"results",pat))) if os.path.exists(os.path.join(d,"runs.csv"))]
         if cands:
             dd=pd.read_csv(os.path.join(cands[-1],"runs.csv")); dd=dd[dd.Status=="ok"]

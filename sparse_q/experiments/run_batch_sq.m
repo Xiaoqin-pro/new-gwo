@@ -65,6 +65,8 @@ switch name
         N=40;
     case 'DMS-PSO'
         N=30;
+    case 'CLPSO'
+        N=40;
     otherwise
         N=50;
 end
