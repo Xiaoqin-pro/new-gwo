@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.14)  17 OCT 2026 00:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.14)  18 OCT 2026 07:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -336,12 +336,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 Files/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
-] [2]
+]
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 2
 41.
  (C:\Program Files\MiKTeX\tex/latex/psnfss\ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
+) [2]
 (tables/table_main.tex)
 Overfull \hbox (20.55035pt too wide) in paragraph at lines 307--317
  [][] 
@@ -357,23 +357,36 @@ File: figures/convergence.png Graphic file (type png)
 <use figures/convergence.png>
 Package pdftex.def Info: figures/convergence.png  used on input line 329.
 (pdftex.def)             Requested size: 516.0pt x 268.76222pt.
-[3] (tables/table_behaviour.tex) [4 <./figures/ranks.png>] [5 <./figures/conver
-gence.png>] (main.bbl) [6] (main.aux)
+[3] (tables/table_behaviour.tex)
+<figures/uav_feasibility_curve.png, id=30, 448.074pt x 303.534pt>
+File: figures/uav_feasibility_curve.png Graphic file (type png)
+<use figures/uav_feasibility_curve.png>
+Package pdftex.def Info: figures/uav_feasibility_curve.png  used on input line 
+419.
+(pdftex.def)             Requested size: 252.0pt x 170.70966pt.
+<figures/uav_rmst_bar.png, id=31, 448.074pt x 303.534pt>
+File: figures/uav_rmst_bar.png Graphic file (type png)
+<use figures/uav_rmst_bar.png>
+Package pdftex.def Info: figures/uav_rmst_bar.png  used on input line 429.
+(pdftex.def)             Requested size: 252.0pt x 170.70966pt.
+ [4 <./figures/ranks.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5 <./figures/convergence.png> <./figures/uav_feasibility_curve.png> <./figure
+s/uav_rmst_bar.png>] (main.bbl [6]) [7
+
+] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 4356 strings out of 467871
- 68594 string characters out of 5428449
- 496433 words of memory out of 5000000
- 33168 multiletter control sequences out of 15000+600000
- 674071 words of font info for 131 fonts, out of 8000000 for 9000
+ 4375 strings out of 467871
+ 69139 string characters out of 5428449
+ 496571 words of memory out of 5000000
+ 33186 multiletter control sequences out of 15000+600000
+ 675178 words of font info for 132 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,9n,65p,442b,288s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Progra
@@ -389,9 +402,9 @@ nts/cm/cmsy7.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C
 :/Program Files/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTe
 X/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/ti
 mes/utmr8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 636546 bytes).
+Output written on main.pdf (7 pages, 817916 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
+ 116 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

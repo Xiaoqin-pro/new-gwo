@@ -25,39 +25,49 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Evaluation allocation}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Selection and commit}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Cost}{2}{}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces DRS-GWO{} (one generation, exactly $K$ true evaluations)}}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Experimental Setup}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Protocol}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Experimental Setup}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Protocol}{2}{}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces VAST-GWO{} (one generation, exactly $K$ true evaluations)}}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Development and final isolation}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Baselines and statistics}{3}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces CEC2017 $D=50$, 100{,}000 true evaluations, 29 functions, 30 runs. ``W-L vs GWO'' counts function-mean wins and losses. Baselines marked ``audited'' are read-only results whose implementations this project reproduced bit-for-bit before reuse.}}{3}{}\protected@file@percent }
 \newlabel{tab:main}{{I}{3}{}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Median paired error ratio of the frozen method over each baseline, aggregated by family (median of the family's per-function medians).}}{3}{}\protected@file@percent }
+\newlabel{tab:family}{{II}{3}{}{table.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Results}{3}{}\protected@file@percent }
 \newlabel{sec:results}{{V}{3}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Formal comparison}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Early-budget behaviour}{3}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Median paired error ratio of the frozen method over each baseline, aggregated by family (median of the family's per-function medians).}}{4}{}\protected@file@percent }
-\newlabel{tab:family}{{II}{4}{}{table.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Mean ranks over the 29 functions (30 runs each), CEC2017 $D=50$, 100{,}000 true evaluations. The frozen method is highlighted.}}{4}{}\protected@file@percent }
 \newlabel{fig:ranks}{{1}{4}{}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Behaviour metrics}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Scalability and resource tiers}{4}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Behaviour metrics on the formal tier (probe-instrumented methods).}}{4}{}\protected@file@percent }
 \newlabel{tab:behaviour}{{III}{4}{}{table.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Ablation and Mechanism Study}{4}{}\protected@file@percent }
-\newlabel{sec:ablation}{{VI}{4}{}{section.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Pool composition and evaluation density}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Screening rules are falsified}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Quota policies and Q-learning}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Behaviour metrics}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Scalability and resource tiers}{4}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces 3D UAV application (150 runs per method). Feas.: routes found within 30{,}000 evaluations; RMST: restricted mean time to first feasibility under a 30{,}000-evaluation censoring horizon (lower is better); medians in FE.}}{4}{}\protected@file@percent }
+\newlabel{tab:uav}{{IV}{4}{}{table.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Application: 3D UAV Delivery Path Planning}{4}{}\protected@file@percent }
+\newlabel{sec:uav}{{VI}{4}{}{section.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Median best-so-far error versus true evaluations on five representative functions (F1, F4, F9, F13, F24). Thick red: frozen method; purple: its K=50 variant; dashed grey: standard GWO; dashed blue: frozen full-evaluation ANGWO; thin lines: audited strong baselines. All curves use the same true-FE budget.}}{5}{}\protected@file@percent }
 \newlabel{fig:conv}{{2}{5}{}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-D}}Post-freeze enhancement probes}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion}{5}{}\protected@file@percent }
-\newlabel{sec:discussion}{{VII}{5}{}{section.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Dual-axis verdict}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Why the simple policy wins}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Cumulative feasible runs versus real fitness evaluations (benchmark-v1, six methods, 150 runs each). The checkpoints at 2k--20k are early observations within the single 30k protocol, not independent short-budget runs.}}{5}{}\protected@file@percent }
+\newlabel{fig:uavfeas}{{3}{5}{}{figure.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Ablation and Mechanism Study}{5}{}\protected@file@percent }
+\newlabel{sec:ablation}{{VII}{5}{}{section.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Restricted mean time to first feasible route (30k censoring, bootstrap 95\% CI). All runs, including those that never reach feasibility, enter the statistic.}}{5}{}\protected@file@percent }
+\newlabel{fig:uavrmst}{{4}{5}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Pool composition and evaluation density}{5}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Screening rules are falsified}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Quota policies and Q-learning}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Post-freeze enhancement probes}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Discussion}{6}{}\protected@file@percent }
+\newlabel{sec:discussion}{{VIII}{6}{}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}Dual-axis verdict}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}Why the simple policy wins}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-C}}Limitations}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Conclusion}{6}{}\protected@file@percent }
 \bibcite{ssrlpso2026}{1}
 \bibcite{dong2020surrogate}{2}
 \bibcite{mirjalili2014gwo}{3}
@@ -69,7 +79,5 @@
 \bibcite{yin2026amsrl}{9}
 \bibcite{huang2026qlfdgwo}{10}
 \bibcite{nayeem2025qgwo}{11}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Limitations}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
-\gdef \@abspage@last{6}
+\@writefile{toc}{\contentsline {section}{References}{7}{}\protected@file@percent }
+\gdef \@abspage@last{7}

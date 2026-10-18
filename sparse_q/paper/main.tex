@@ -5,13 +5,13 @@
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\newcommand{\method}{DRS-GWO}
+\newcommand{\method}{VAST-GWO}
 \newcommand{\TBD}{\textsc{tbd}}
 
 \begin{document}
 
-\title{Dual-Route Sparse Evaluation for Grey Wolf Optimization: Which
-Candidates Deserve the Real Evaluations?}
+\title{VAST-GWO: Verified Archive-Guided Sparse Evaluation for Grey Wolf
+Optimization}
 
 \author{Draft -- sparse\_q research branch\thanks{All experiments in this
 draft come from the frozen batch recorded in the accompanying repository;
@@ -380,6 +380,80 @@ against the frozen ANGWO (0.807). The sparse framework therefore scales
 with dimension and with smaller budgets rather than relying on the
 100{,}000-evaluation regime.
 
+
+\section{Application: 3D UAV Delivery Path Planning}
+\label{sec:uav}
+The sparse-evaluation framework is applied to a three-dimensional UAV delivery
+scenario built on five real Copernicus GLO-90 digital-elevation tiles (ridge,
+peaks, mountain, hills and plateau). Each instance contains 20 delivery
+stations with hard time windows, three cylindrical threat zones and three
+intermediate control points per leg, i.e.\ a 209-dimensional mixed
+route-and-trajectory search space; this is a normalized simulation derived from
+real terrain data, not a flight test. All algorithms use $N=50$, 30{,}000 true
+fitness evaluations (initialization included), identical initial populations
+per (map, seed) and 30 seeds (101--130). The comparison set is GWO, I-GWO,
+HAGWO (2026), PSO and CLPSO; 900/900 runs completed with zero failures.
+
+\begin{table}[t]
+\centering
+\caption{3D UAV application (150 runs per method). Feas.: routes found within
+30{,}000 evaluations; RMST: restricted mean time to first feasibility under a
+30{,}000-evaluation censoring horizon (lower is better); medians in FE.}
+\label{tab:uav}
+\begin{tabular}{lcccc}
+\toprule
+Method & Feas.\ (\%) & RMST & Med.\ first feas. & Med.\ cost \\
+\midrule
+VAST-GWO & \textbf{100.0} & \textbf{7062} & 6314 & 667.4 \\
+GWO      & 94.0 & 10936 & 8920 & 699.8 \\
+I-GWO    & 97.3 & 12270 & 11152 & 724.7 \\
+HAGWO    & 97.3 & 8133 & 7432 & 663.4 \\
+PSO      & 95.3 & 8138 & 5357 & 766.4 \\
+CLPSO    & 61.3 & 24427 & 21330 & 1015.4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/uav_feasibility_curve.png}
+\caption{Cumulative feasible runs versus real fitness evaluations
+(benchmark-v1, six methods, 150 runs each). The checkpoints at 2k--20k are
+early observations within the single 30k protocol, not independent
+short-budget runs.}
+\label{fig:uavfeas}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/uav_rmst_bar.png}
+\caption{Restricted mean time to first feasible route (30k censoring,
+bootstrap 95\% CI). All runs, including those that never reach feasibility,
+enter the statistic.}
+\label{fig:uavrmst}
+\end{figure}
+
+\method{} is the only method that finds a feasible route in every one of the
+150 runs (100\% versus 97.3\% for I-GWO and HAGWO, 95.3\% for PSO, 94.0\% for
+GWO and 61.3\% for CLPSO; Table~\ref{tab:uav}). Under the censoring horizon its
+RMST is the smallest ($7062$, $95\%$ CI $6449$--$7731$), i.e.\ it also reaches
+feasibility fastest on average once failed runs are accounted for
+(Figure~\ref{fig:uavrmst}); the advantage grows in the mid-to-late budget
+(82.0\% versus 76.0\%/74.0\% at 10{,}000 evaluations; 100\% versus
+97.3\%/95.3\% at 20{,}000; Figure~\ref{fig:uavfeas}). Paired tests over the
+150 map--seed pairs (Holm across the five baselines) give significantly better
+final cost against every baseline (median ratios $0.631$--$0.967$, Holm
+$p\le 0.046$) and significantly earlier censored time-to-feasibility against
+GWO, I-GWO, HAGWO and CLPSO ($p\le 0.0072$).
+
+Two non-supported comparisons are reported explicitly. PSO discovers feasible
+routes earlier in the first 5{,}000 evaluations and its paired
+time-to-feasibility difference is not significant ($p=0.598$ on the
+checkpoint-ordered test), but its final routes are worse (median cost $766.4$
+versus $667.4$). HAGWO's marginal median cost ($663.4$) is slightly below that
+of \method{} ($667.4$) because it conditions on its own successful runs; on
+the 146 pairs where both succeed, \method{} is significantly better (median
+ratio $0.967$, rank-biserial $0.19$, Holm $p=0.0458$) and it is more reliable.
 \section{Ablation and Mechanism Study}
 \label{sec:ablation}
 The design space was explored on an eight-function development set

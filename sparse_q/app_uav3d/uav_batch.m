@@ -1,6 +1,6 @@
 function out = uav_batch(algorithms,mapIDs,repeats,pop,maxFE,outDir)
 %UAV_BATCH  3D 无人机配送应用批处理（benchmark-v1 协议；恰 4 worker；断点续跑）。
-%   uav_batch() 使用默认：七算法 x 五地图 x 正式种子 101:130 x 60 粒子 x 30k FE。
+%   uav_batch() 使用默认：六算法 x 五地图 x 正式种子 101:130 x N=50 x 30k FE。
 %   同一 outDir 重跑 = 续跑（runBatch4 只补缺失/失败作业）。
 here=fileparts(mfilename('fullpath')); sq=fileparts(here);
 if nargin<1 || isempty(algorithms)
