@@ -33,7 +33,8 @@ for a=1:numel(algorithms)
         end
     end
 end
-addpath(here,fullfile(sq,'src'));
+cfg0=newgwo_config();
+addpath(here,fullfile(sq,'src'),cfg0.root);   % root 提供 +overnight 包
 summary=overnight.runBatch4(jobs,@uav_runner,outDir);
 % ---- 汇总 raw_runs.csv ----
 n=numel(jobs); rows=cell(n,1);

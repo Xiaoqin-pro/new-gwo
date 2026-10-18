@@ -1,0 +1,8 @@
+[uav_batch] NOTE: maxFE=5000 deviates from the frozen 30,000-FE protocol (dev ok).
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+已连接到具有 4 个工作进程的并行池。
+[NEW-GWO] Local parallel pool confirmed: 4 workers.
+[NEW-GWO] 4-worker pool; 90 total; 0 done; 90 pending; output=D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\uav_dev_N50_5k
+[NEW-GWO] done=90 failed=0 missing=0 workers=4
+[uav_batch] raw_runs.csv: 90 行 -> D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\uav_dev_N50_5k
+D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q\results\uav_dev_N50_5k
