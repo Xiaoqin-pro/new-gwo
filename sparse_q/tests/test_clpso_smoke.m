@@ -5,7 +5,7 @@ cfg=newgwo_config();
 addpath(fullfile(cfg.root,'src'),fullfile(root,'src'));
 fprintf('== test_clpso_smoke ==\n');
 cd(cfg.cecDir);
-D=30; N=40; budget=3000;
+D=30; N=50; budget=3000;
 rng(261013000+1*10000+3001,'twister'); pool=-100+200*rand(50,D);
 st=struct('initialPopulation',pool(1:N,:),'lowerBound',-100*ones(1,D), ...
     'upperBound',100*ones(1,D),'maxEvaluations',budget);

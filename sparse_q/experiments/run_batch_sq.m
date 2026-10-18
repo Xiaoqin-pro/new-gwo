@@ -66,7 +66,7 @@ switch name
     case 'DMS-PSO'
         N=30;
     case 'CLPSO'
-        N=40;
+        N=50;   % 主表统一协议 N=50（N=40 为作者原设置版本，已存档不再使用）
     otherwise
         N=50;
 end
