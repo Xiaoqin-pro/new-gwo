@@ -8,8 +8,8 @@ try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception: pass
 SQ = r"D:\111\Desktop\噜噜\基础版狼群\NEW_GWO_2026\sparse_q"
 RNG = np.random.default_rng(20261017)
-MAIN = {"SPSO-2011":"PSO(SPSO-2011)","CLPSO":"CLPSO","GWO":"GWO","IGWO":"IGWO",
-        "S-star":"VAST-GWO(V1)","HAGWO":"HAGWO(2026)","AOGWO":"AOGWO(2026)","EDGWO":"EDGWO(2025)"}
+MAIN = {"PSO(classic)":"PSO(classic)","CLPSO":"CLPSO","GWO":"GWO","IGWO":"IGWO",
+        "S-star":"VAST-GWO(V1)","HAGWO":"HAGWO(2026)","AOGWO":"AOGWO(2026)"}
 
 def holm(p):
     p=np.asarray(p,float); o=np.argsort(p); adj=np.empty_like(p); cur=0.0
@@ -42,10 +42,16 @@ def stats_vs(piv,A,B):
 def main():
     base=pd.read_csv(os.path.join(SQ,"results","final_20261016_215309","merged_runs.csv"), low_memory=False)
     base=base[base.Status=="ok"]
-    cands=[d for d in sorted(glob.glob(os.path.join(SQ,"results","new3_*"))) if os.path.exists(os.path.join(d,"runs.csv"))]
-    if not cands: print("no new3 batch yet"); return
-    df=pd.read_csv(os.path.join(cands[-1],"runs.csv")); df=df[df.Status=="ok"]
-    print(f"new3 batch: {os.path.basename(cands[-1])}  ok={len(df)}/2610")
+    parts=[]
+    for pat,n in [("new3_*",2610),("pso_*",870)]:
+        cands=[d for d in sorted(glob.glob(os.path.join(SQ,"results",pat))) if os.path.exists(os.path.join(d,"runs.csv"))]
+        if cands:
+            dd=pd.read_csv(os.path.join(cands[-1],"runs.csv")); dd=dd[dd.Status=="ok"]
+            print(f"{pat}: {os.path.basename(cands[-1])} ok={len(dd)}/{n}")
+            parts.append(dd)
+    if not parts: print("no new batches yet"); return
+    df=pd.concat(parts,ignore_index=True,sort=False)
+    df=df[df.Algorithm!="EDGWO"]
     both=pd.concat([base,df],ignore_index=True,sort=False)
     piv=both.pivot_table(index=["FunctionID","Seed"],columns="Algorithm",values="FinalError",aggfunc="first")
     have=[a for a in MAIN if a in piv.columns]
