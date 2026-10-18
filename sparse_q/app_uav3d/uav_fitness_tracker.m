@@ -13,17 +13,20 @@ classdef uav_fitness_tracker < handle
             obj.initCosts = nan(pop,1); obj.initFeas = false(pop,1);
         end
         function c = eval(obj,x)
+            % 严格 FE 审计：预算外调用直接报错（与 CEC 探针同标准）
+            if obj.feCount >= obj.maxEval
+                error('uav_fitness_tracker:BudgetExceeded', ...
+                    'Fitness called beyond the FE budget (%d).',obj.maxEval);
+            end
             [c,dt] = Fitness(x,obj.model,obj.uavState);
             obj.feCount = obj.feCount + 1;
-            if obj.feCount <= obj.maxEval
-                obj.feasTrace(obj.feCount) = dt.feasible;
-                if isnan(obj.firstFeasible) && dt.feasible
-                    obj.firstFeasible = obj.feCount;
-                end
-                if obj.feCount <= obj.pop
-                    obj.initCosts(obj.feCount) = c;
-                    obj.initFeas(obj.feCount) = dt.feasible;
-                end
+            obj.feasTrace(obj.feCount) = dt.feasible;
+            if isnan(obj.firstFeasible) && dt.feasible
+                obj.firstFeasible = obj.feCount;
+            end
+            if obj.feCount <= obj.pop
+                obj.initCosts(obj.feCount) = c;
+                obj.initFeas(obj.feCount) = dt.feasible;
             end
         end
     end

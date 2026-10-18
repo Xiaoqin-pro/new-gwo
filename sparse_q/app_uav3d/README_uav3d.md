@@ -49,6 +49,19 @@ ref_legacy/                                  9.29 原版算法与 main.m（对�
 **对比算法集可配置**（默认 `{'VAST-GWO','GWO','IGWO','PSO','CLPSO','HAGWO','AOGWO'}`，
 不必与 CEC 主表相同）。
 
+## 4b. 预注册配置与审计（2026-10-17 增补）
+
+* **VAST 配置显式化**（`uav_run_one.m` 预设）：`VAST-GWO` = N=50、G1/G2/E=**50/12/38**、
+  K=10（与 CEC 冻结版逐参数一致，推荐）；`VAST-N60` = 60/14/46（比例缩放备选）；
+  `VAST-A0` = 关闭 G2/E 的 GWO-only 稀疏池（机制对照臂）。
+* **严格 FE 审计**：`uav_fitness_tracker` 拒绝预算外调用；`uav_run_one` 断言
+  `trk.feCount == maxEval`（与 CEC 探针同标准）。
+* **五图可行解见证**：`data/witness/witness_v1.mat`（GWO@10k FE；mountain/plateau 升到
+  30k；含 209 维决策向量与全部指标）；`verify_witness.m` 用本目录代码独立重算并逐项
+  比对（已通过：五图 cost/可行/距离全部一致）。生成脚本：`make_witness.m`。
+  旧实例记录 `legacy_v3_tight/` 与 `v6_*_witness.csv` 仅存档（属不同参数版本）。
+* **实验规划**：见 `PLAN_uav3d.md`（三条可证伪假设、三层指标、统计口径、阶段与时间预算）。
+
 ## 5. 运行
 
 ```matlab

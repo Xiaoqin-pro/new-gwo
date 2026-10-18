@@ -18,10 +18,18 @@ trk=uav_fitness_tracker(model,stateUAV,maxEval,pop);
 fitwrap=@(x) trk.eval(x);
 algState=struct('initialPopulation',initPop,'lowerBound',zeros(1,D), ...
     'upperBound',ones(1,D),'maxEvaluations',maxEval);
-% VAST-GWO 的默认冻结配置（与主表口径一致：稀疏评价 K=10，池尺寸按 N 自适应）
+% 显式冻结配置：VAST-GWO = N=50, G1/G2/E = 50/12/38, K=10（与 CEC 主表逐参数一致）
+% VAST-A0 = 应用层机制臂：G2/E 关闭（GWO-only 稀疏池），用于检验档案机制贡献。
 switch upper(algoName)
     case 'VAST-GWO'
-        algFcn=@SGWO; algState.mode='sparse'; algState.K=10; algState.screenPolicy='random';
+        algFcn=@SGWO; algState.mode='sparse'; algState.K=10;
+        algState.nG2=12; algState.nE=38; algState.screenPolicy='random';
+    case 'VAST-A0'
+        algFcn=@SGWO_ABLATION; algState.mode='sparse'; algState.K=10;
+        algState.ablateG2=1; algState.ablateE=1; algState.screenPolicy='random';
+    case 'VAST-N60'
+        algFcn=@SGWO; algState.mode='sparse'; algState.K=10;
+        algState.nG2=14; algState.nE=46; algState.screenPolicy='random';
     case 'GWO',    algFcn=@GWO;
     case 'IGWO',   algFcn=@IGWO;
     case 'PSO',    algFcn=@PSO_CEC;
@@ -32,6 +40,7 @@ switch upper(algoName)
 end
 t0=tic; [Best,T,info]=feval(algFcn,fitwrap,algState,[],pop,searchSeed); secs=toc(t0);
 assert(info.Evaluations==maxEval,sprintf('FE mismatch: %d vs %d',info.Evaluations,maxEval));
+assert(trk.feCount==maxEval,sprintf('tracker FE mismatch: %d vs %d',trk.feCount,maxEval));
 assert(numel(T)==maxEval,'trace length mismatch');
 [costV,detailV]=Fitness(Best.Vector,model,stateUAV);   % 复算（不计入预算）
 assert(abs(costV-Best.Cost)<=1e-7*max(1,abs(Best.Cost)),'verification cost mismatch');
