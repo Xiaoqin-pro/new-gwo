@@ -1,0 +1,58 @@
+{
+  "VAST-GWO": {
+    "run_median": 8.328103200000001,
+    "run_iqr": 7.984786274999999,
+    "fn_median_of_medians": 8.25330535,
+    "fn_med_q1": 7.646082,
+    "fn_med_q3": 15.613999849999999,
+    "within_fn_iqr_median": 0.19119772500000032
+  },
+  "GWO": {
+    "run_median": 4.1996652,
+    "run_iqr": 7.708423575000001,
+    "fn_median_of_medians": 4.16118875,
+    "fn_med_q1": 3.7341668500000003,
+    "fn_med_q3": 9.5957224,
+    "within_fn_iqr_median": 0.0494747250000005
+  },
+  "IGWO": {
+    "run_median": 4.4748620500000005,
+    "run_iqr": 7.7616645250000005,
+    "fn_median_of_medians": 4.43295195,
+    "fn_med_q1": 4.0159835,
+    "fn_med_q3": 10.10349065,
+    "within_fn_iqr_median": 0.06150644999999999
+  },
+  "HAGWO": {
+    "run_median": 4.5409799500000005,
+    "run_iqr": 7.86656405,
+    "fn_median_of_medians": 4.55394955,
+    "fn_med_q1": 3.87093045,
+    "fn_med_q3": 11.708717400000001,
+    "within_fn_iqr_median": 0.044722500000000664
+  },
+  "PSO": {
+    "run_median": 3.8663273499999997,
+    "run_iqr": 7.738341125,
+    "fn_median_of_medians": 3.8459199,
+    "fn_med_q1": 3.48260235,
+    "fn_med_q3": 9.5831187,
+    "within_fn_iqr_median": 0.042804500000000356
+  },
+  "CLPSO": {
+    "run_median": 4.570066949999999,
+    "run_iqr": 6.9729866000000005,
+    "fn_median_of_medians": 4.570066949999999,
+    "fn_med_q1": 4.0139829,
+    "fn_med_q3": 10.8852017,
+    "within_fn_iqr_median": 0.06194500000000058
+  },
+  "AOGWO": {
+    "run_median": 6.39819565,
+    "run_iqr": 6.7868874,
+    "fn_median_of_medians": 6.3356911,
+    "fn_med_q1": 5.8348375,
+    "fn_med_q3": 12.14692625,
+    "within_fn_iqr_median": 0.12744397500000026
+  }
+}

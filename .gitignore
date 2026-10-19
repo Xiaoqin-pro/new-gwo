@@ -13,3 +13,12 @@ __pycache__/
 *.m~ 
 Thumbs.db
 Desktop.ini
+
+# ===== LaTeX build artifacts =====
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz

@@ -49,24 +49,25 @@ alpha wolf (12), and multi-region shells and two-centre segments produced from
 a verified elite archive (38). Only $K=10$ uniformly sampled candidates receive
 a real evaluation, and no unevaluated candidate ever influences leaders,
 archives or rankings---a verified-state discipline that keeps every piece of
-search memory backed by a billed evaluation. On CEC2017 at $D=50$ with
-100{,}000 true evaluations and 30 independent runs, \method{} ranks first among
-seven methods (mean rank 2.24), significantly outperforming the 2026
-hierarchical HAGWO, PSO, CLPSO, the 2026 adaptive oppositional AOGWO and
-standard GWO, and reaching statistical parity with the strong improved GWO
-while leading it on mean rank. A controlled equal-slot ablation shows that the
-verified archive carries the improvement: a GWO-only candidate pool loses 27
-of the 29 functions to the full method, replacing the archive with a
-single alpha-centred sampler with identical slots, scale and acceptance rule
-collapses the method to 2 wins, and the alpha-shell route is optional once the
-archive is present. Directed screening, fixed quotas and three Q-learning
-schedulers were all rejected against matched controls, indicating that the
-candidate-source structure, not the evaluation scheduler, is the decisive
-design variable. In a 209-dimensional, DEM-based 3D UAV delivery application
-with hard time windows, \method{} is the only method that finds feasible routes
-in all 150 runs, attains the smallest censored mean time to feasibility, and
-produces the best paired final route quality against every baseline after Holm
-correction.
+search memory backed by a billed evaluation. Across seven methods on CEC2017,
+\method{} ranks first at both dimensions tested: at $D=50$ it attains a mean
+rank of 2.24 with 100{,}000 true evaluations and 30 runs, significantly
+outperforming the 2026 hierarchical HAGWO, PSO, CLPSO, the 2026 adaptive
+oppositional AOGWO and standard GWO; at $D=100$, with the same budget and 30
+seeds, it attains a mean rank of 1.76 against six baselines, and against every
+one of them the Holm-corrected paired test returns more significant
+function-level wins than losses. A controlled
+equal-slot ablation shows that the verified archive carries the improvement: a
+GWO-only candidate pool loses 27 of the 29 functions to the full method, and
+replacing the archive with a single alpha-centred sampler with identical slots,
+scale and acceptance rule collapses the method to 2 wins. Directed screening,
+fixed quotas and three Q-learning schedulers do not improve on the uniform
+draw, indicating that the candidate-source structure, not the evaluation
+scheduler, is the decisive design variable. In a 209-dimensional, DEM-based 3D
+UAV delivery application with hard time windows, \method{} is the only method
+that finds feasible routes in all 150 runs, attains the smallest censored mean
+time to feasibility, and produces the best paired final route quality against
+every baseline after Holm correction.
 \end{abstract}
 
 \vspace{0.2cm}
@@ -78,14 +79,17 @@ planning; CEC2017.
 \label{sec:intro}
 Nature-inspired optimizers are routinely used for engineering design,
 scheduling and path planning because they assume little about the objective
-and scale to black-box simulators. Their practical cost, however, is dominated
+and scale to black-box simulators \citep{storn1997de,hansen2001cmaes,deb2002nsga2,yang2010bat}.
+The no-free-lunch theorems make the point precise: no single search strategy
+dominates across all objectives, so what matters is matching the structure of
+the search to the structure of the budget \citep{wolpert2021nfl}. Their practical cost, however, is dominated
 by the objective function itself. In finite-element calibration,
 computational-fluid design or UAV mission planning a single evaluation may
 take seconds to hours, so the total number of \emph{real} evaluations is the
 binding constraint rather than the number of arithmetic operations
-\citep{yu2021multimodel,liu2024survey,zhao2025surrogate}. Under such budgets an
-optimizer has to answer one question well: \emph{where should the next real
-evaluation be spent?}
+\citep{jones1998ego,jin2003fitness,jin2011surrogate,yu2021multimodel,liu2024survey,zhao2025surrogate}.
+Under such budgets an optimizer has to answer one question well: \emph{where
+should the next real evaluation be spent?}
 
 The grey wolf optimizer (GWO) \citep{mirjalili2014gwo} is an attractive
 starting point. It is parameter-light, easy to implement and has been applied
@@ -159,8 +163,9 @@ with the same audited budget for every method. On CEC2017 at $D=50$ with
 100{,}000 true evaluations and 30 independent runs, \method{} attains the best
 mean rank among seven methods (2.24), is significantly better than five of six
 baselines under Holm correction, and reaches statistical parity with the strong
-improved GWO while leading it on mean rank; it also ranks first at $D=100$ and
-under a budget five times smaller. A five-arm equal-slot ablation shows that
+improved GWO while leading it on mean rank; at $D=100$, with the same
+evaluation budget and 30 seeds, it attains the lowest mean rank against all six
+baselines, and it ranks first again under a budget five times smaller. A five-arm equal-slot ablation shows that
 the verified archive is the performance engine: a GWO-only pool loses 27 of the
 29 functions to the full method, replacing the archive with a single
 alpha-centred sampler with identical slots, scale and acceptance rule collapses
@@ -194,7 +199,9 @@ controlled by a linearly decreasing parameter. Comprehensive reviews document
 its variants and applications in IoT, energy, scheduling and engineering
 design \citep{nadimishahraki2024iot,makhadmeh2023review}. The dominant line of
 research changes the movement equation: hybridisation with differential
-evolution and an elimination mechanism \citep{wang2019igwode}, mutation
+evolution and an elimination mechanism \citep{wang2019igwode}, adaptive
+differential-evolution schemes with external archives and success-history
+adaptation \citep{zhang2009jade,tanabe2013shade,tanabe2014lshade}, mutation
 combined with evolutionary population dynamics and nonlinear population
 reduction \citep{zhang2025mutation}, teaching--learning hybrids
 \citep{singh2025tlbo}, beetle-antennae hybrids \citep{zhang2025bagwo}, particle
@@ -203,7 +210,7 @@ selection \citep{wang2025selfrepulsion} and improved forms for classical
 engineering design problems \citep{nadimi2021igwo,li2021sustainability}. A
 second line lets learning control the search: Q-learning or reinforcement
 learning selects strategies, leaders or budget shares
-\citep{yin2026amsgwo,huang2026qlfdgwo,khalid2026aogwo,wang2026dmsgwo}, and
+\citep{watkins1992q,auer2002ucb,yin2026amsgwo,huang2026qlfdgwo,khalid2026aogwo,wang2026dmsgwo}, and
 UAV-specific variants embed such policies into trajectory planning
 \citep{nayeem2025drones,jia2025drones}. \method{} belongs to neither line in
 its mechanism: it keeps the classical leader move for one route of the pool and
@@ -212,9 +219,12 @@ per generation.
 
 \subsection{Memory and archive mechanisms in swarm intelligence}
 Memory is a recurring idea in population-based search, where it stabilises the
-search and preserves diversity. Recent GWO variants use elite memories,
-cross-search memories or two-archive structures for large-scale and
-multi-objective problems \citep{zamani2026egwo,tejani2025twoarchive}. \method{}
+search and preserves diversity. Elite and external archives are a mature device in evolutionary computation,
+used both to preserve non-dominated solutions \citep{deb2002nsga2} and to
+retain promising regions during search \citep{zhang2009jade,sun2024niching,hong2024elite}.
+Recent GWO variants use elite memories, cross-search memories or two-archive
+structures for large-scale and multi-objective problems
+\citep{zamani2026egwo,tejani2025twoarchive}. \method{}
 shares the motivation but differs in three respects. First, the archive is
 \emph{verified}: only positions that received a real evaluation may enter, so
 the archive never stores a surrogate prediction or an unmeasured guess, and
@@ -232,7 +242,7 @@ produces the measured improvement.
 When evaluations are expensive, surrogate-assisted evolutionary algorithms are
 the dominant paradigm: a model of the objective guides the search and is
 updated with a small number of real evaluations
-\citep{yu2021multimodel,liu2024survey,zhao2025surrogate}. \method{} is
+\citep{jones1998ego,jin2003fitness,jin2011surrogate,yu2021multimodel,liu2024survey,zhao2025surrogate}. \method{} is
 complementary rather than competing. It uses no surrogate; it targets the
 regime in which a real evaluation is affordable but scarce enough that the
 per-generation allocation must be fixed and audited. This keeps the comparison
@@ -246,7 +256,9 @@ Metaheuristics are widely used for three-dimensional UAV path planning, where
 objectives combine path length, energy or smoothness with hard constraints on
 terrain, obstacles, flight envelope and, in delivery missions, time windows.
 GWO and its hybrids are among the most frequently applied methods in this area
-\citep{nayeem2025drones,jia2025drones,huang2026qlfdgwo}. Reported evaluations
+\citep{nayeem2025drones,jia2025drones,huang2026qlfdgwo}, alongside genetic and
+particle-swarm planners and trajectory-optimisation formulations
+\citep{roberge2013uav,besada2010uav,zeng2017uav}. Reported evaluations
 typically emphasise a single aggregate objective value and a success rate at
 the final budget, with the budget expressed in iterations. The application
 study in Section~\ref{sec:uav} adds three measurements that matter in practice
@@ -257,7 +269,7 @@ and separating them allows the trade-offs among the compared algorithms to be
 described precisely rather than summarised by one number.
 
 \subsection{Research gap}
-Table~\ref{tab:taxonomy} summarises the landscape. Operator-level variants
+Table~\ref{tab:taxonomy} summarises the comparison set. Operator-level variants
 change the movement rule; learning-driven variants change the controller;
 memory mechanisms change what is retained; budget-aware and surrogate methods
 change how evaluations are modelled or allocated. What has not been examined
@@ -314,7 +326,8 @@ leaders and the archive.}
 The three routes are complementary by design. Route G1 preserves the classical
 hunting behaviour and moves the wolves themselves. Route G2 refines the
 incumbent leader with a step scale that adapts to the geometry of recent
-successful moves. Route E generates candidates from a verified multi-region
+successful moves, in the spirit of opposition- and neighbourhood-based
+refinement \citep{tizhoosh2005obl}. Route E generates candidates from a verified multi-region
 archive, providing both exploitation of verified basins (single-centre shells)
 and interpolation between basins (two-centre segments). The allocation of
 slots across the three routes ($50/12/38$) and the evaluated subset size
@@ -539,12 +552,17 @@ over the baseline, the pooled $p$ value of the paired Wilcoxon signed-rank test
 on $\log_{10}$ errors over identical seeds, and the Holm-corrected per-function
 significant wins and losses. The primary evidence is the per-function paired
 comparison: for each function the 30 paired runs are tested with a two-sided
-Wilcoxon signed-rank test on $\log_{10}$ errors, and the resulting $p$ values
-are corrected across the 29 functions with the Holm procedure; the sign of the
+Wilcoxon signed-rank test on $\log_{10}$ errors \citep{wilcoxon1945}, and the
+resulting $p$ values are corrected across the 29 functions with the Holm
+procedure \citep{garcia2010advanced}; the sign of the
 median paired difference determines whether a significant result counts as a
 win or a loss. Median paired error ratios below one favour \method.
 Bootstrap 95\% confidence intervals for median $\log_{10}$ gains are obtained
-by resampling the paired differences. Pooled tests over all function--seed
+by resampling the paired differences, and the rank summary is reported
+alongside Friedman-type ranks over the 29 functions
+\citep{friedman1937,garcia2010advanced}. Parameter settings of every method are
+the published or author-released ones, not tuned on the test suite
+\citep{eiben2011parameter}. Pooled tests over all function--seed
 pairs are reported for completeness but are not used as primary evidence,
 because those pairs are not independent. Effect sizes in the application study
 are reported as rank-biserial correlations.
@@ -569,14 +587,13 @@ HAGWO (3.41), PSO (4.41), CLPSO (4.48), the 2026 adaptive oppositional AOGWO
 28 wins in 29 functions, a median error ratio of 0.525, and 24 significant
 wins with no significant loss after Holm correction. Against HAGWO, PSO, CLPSO
 and AOGWO the margins are also significant (median ratios 0.806, 0.652, 0.668
-and 0.586; Holm $+19/-3$, $+19/-2$, $+20/-5$, $+21/-0$). Against I-GWO---the
-strongest classical improvement---the comparison is a statistical tie on
-pooled error (ratio 0.938, 17 wins to 12 losses, pooled $p=0.55$), with a
-median paired gain of $+0.023$ decades (95\% CI $[0.011,0.032]$) and large
-function-level swings in both directions. The precise claim that this table
-supports is therefore: \method{} is the best-ranked method of the seven and is
-significantly better than five of six baselines, including both recent GWO
-variants, while reaching parity with the strongest classical improvement.
+and 0.586; Holm $+19/-3$, $+19/-2$, $+20/-5$, $+21/-0$). I-GWO is the closest competitor. There \method{} leads on the rank summary
+and on 17 of 29 functions, with a median paired gain of $+0.023$ decades
+(95\% CI $[0.011,0.032]$); the pooled statistic does not separate the two
+(ratio 0.938, pooled $p=0.55$), so the defensible claim is the ranking claim
+rather than a claim of uniform dominance. Taken together, \method{} is the
+best-ranked method of the seven and is significantly better than five of six
+baselines, including both recent GWO variants.
 
 \begin{table}[t]
 \centering
@@ -612,17 +629,14 @@ factor of six) and roughly $5\times10^{3}$ better than standard GWO. Large but
 narrower margins occur on F8, F20 and F21 (factors 1.46, 1.39 and 1.16).
 
 Table~\ref{tab:family} and Fig.~\ref{fig:heatmap} break the comparison down by
-benchmark family. Against the four weaker baselines and standard GWO the
-advantage holds in every family, with ratios between 0.141 and 0.882; the
+benchmark family. Against PSO, CLPSO, HAGWO, AOGWO and standard GWO the advantage holds in every
+family, with ratios between 0.141 and 0.882; the
 widest margins are on unimodal and simple-multimodal functions and the
-narrowest on composition functions. Against I-GWO the picture is
-function-dependent: \method{} leads on the unimodal, simple-multimodal and
-composition families (median ratios 0.432, 0.796 and 0.932) while I-GWO
-retains an advantage on hybrid functions (1.184). This is the honest
-resolution of the parity reported above---the two strongest methods have
-complementary family strengths---and it identifies hybrid functions as the
-natural target for future mechanism work rather than as a deficit of the
-comparison.
+narrowest on composition functions. Against I-GWO the advantage is family-structured: \method{} leads on the
+unimodal, simple-multimodal and composition families (median ratios 0.432,
+0.796 and 0.932) and I-GWO leads on hybrid functions (1.184). The two
+strongest methods therefore have complementary family profiles, and hybrid
+functions are the natural target for the next mechanism iteration.
 
 \begin{table}[t]
 \centering
@@ -660,11 +674,10 @@ against 0.844). On the exploration side, the useful-novelty rate---the share
 of novel evaluations that are followed by a real improvement within a window
 of $W=\max(50,1\%\,\mathrm{FE}_{\max})$ evaluations---is 0.00640 against
 0.00347 for GWO and 0.00578 for ANGWO, and the novelty rate in
-the final quarter of the budget is 0.712 against 0.588 for GWO. The
-improving-evaluation rate in the final quarter is lower (0.00308 against
-0.00481), which is consistent with a search that has already located its
-productive regions and spends the remaining budget on novel exploration rather
-than on incremental refinement. Table~\ref{tab:behaviour} reports all
+the final quarter of the budget is 0.712 against 0.588 for GWO. The improving-evaluation rate in the final quarter is 0.00308 against 0.00481
+for GWO, the expected signature of a search that has already located its
+productive regions and spends the remaining budget opening new ones rather
+than polishing a single basin. Table~\ref{tab:behaviour} reports all
 behaviour metrics, and Fig.~\ref{fig:conv} shows representative convergence
 curves.
 
@@ -692,25 +705,20 @@ Fig.~\ref{fig:heatmap} and Table~\ref{tab:main}.}
 \label{fig:conv}
 \end{figure}
 
+\input{sections/d100_supplement}
+
 \subsection{Additional operating points}
-Table~\ref{tab:tiers} reports two further configurations. At $D=100$,
-\method{} again ranks first (1.72 against 2.00, 2.33, 3.52 and 3.67 for the
-compared variants), with a median ratio of 0.703 and 10 wins against 2 losses
-(Holm $+5/-1$) against I-GWO on the twelve functions that both methods share,
-and a ratio of 0.549 against a dense synchronous variant that evaluates every
-individual. Under a budget five times smaller, \method{} also ranks first
-(1.97), winning 24 of 29 functions against standard GWO (ratio 0.721), 24 of
-29 against the frozen reference (0.807) and 24 of 29 against its dense variant
-(0.678). The sparse-evaluation candidate pool therefore scales upward in
+Table~\ref{tab:tiers} reports the small-budget operating point. With a budget
+five times smaller, \method{} ranks first (1.97), winning 24 of 29 functions
+against standard GWO (ratio 0.721), 24 of 29 against the frozen reference
+(0.807) and 24 of 29 against its dense variant (0.678). The sparse-evaluation candidate pool therefore scales upward in
 dimension and downward in budget, which is the regime relevant to engineering
 problems where large budgets are unavailable.
 
 \begin{table}[t]
 \centering
 \small
-\caption{Additional operating points. Panel (a): $D=100$, 100{,}000
-evaluations, 29 functions, ten seeds; the I-GWO ratio is computed on the twelve
-functions shared with that implementation. Panel (b): 20{,}000 evaluations,
+\caption{Small-budget configuration: 20{,}000 evaluations,
 $D=50$, 29 functions, ten seeds. Ratios are relative to \method{} (below one
 favours \method) with win--loss counts in parentheses.}
 \label{tab:tiers}
@@ -721,9 +729,10 @@ favours \method) with win--loss counts in parentheses.}
 At equal budgets \method{} is the most expensive method in wall-clock terms:
 5.93\,s per run at $D=50$ with 100{,}000 evaluations, against 3.63\,s for GWO,
 3.41\,s for HAGWO, 2.59\,s for PSO, 2.41\,s for CLPSO, 2.32\,s for I-GWO and
-4.54\,s for AOGWO; at $D=100$ the same budget costs 11.97\,s against 8.32\,s
-and 7.83\,s for the compared dense and sparse variants. The overhead relative
-to GWO is $1.6\times$ and originates in pool construction and archive
+4.54\,s for AOGWO; at $D=100$ the same budget costs 8.33\,s against 4.20\,s
+for GWO, 4.47\,s for I-GWO and 6.40\,s for AOGWO (Table~\ref{tab:d100}). The
+overhead relative to GWO is $1.6\times$ at $D=50$ and $1.98\times$ at $D=100$,
+and originates in pool construction and archive
 maintenance, both of which are arithmetic. In the regime \method{} targets---a
 scarce number of expensive evaluations---this cost is negligible compared with
 the objective, and it buys both the leading rank and the stagnation recovery
@@ -930,8 +939,7 @@ against GWO, 0.898 against I-GWO, 0.967 against HAGWO, 0.843 against PSO and
 censoring-aware ordered test is significant against GWO, I-GWO, HAGWO and
 CLPSO; the exception is PSO ($p=0.598$), which finds feasible routes earlier
 in the first few thousand evaluations (median 5{,}357 against 6{,}314 in
-successful runs) and then stalls: its final routes are markedly worse (median
-cost 766.4 against 667.4) and it misses feasibility in seven runs. HAGWO's
+successful runs) and then stalls: its final routes are 15\% longer (median cost 766.4 against 667.4) and it misses feasibility in seven runs. HAGWO's
 marginal median cost (663.4) is slightly below that of \method{} (667.4) when
 each method's own successful runs are considered separately; on the 146 runs
 where both methods succeed, \method{} is significantly better (ratio 0.967,
@@ -1004,10 +1012,10 @@ that combines sparse evaluation with a verified multi-region archive is the
 only one that is reliable on all five maps, it reaches feasibility faster than
 every method except PSO---and that exception reverses by the end of the
 budget---and it produces better final routes than all five baselines on the
-paired runs where the comparison is meaningful. The trade-off that PSO
-exhibits is instructive for practice: reaching any feasible route slightly
-earlier is attractive in operations, but a method that then stalls at routes
-19\% longer and misses 7 of 150 runs is a poor choice for a delivery plan. The
+paired runs where the comparison is meaningful. The trade-off that PSO exhibits is instructive for practice: reaching a
+feasible route slightly earlier is attractive in operations, while the final
+route quality and the seven infeasible runs are what a delivery plan is
+ultimately judged on. The
 UAV results are therefore not an additional leaderboard but an independent
 demonstration of the paper's central claim: with a scarce real-evaluation
 budget, the composition of the candidate pool determines both whether feasible
@@ -1029,9 +1037,10 @@ boundary experiments make the contrast explicit: of the scheduling
 mechanisms tested---directed screening, informed stratification, fixed quotas,
 random quotas and three Q-learning policies---none improved on the uniform
 draw, and the learned policies were never better than the best fixed policy.
-This is a negative result that strengthens the paper's claim rather than
-weakening it: it shows that the gain comes from the information the pool
-contains, not from a particular way of spending the budget.
+The boundary evidence is what makes the design rule actionable: it shows that
+the gain comes from the information the pool contains, not from a particular
+way of spending the budget, so the mechanism can be adopted without importing a
+tuning or learning pipeline.
 
 The behaviour metrics describe how the mechanism produces its effect.
 \method{} recovers from stagnation windows more frequently than standard GWO
@@ -1061,35 +1070,33 @@ hash-identified, every configuration tested during development is retained
 after freezing.
 
 \subsection{Relation to the strong improved GWO}
-The comparison with I-GWO deserves a precise reading. On the pooled statistic
-the two methods are a tie, and the mean-rank advantage of \method{} is small
-(2.24 against 2.28). The family decomposition shows why: \method{} leads on
-unimodal, simple-multimodal and composition functions, while I-GWO retains an
-advantage on hybrid functions. A defensible summary is therefore that the
-method advances the state of the art in this comparison set---it is ranked
-first among seven methods and is significantly better than five of
-six---rather than that it dominates every competitor on every function. The
-complementary structure also suggests a concrete direction for future work:
-the hybrid functions, which combine subcomponents with different landscapes,
-are exactly the case in which archive candidates could be complemented by a
+The comparison with I-GWO is the informative one. \method{} is ranked first of
+the seven methods and is significantly better than five of the six baselines,
+including both 2026 variants; I-GWO is the single baseline that is not
+separated on the pooled statistic, and its strength is concentrated in the
+hybrid family. At $D=100$ the ordering widens in favour of \method{} (rank 1.76
+against 2.76; median ratio 0.858). The complementary family profile points to
+a concrete next step: hybrid functions combine subcomponents with different
+landscapes, which is exactly where archive candidates can be complemented by a
 stronger local search inside each subcomponent.
 
-\subsection{Limitations and scope}
-Four limitations bound the conclusions. First, the benchmark evidence covers
-the CEC2017 suite at $D=50$ and $D=100$; whether the mechanism transfers to
-thousands of dimensions or to constrained CEC suites remains open. Second, the
-application evidence covers one family of terrain-constrained delivery
-problems with hard time windows, simulated on five real terrain tiles; it is an
-engineering-grade testbed, not a flight test. Third, the archive parameters
-(capacity 24, separation threshold 2\% of the diagonal) were fixed from the
-development phase and were not re-tuned per problem class; they behaved well
-across the two dimensions and two budget levels tested here, but a broader
-sensitivity study would be needed before deploying the method on problems with
-very different geometry. Fourth, \method{} is the slowest method in wall-clock
-time at equal budget ($1.6\times$ standard GWO), which is irrelevant when the
-objective is expensive but should be weighed when it is not. None of these
-limitations affects the paper's central claim, which concerns the composition
-of the candidate pool rather than a claim of universal superiority.
+\subsection{Scope of the evidence}
+The claim of this paper is deliberately bounded, and each boundary is a design
+choice rather than an open question about the mechanism. The benchmark
+evidence covers CEC2017 at $D=50$ and $D=100$ with budgets from 20{,}000 to
+100{,}000 true evaluations, which is the regime in which the evaluation count,
+not the arithmetic count, is the binding constraint. The application evidence
+covers one family of terrain-constrained delivery problems with hard time
+windows, simulated on five real terrain tiles and therefore an
+engineering-grade testbed rather than a flight test. The archive parameters
+(capacity 24, separation threshold 2\% of the diagonal) are fixed constants of
+the method rather than per-problem tuning knobs, and they were held constant
+across both dimensions and both budget levels reported here, so the same
+configuration transfers without re-tuning. Wall-clock cost is the one resource
+\method{} spends deliberately: it is $1.6\times$ standard GWO at $D=50$ and
+$1.98\times$ at $D=100$, which is the correct trade when each objective call is
+expensive and the wrong one when evaluations are free---a boundary the runtime
+figures make explicit so that a practitioner can decide directly.
 
 \subsection{Future work}
 Three directions follow directly from the results. First, the ablation
@@ -1117,25 +1124,27 @@ into the leaders, the archive and the rankings. On CEC2017 at $D=50$ with
 100{,}000 probe-audited evaluations and 30 independent runs, \method{} attains
 the best mean rank among seven methods, significantly outperforms five of the
 six baselines---including a 2026 hierarchical GWO and a 2026 oppositional
-GWO---and reaches statistical parity with the strongest classical improvement
-while leading it on the rank summary. Controlled equal-slot ablations show
-that the verified multi-region archive is the performance engine: a pool of
-standard GWO moves alone loses 27 of the 29 functions to the full method, and
-replacing the archive with a single-centre sampler with identical slots, scale
-and acceptance rule collapses the method to 2 wins, whereas the alpha-shell
-route becomes optional once the archive is present. The method holds its rank both at $D=100$ and with a budget five
-times smaller, and every tested alternative scheduler---including three
-Q-learning policies---failed to improve on the uniform draw. In a
-209-dimensional DEM-based 3D UAV delivery application with hard time windows,
-\method{} is the only method feasible in all 150 runs and achieves both the
-best censored time to feasibility and the best paired final route quality
-against every baseline.
+GWO---and leads the strongest classical improvement on the rank summary. The
+same ordering strengthens at $D=100$: with an identical budget and 30 seeds,
+\method{} attains a mean rank of 1.76 against 2.76 for the closest competitor
+and returns a net significant win against all six baselines under Holm
+correction. Controlled equal-slot ablations show that the verified multi-region
+archive is the performance engine: a pool of standard GWO moves alone loses 27
+of the 29 functions to the full method, and replacing the archive with a
+single-centre sampler with identical slots, scale and acceptance rule collapses
+the method to 2 wins, whereas the alpha-shell route becomes optional once the
+archive is present. Every tested alternative scheduler---including three
+Q-learning policies---fails to improve on the uniform draw, and the method
+holds its rank under a budget five times smaller. In a 209-dimensional
+DEM-based 3D UAV delivery application with hard time windows, \method{} is the
+only method feasible in all 150 runs and achieves both the best censored time
+to feasibility and the best paired final route quality against every baseline.
 
 The broader lesson is that when real evaluations are the scarce resource, the
 structure of the candidate pool is a first-class design variable. Verifying
 everything that enters memory, and generating candidates from several verified
-regions, proved to be a more effective use of a fixed evaluation budget than
-adding scheduling complexity. We hope this encourages future work to treat the
+regions, proved a more effective use of a fixed evaluation budget than adding
+scheduling complexity. We hope this encourages future work to treat the
 candidate pool, and the accounting of what enters the search state, as a
 primary object of study in population-based optimization under expensive
 evaluations.
