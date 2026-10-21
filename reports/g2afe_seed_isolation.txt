@@ -1,0 +1,6 @@
+Performed before the G2-AFE P1 batch; current g2afe_* outputs excluded from this audit.
+csv_files_scanned=239
+P1_target=3111:3120
+P1_target_used_in_history=[]
+smoke_seed=3995
+smoke_used_in_history=False

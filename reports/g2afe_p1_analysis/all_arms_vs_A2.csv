@@ -1,0 +1,5 @@
+arm,median_ratio_vs_A2,wins_vs_A2,losses_vs_A2,catastrophic_gt1_20
+V1-frozen,1.2928529386004426,0,8,5
+G2-AFE-RandomDir,1.0376613845787412,1,7,0
+G2-AFE-Always,1.0461318415675356,3,5,1
+G2-AFE-Trigger,0.9966912623111644,5,3,0

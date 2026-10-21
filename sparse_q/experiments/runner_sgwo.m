@@ -55,6 +55,8 @@ switch job.algorithm
         [Best,T,info]=SGWO_ABLATION(f,state,[],N,job.seedSearch);
     case 'SGWO_TR'
         [Best,T,info]=SGWO_TR(f,state,[],N,job.seedSearch);
+    case 'SGWO_AFE'
+        [Best,T,info]=SGWO_AFE(f,state,[],N,job.seedSearch);
     case 'ANGWO'
         [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
     case 'DMSGWO'
@@ -101,6 +103,11 @@ S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',
     'EvalCnt',nan(1,4),'G2EvalCount',NaN,'G2AlphaImp',NaN,'G2PopImp',NaN, ...
     'G2NoImp',NaN,'G2GlobalImp',NaN,'G2RadiusStart',NaN,'G2RadiusEnd',NaN, ...
     'G2RadiusMean',NaN,'G2RadiusMin',NaN,'G2RadiusMax',NaN,'G2RadiusTrace',zeros(0,7), ...
+    'G2AFEAlways',NaN,'G2AFERandomDir',NaN,'G2AFETriggerFrac',NaN,'G2AFEMinArc',NaN, ...
+    'G2AFEMinPairFrac',NaN,'G2AFELambdaMin',NaN,'G2AFELambdaMax',NaN,'G2AFEEpsFrac',NaN, ...
+    'G2AFEActiveRounds',NaN,'G2AFEPairValidRounds',NaN,'G2AFECandidates',NaN, ...
+    'G2AFEFallbackCandidates',NaN,'G2AFEStepMean',NaN,'G2AFEGlobalImp',NaN, ...
+    'G2AFEArchiveImp',NaN,'G2AFEAccept',NaN, ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
@@ -125,6 +132,22 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
     if isfield(info,'G2RadiusMin'), S.G2RadiusMin=info.G2RadiusMin; end
     if isfield(info,'G2RadiusMax'), S.G2RadiusMax=info.G2RadiusMax; end
     if isfield(info,'G2RadiusTrace'), S.G2RadiusTrace=info.G2RadiusTrace; end
+    if isfield(info,'G2AFEAlways'), S.G2AFEAlways=info.G2AFEAlways; end
+    if isfield(info,'G2AFERandomDir'), S.G2AFERandomDir=info.G2AFERandomDir; end
+    if isfield(info,'G2AFETriggerFrac'), S.G2AFETriggerFrac=info.G2AFETriggerFrac; end
+    if isfield(info,'G2AFEMinArc'), S.G2AFEMinArc=info.G2AFEMinArc; end
+    if isfield(info,'G2AFEMinPairFrac'), S.G2AFEMinPairFrac=info.G2AFEMinPairFrac; end
+    if isfield(info,'G2AFELambdaMin'), S.G2AFELambdaMin=info.G2AFELambdaMin; end
+    if isfield(info,'G2AFELambdaMax'), S.G2AFELambdaMax=info.G2AFELambdaMax; end
+    if isfield(info,'G2AFEEpsFrac'), S.G2AFEEpsFrac=info.G2AFEEpsFrac; end
+    if isfield(info,'G2AFEActiveRounds'), S.G2AFEActiveRounds=info.G2AFEActiveRounds; end
+    if isfield(info,'G2AFEPairValidRounds'), S.G2AFEPairValidRounds=info.G2AFEPairValidRounds; end
+    if isfield(info,'G2AFECandidates'), S.G2AFECandidates=info.G2AFECandidates; end
+    if isfield(info,'G2AFEFallbackCandidates'), S.G2AFEFallbackCandidates=info.G2AFEFallbackCandidates; end
+    if isfield(info,'G2AFEStepMean'), S.G2AFEStepMean=info.G2AFEStepMean; end
+    if isfield(info,'G2AFEGlobalImp'), S.G2AFEGlobalImp=info.G2AFEGlobalImp; end
+    if isfield(info,'G2AFEArchiveImp'), S.G2AFEArchiveImp=info.G2AFEArchiveImp; end
+    if isfield(info,'G2AFEAccept'), S.G2AFEAccept=info.G2AFEAccept; end
     if na>=3 && ~isempty(qt)
         nz=qt(:,3)>0;
         if any(nz)
