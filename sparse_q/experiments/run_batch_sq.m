@@ -60,6 +60,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_CAGL.m'),'file')
     h.SGWO_CAGL=fileSha256(fullfile(sqRoot,'src','SGWO_CAGL.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_TSD.m'),'file')
+    h.SGWO_TSD=fileSha256(fullfile(sqRoot,'src','SGWO_TSD.m'));
+end
 h.runner_sgwo=fileSha256(fullfile(sqRoot,'experiments','runner_sgwo.m'));
 h.ANGWO_frozen=fileSha256(fullfile(cfg.root,'src','ANGWO.m'));
 h.GWO_frozen=fileSha256(fullfile(cfg.root,'src','GWO.m'));
