@@ -27,13 +27,15 @@ for i=1:n
             row.ImpMag1=im(1); row.ImpMag2=im(2); row.ImpMag3=im(3); row.ImpMag4=im(4);
         end
         row.K=S.K;
-        if isfield(S,'ECPSOn')
+        if isfield(S,'ECPSOn') && ~isnan(S.ECPSOn)
             row.ECPSOn=S.ECPSOn; row.ECPSMode=S.ECPSMode; row.ECPSWindow=S.ECPSWindow;
             ec=double(S.ECPSActionCounts); et=max(sum(ec),1);
             row.ECPSAction1Pct=ec(1)/et; row.ECPSAction2Pct=ec(2)/et;
             row.ECPSAction3Pct=ec(3)/et; row.ECPSActionAvgPct=ec(4)/et;
             row.ECPSEvalCount=sum(S.ECPSEvalCounts); row.ECPSSuccCount=sum(S.ECPSSuccCounts);
             ae=double(S.ECPSEvalCounts); as=double(S.ECPSSuccCounts);
+            gb=double(S.ECPSGBSuccCounts); arc=double(S.ECPSArcSuccCounts); mag=double(S.ECPSMagSum);
+            row.ECPSGBSucc=sum(gb); row.ECPSArcSucc=sum(arc); row.ECPSMagSum=sum(mag);
             row.ECPSAction1Eval=ae(1); row.ECPSAction2Eval=ae(2); row.ECPSAction3Eval=ae(3); row.ECPSActionAvgEval=ae(4);
             row.ECPSAction1Succ=as(1); row.ECPSAction2Succ=as(2); row.ECPSAction3Succ=as(3); row.ECPSActionAvgSucc=as(4);
             row.ECPSSuccessRate=row.ECPSSuccCount/max(row.ECPSEvalCount,1);
@@ -90,6 +92,7 @@ row=struct('RunID',NaN,'Algorithm',"",'Family',"",'FunctionID',NaN,'D',NaN,'Seed
     'ECPSEvalCount',NaN,'ECPSSuccCount',NaN,'ECPSSuccessRate',NaN, ...
     'ECPSAction1Eval',NaN,'ECPSAction2Eval',NaN,'ECPSAction3Eval',NaN,'ECPSActionAvgEval',NaN, ...
     'ECPSAction1Succ',NaN,'ECPSAction2Succ',NaN,'ECPSAction3Succ',NaN,'ECPSActionAvgSucc',NaN, ...
+    'ECPSGBSucc',NaN,'ECPSArcSucc',NaN,'ECPSMagSum',NaN, ...
     'ECPSProb1Mean',NaN,'ECPSProb2Mean',NaN,'ECPSProb3Mean',NaN,'ECPSProbAvgMean',NaN, ...
     'ECPSEntropyMean',NaN, ...
     'QAct1',NaN,'QAct2',NaN,'QAct3',NaN, ...

@@ -55,6 +55,8 @@ switch job.algorithm
         [Best,T,info]=SGWO_ABLATION(f,state,[],N,job.seedSearch);
     case 'SGWO_ECPS'
         [Best,T,info]=SGWO_ECPS(f,state,[],N,job.seedSearch);
+    case 'SGWO_TRPS'
+        [Best,T,info]=SGWO_TRPS(f,state,[],N,job.seedSearch);
     case 'ANGWO'
         [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
     case 'DMSGWO'
@@ -100,6 +102,7 @@ S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',
     'ImpCnt',nan(1,4),'ImpMag',nan(1,4), ...
     'ECPSOn',NaN,'ECPSMode',"",'ECPSWindow',NaN,'ECPSActionCounts',nan(1,4), ...
     'ECPSSuccCounts',nan(1,4),'ECPSEvalCounts',nan(1,4),'ECPSProbMean',nan(1,4),'ECPSEntropyMean',NaN, ...
+    'ECPSGBCounts',nan(1,4),'ECPSGBSuccCounts',nan(1,4),'ECPSArcCounts',nan(1,4),'ECPSArcSuccCounts',nan(1,4),'ECPSMagSum',nan(1,4), ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
@@ -112,7 +115,7 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
     S.QActionCounts=info.QActionCounts; S.QStateVisits=info.QStateVisits; S.QTable=info.QTable;
     if isfield(info,'QuotaTrace'), S.QuotaTrace=info.QuotaTrace; end
     if isfield(info,'ImpCnt'), S.ImpCnt=info.ImpCnt; S.ImpMag=info.ImpMag; end
-    ecpsNames={'ECPSOn','ECPSMode','ECPSWindow','ECPSActionCounts','ECPSSuccCounts','ECPSEvalCounts','ECPSProbMean','ECPSEntropyMean'};
+    ecpsNames={'ECPSOn','ECPSMode','ECPSWindow','ECPSActionCounts','ECPSSuccCounts','ECPSEvalCounts','ECPSProbMean','ECPSEntropyMean','ECPSGBCounts','ECPSGBSuccCounts','ECPSArcCounts','ECPSArcSuccCounts','ECPSMagSum'};
     for ii=1:numel(ecpsNames)
         if isfield(info,ecpsNames{ii}), S.(ecpsNames{ii})=info.(ecpsNames{ii}); end
     end

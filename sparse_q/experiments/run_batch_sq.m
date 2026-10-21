@@ -48,6 +48,9 @@ h.SGWO=fileSha256(fullfile(sqRoot,'src','SGWO.m'));
 if exist(fullfile(sqRoot,'src','SGWO_ECPS.m'),'file')
     h.SGWO_ECPS=fileSha256(fullfile(sqRoot,'src','SGWO_ECPS.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_TRPS.m'),'file')
+    h.SGWO_TRPS=fileSha256(fullfile(sqRoot,'src','SGWO_TRPS.m'));
+end
 h.runner_sgwo=fileSha256(fullfile(sqRoot,'experiments','runner_sgwo.m'));
 h.ANGWO_frozen=fileSha256(fullfile(cfg.root,'src','ANGWO.m'));
 h.GWO_frozen=fileSha256(fullfile(cfg.root,'src','GWO.m'));
