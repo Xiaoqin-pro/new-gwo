@@ -1,0 +1,14 @@
+{
+  "sparse_q\\src\\SGWO_ENAC.m": "ce0e9a942c816ed01f8aa533c68f8d9f900ccd46712abefb248712da088a3fe0",
+  "sparse_q\\src\\SGWO_ENAC_AUDIT.m": "47aefe3c8ac35b928bc36269c22123c99a562b8d4186ed53eade2bde55d41271",
+  "sparse_q\\experiments\\runner_sgwo.m": "ec125875cf0d7b193475b9203df5b91c3185e959210e0de157f415e2357530cb",
+  "sparse_q\\experiments\\collect_sq.m": "d00cd02299d010b70b89b13c069230e7b4c578893861a3e8ab9a11dd5af3b07a",
+  "sparse_q\\experiments\\run_batch_sq.m": "4009abb5060938383e31e5b313b85b33c51a15eb613fff8fa0af37e68a82a3a4",
+  "sparse_q\\experiments\\screen29_enac_audit.m": "3e9a973266e331d68428fb1b31f0115be54d72d0bcf40e751a2bb7b192e2fa51",
+  "sparse_q\\experiments\\screen30_enac.m": "f82193086f4f265580b17fb5d73ab2827bfb606203d5569bf8dc4113443f478b",
+  "sparse_q\\experiments\\analyze_enac_p1.py": "efc71f5b1cf9a05a2e133f5e34061cc0d1123c06c23b41661a8cd8e726561af1",
+  "sparse_q\\tests\\test_enac_audit_contract.m": "60d67324cf098ec2a2244beee0762b901f26f172b8f919d080d0f24a8087937b",
+  "sparse_q\\tests\\test_enac_contract.m": "ce24df59865d716afcd513a0f89579833b08a098a42c02f1edb8524be4ea20f9",
+  "sparse_q\\results\\enac_p1_20261021_023237\\runs.csv": "f0f94c43156c75e2a9ea50f63e96288d4a8437004cea2b36b155baad36ebbc6d",
+  "sparse_q\\results\\enac_a3offc_20261021_023511\\runs.csv": "c3be1517d5043e34d5285c7b8b1aaee8c4feb59319d6be3c3968f83a12016221"
+}
