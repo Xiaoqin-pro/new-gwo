@@ -297,6 +297,11 @@ while fe<budget
                 tsdG1Eval=tsdG1Eval+1; tsdG1Split=tsdG1Split+(v>=Pf(i));
             end
             if isTsd && v<Pf(i), Ps(i,:)=y; Pf(i)=v; end
+            if isTsd
+                gd=norm(Ps(i,:)-Xv(i,:))/span; gf=fv(i)-Pf(i);
+                tsdGapDistSum=tsdGapDistSum+gd; tsdGapFitSum=tsdGapFitSum+gf;
+                tsdGapCount=tsdGapCount+1; tsdMaxGapDist=max(tsdMaxGapDist,gd);
+            end
             if strcmpi(opt.tsdMode,'audit')
                 split=(v>=Pf(i));
                 tsdG1Eval=tsdG1Eval+1; tsdG1Split=tsdG1Split+split;
