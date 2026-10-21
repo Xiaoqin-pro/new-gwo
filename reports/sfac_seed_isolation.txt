@@ -1,0 +1,6 @@
+Historical scan before SFAC P1; SFAC result files excluded.
+csv_files_scanned=258
+P1_target=3121:3130
+P1_target_used=[]
+smoke_seed=3993
+smoke_used=False

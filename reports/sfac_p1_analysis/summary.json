@@ -1,0 +1,35 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\拯救G2\\sparse_q\\results\\sfac_p1_20261021_000502",
+  "a3off_dir": "D:\\111\\Desktop\\噜噜\\拯救G2\\sparse_q\\results\\sfac_a3off2_20261021_000758",
+  "runs": 160,
+  "functions": [
+    7,
+    10,
+    13,
+    14,
+    16,
+    18,
+    22,
+    24
+  ],
+  "seeds": [
+    3121,
+    3122,
+    3123,
+    3124,
+    3125,
+    3126,
+    3127,
+    3128,
+    3129,
+    3130
+  ],
+  "median_ratio": 0.9956074825985106,
+  "wins": 4,
+  "losses": 4,
+  "catastrophic_gt_1_20": 3,
+  "runtime_ratio_SFAC_over_A3": 1.0324862065435987,
+  "runtime_ratio_median": 1.0259068750635856,
+  "H1_pass": false,
+  "verdict": "STOP_SFAC_NEGATIVE"
+}

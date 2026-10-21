@@ -53,6 +53,8 @@ switch job.algorithm
         [Best,T,info]=SGWO(f,state,[],N,job.seedSearch);
     case 'SGWOAB'
         [Best,T,info]=SGWO_ABLATION(f,state,[],N,job.seedSearch);
+    case 'SGWO_SFAC'
+        [Best,T,info]=SGWO_SFAC(f,state,[],N,job.seedSearch);
     case 'ANGWO'
         [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
     case 'DMSGWO'
@@ -96,6 +98,11 @@ idx=idx(idx>=1 & idx<=budget);
 S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',NaN, ...
     'ArchiveSize',NaN,'QuotaAct1Pct',NaN,'QuotaAct2Pct',NaN,'QuotaAct3Pct',NaN, ...
     'ImpCnt',nan(1,4),'ImpMag',nan(1,4), ...
+    'SFACOn',NaN,'SFACUniform',NaN,'ArcCredSum',NaN,'ArcCredMax',NaN, ...
+    'ArcCredNonzero',NaN,'ArcCredZeroFrac',NaN,'ArcGenCountTotal',NaN, ...
+    'ArcGenTopShare',NaN,'ArcGenEntropy',NaN,'ArcEvalCountTotal',NaN, ...
+    'ArcEvalTopShare',NaN,'ArcEvalEntropy',NaN,'ArcEvalSuccessRate',NaN, ...
+    'ArcStaleFeedback',NaN,'ArcReplacementCount',NaN,'SFACBoostCount',NaN,'SFACDecayCount',NaN, ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
@@ -108,6 +115,23 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
     S.QActionCounts=info.QActionCounts; S.QStateVisits=info.QStateVisits; S.QTable=info.QTable;
     if isfield(info,'QuotaTrace'), S.QuotaTrace=info.QuotaTrace; end
     if isfield(info,'ImpCnt'), S.ImpCnt=info.ImpCnt; S.ImpMag=info.ImpMag; end
+    if isfield(info,'SFACOn'), S.SFACOn=info.SFACOn; end
+    if isfield(info,'SFACUniform'), S.SFACUniform=info.SFACUniform; end
+    if isfield(info,'ArcCredSum'), S.ArcCredSum=info.ArcCredSum; end
+    if isfield(info,'ArcCredMax'), S.ArcCredMax=info.ArcCredMax; end
+    if isfield(info,'ArcCredNonzero'), S.ArcCredNonzero=info.ArcCredNonzero; end
+    if isfield(info,'ArcCredZeroFrac'), S.ArcCredZeroFrac=info.ArcCredZeroFrac; end
+    if isfield(info,'ArcGenCountTotal'), S.ArcGenCountTotal=info.ArcGenCountTotal; end
+    if isfield(info,'ArcGenTopShare'), S.ArcGenTopShare=info.ArcGenTopShare; end
+    if isfield(info,'ArcGenEntropy'), S.ArcGenEntropy=info.ArcGenEntropy; end
+    if isfield(info,'ArcEvalCountTotal'), S.ArcEvalCountTotal=info.ArcEvalCountTotal; end
+    if isfield(info,'ArcEvalTopShare'), S.ArcEvalTopShare=info.ArcEvalTopShare; end
+    if isfield(info,'ArcEvalEntropy'), S.ArcEvalEntropy=info.ArcEvalEntropy; end
+    if isfield(info,'ArcEvalSuccessRate'), S.ArcEvalSuccessRate=info.ArcEvalSuccessRate; end
+    if isfield(info,'ArcStaleFeedback'), S.ArcStaleFeedback=info.ArcStaleFeedback; end
+    if isfield(info,'ArcReplacementCount'), S.ArcReplacementCount=info.ArcReplacementCount; end
+    if isfield(info,'SFACBoostCount'), S.SFACBoostCount=info.SFACBoostCount; end
+    if isfield(info,'SFACDecayCount'), S.SFACDecayCount=info.SFACDecayCount; end
     if na>=3 && ~isempty(qt)
         nz=qt(:,3)>0;
         if any(nz)

@@ -1,0 +1,10 @@
+{
+  "sparse_q\\src\\SGWO_SFAC.m": "808fde9e0c0931876e4cf94048ea9aa01b01788c3dd38f6ddec010dec6590da8",
+  "sparse_q\\experiments\\runner_sgwo.m": "cff7b782d8a29a4c611595f9841b7507b1adccb5f9ef463e79b274426aeee84e",
+  "sparse_q\\experiments\\collect_sq.m": "fa2c7af86b4ae67ffda9084c748d8ac866ebdc60e37513d358e79dac092dd0fb",
+  "sparse_q\\experiments\\run_batch_sq.m": "a5bf36318afc1658da6fda203e4233ccef5df9cbcd6166edf4f67654b3f10c9f",
+  "sparse_q\\experiments\\screen26_sfac.m": "f9771283a27655299b8e73ffdfc35cc58eb7c05c70617180b75800dbbd6fef6d",
+  "sparse_q\\experiments\\analyze_sfac_p1.py": "81defd1f02374d13c5c4a3380416e8e11fc82ac9dedae15065ad98c17e7abfde",
+  "sparse_q\\tests\\test_sfac_contract.m": "069abb593353463849934b930548597cceff12cbe3b758567f9be1157b56985b",
+  "sparse_q\\results\\sfac_p1_20261021_000502\\runs.csv": "e5a54f380c4dee064fe996449dc8de559bbc2390d2ba8f3b230f9d14b49836f0"
+}
