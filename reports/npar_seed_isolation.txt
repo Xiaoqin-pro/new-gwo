@@ -1,0 +1,5 @@
+NPAR P0 seed isolation scan
+seeds: 3246-3250
+searched: all runs.csv under new-gwo-g2tr-branch and 拯救G2
+hits before launch: 0
+status: PASS

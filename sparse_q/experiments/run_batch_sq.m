@@ -54,6 +54,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_VGA.m'),'file')
     h.SGWO_VGA=fileSha256(fullfile(sqRoot,'src','SGWO_VGA.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_NPAR.m'),'file')
+    h.SGWO_NPAR=fileSha256(fullfile(sqRoot,'src','SGWO_NPAR.m'));
+end
 h.runner_sgwo=fileSha256(fullfile(sqRoot,'experiments','runner_sgwo.m'));
 h.ANGWO_frozen=fileSha256(fullfile(cfg.root,'src','ANGWO.m'));
 h.GWO_frozen=fileSha256(fullfile(cfg.root,'src','GWO.m'));
