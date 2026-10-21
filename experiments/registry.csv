@@ -18,3 +18,4 @@ RD3,2026-10-16,rd3_*,ANGWO.m,E+S combination is not worse than the best single m
 
 
 
+CALA-P1-001,2026-10-21,cala_p1_20261021_061957,29395ed04551f3428fc5d9aad81f2bd8a3893358081a112d046cc68c613bc5ac,15-function 4-arm P1: G2 removal and consensus-aware leader aggregation,geometric leader-consensus gating with matched random-leader control,"D=50, F1/3/4/7/10/11/13/14/16/18/20/22/24/26/30, seeds 3186:3195, 100k true FE",K=10;nG2=0;nE=50;screenPolicy=random;calaEps=1e-12,CALA beats two-route standard and matched RandomLeader; G2 deletion is safe,"H1 FAIL: B/A ratio .95567 W-L 9-6, 3 functions >1.20. H2 FAIL: B/C ratio .95706 W-L 8-7, 2 functions >1.20. H3 FAIL: A/D ratio .79759 and B/D .81456 but each has 3 functions >1.20. Runtime B/A 1.078.",STOP_CALA_NEGATIVE,report in reports/cala_p1_analysis

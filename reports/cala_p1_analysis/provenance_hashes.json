@@ -1,0 +1,12 @@
+{
+  "sparse_q\\src\\SGWO_CALA.m": "29395ed04551f3428fc5d9aad81f2bd8a3893358081a112d046cc68c613bc5ac",
+  "sparse_q\\experiments\\runner_sgwo_amc.m": "c5f219095d85314873e14cc91e7176911da488aeef0d158a33c61800b3bdb400",
+  "sparse_q\\experiments\\runner_sgwo.m": "562598b804711c0e043ba5702ed7ab2a6b490d85a5c63021a1365cbd936cc8ff",
+  "sparse_q\\experiments\\collect_sq.m": "010f53b219f1be1661ab9a002ff1d851be0393ac20820dfaecdba24c74daf52f",
+  "sparse_q\\experiments\\run_batch_sq.m": "6354119e606c4245c08ccf069495a75ac276dbc5396cfca1a5cd448297340554",
+  "sparse_q\\experiments\\screen33_cala.m": "76762d914da5e27478479b071de44dc01a61ed7d7a9951973d412b503bea3e35",
+  "sparse_q\\experiments\\analyze_cala_p1.py": "53a3fddca3aba6555c7682db1af659e0f5684f54c8e59a7a68210aeff4660300",
+  "sparse_q\\tests\\test_cala_contract.m": "d38fc1223bff49e5cda39f3b9631fb1a75a10df1fdf32e0326f625480ad94495",
+  "sparse_q\\results\\cala_p0_100k_20261021_061911\\runs.csv": "cfd9e0acd2589892e0915cd19015c208b99e2e80f21cfeaf8dd95958c9cc1816",
+  "sparse_q\\results\\cala_p1_20261021_061957\\runs.csv": "e96fc3d747268637c84438bcd13b1997ece356c3c1825179a903c8c1c334e841"
+}
