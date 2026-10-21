@@ -1,0 +1,182 @@
+{
+  "B_vs_A": {
+    "unimodal": {
+      "functions": [
+        1,
+        3
+      ],
+      "median_ratio": 1.0253482388440034,
+      "wins": 1,
+      "losses": 1
+    },
+    "simple_multimodal": {
+      "functions": [
+        4,
+        7,
+        10,
+        11
+      ],
+      "median_ratio": 1.0713019031024293,
+      "wins": 1,
+      "losses": 3
+    },
+    "hybrid": {
+      "functions": [
+        13,
+        14,
+        16,
+        18,
+        20
+      ],
+      "median_ratio": 1.017020476706971,
+      "wins": 2,
+      "losses": 3
+    },
+    "composition": {
+      "functions": [
+        22,
+        24,
+        26,
+        30
+      ],
+      "median_ratio": 1.0951916895193836,
+      "wins": 0,
+      "losses": 4
+    }
+  },
+  "B_vs_R": {
+    "unimodal": {
+      "functions": [
+        1,
+        3
+      ],
+      "median_ratio": 1.250302540238391,
+      "wins": 0,
+      "losses": 2
+    },
+    "simple_multimodal": {
+      "functions": [
+        4,
+        7,
+        10,
+        11
+      ],
+      "median_ratio": 1.0349829995972688,
+      "wins": 2,
+      "losses": 2
+    },
+    "hybrid": {
+      "functions": [
+        13,
+        14,
+        16,
+        18,
+        20
+      ],
+      "median_ratio": 0.8433061497416564,
+      "wins": 5,
+      "losses": 0
+    },
+    "composition": {
+      "functions": [
+        22,
+        24,
+        26,
+        30
+      ],
+      "median_ratio": 1.10299099652784,
+      "wins": 0,
+      "losses": 4
+    }
+  },
+  "D_vs_C": {
+    "unimodal": {
+      "functions": [
+        1,
+        3
+      ],
+      "median_ratio": 0.9822019545085003,
+      "wins": 1,
+      "losses": 1
+    },
+    "simple_multimodal": {
+      "functions": [
+        4,
+        7,
+        10,
+        11
+      ],
+      "median_ratio": 1.4314087421553574,
+      "wins": 0,
+      "losses": 4
+    },
+    "hybrid": {
+      "functions": [
+        13,
+        14,
+        16,
+        18,
+        20
+      ],
+      "median_ratio": 1.1248118965930314,
+      "wins": 2,
+      "losses": 3
+    },
+    "composition": {
+      "functions": [
+        22,
+        24,
+        26,
+        30
+      ],
+      "median_ratio": 1.0656385873550376,
+      "wins": 0,
+      "losses": 4
+    }
+  },
+  "A_vs_C": {
+    "unimodal": {
+      "functions": [
+        1,
+        3
+      ],
+      "median_ratio": 1.0624120574356666,
+      "wins": 1,
+      "losses": 1
+    },
+    "simple_multimodal": {
+      "functions": [
+        4,
+        7,
+        10,
+        11
+      ],
+      "median_ratio": 1.1052783219322928,
+      "wins": 1,
+      "losses": 3
+    },
+    "hybrid": {
+      "functions": [
+        13,
+        14,
+        16,
+        18,
+        20
+      ],
+      "median_ratio": 0.8324706205097315,
+      "wins": 4,
+      "losses": 1
+    },
+    "composition": {
+      "functions": [
+        22,
+        24,
+        26,
+        30
+      ],
+      "median_ratio": 0.9985123517918233,
+      "wins": 2,
+      "losses": 2
+    }
+  }
+}
