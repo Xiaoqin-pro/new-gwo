@@ -1,0 +1,37 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\cagl_audit_20261021_085239",
+  "runs": 40,
+  "functions": [
+    1,
+    3,
+    4,
+    7,
+    10,
+    13,
+    20,
+    30
+  ],
+  "seeds": [
+    3251,
+    3252,
+    3253,
+    3254,
+    3255
+  ],
+  "rounds": 399800.0,
+  "collapse_rounds": 108607.0,
+  "eligible_rounds": 37024.0,
+  "collapse_rate": 0.27165332666333164,
+  "eligible_share": 0.34089883709153185,
+  "eligible_centers_mean": 4.084221090721592,
+  "direction_events": 1851200.0,
+  "mean_norm_diff": 0.00842635496508346,
+  "mean_cos": 0.7733319506449151,
+  "changed10_fraction": 0.9034599178910977,
+  "functions_with_direction_events": 8,
+  "gate_collapse_10pct": true,
+  "gate_eligible_50pct": false,
+  "gate_direction_change": true,
+  "gate_multi_family": true,
+  "gate_pass": false
+}
