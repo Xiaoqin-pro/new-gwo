@@ -1,0 +1,11 @@
+{
+  "sparse_q\\src\\SGWO_SSSA.m": "7d177871107dbc205e30177cadd24e5a12bfb390e7b0a4bf33770b7e12989c48",
+  "sparse_q\\src\\sssa_source_sigma.m": "33a110ef48ea49e81f61c0c1c94749b706e75d05c71f9c667cf6d10d58481d9b",
+  "sparse_q\\experiments\\runner_sgwo.m": "5ac910725c7a2c4cdeaad95756d871958e3a9db389e12ef26af4cc44d5410828",
+  "sparse_q\\experiments\\collect_sq.m": "b6a20f40da978076e7fab573f45d37595a49f0e0931dc6015c9470eabf6eb797",
+  "sparse_q\\experiments\\run_batch_sq.m": "c93d3f46f2a73d94a24f9de715555c1ca7f8b561942f89eb1aa874d6f5a17cb6",
+  "sparse_q\\experiments\\screen28_sssa.m": "c58084bf8f0c08097eb5b76ba60d47d2ab155880cabd6f075e7b09afaadae894",
+  "sparse_q\\experiments\\analyze_sssa_p1.py": "f260082098b9709695f3dcc93a062678aa4265eabac7acf714b43506f4834281",
+  "sparse_q\\tests\\test_sssa_contract.m": "4f7be9590faea16388d58253517e10e26c5d4ab019c40af60bf4a1d2bd7669e2",
+  "sparse_q\\results\\sssa_p1_20261021_004714\\runs.csv": "42648dc5860fcf6c2607aa343b57d6bc199518070a9571766ad122cf8a5060b9"
+}

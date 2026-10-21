@@ -1,0 +1,6 @@
+Historical scan before SSSA P1; SSSA result files excluded.
+csv_files_scanned=266
+P1_target=3141:3150
+P1_target_used=[]
+smoke_seed=3990
+smoke_used=False

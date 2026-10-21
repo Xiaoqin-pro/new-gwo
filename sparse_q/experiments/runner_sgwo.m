@@ -53,6 +53,8 @@ switch job.algorithm
         [Best,T,info]=SGWO(f,state,[],N,job.seedSearch);
     case 'SGWOAB'
         [Best,T,info]=SGWO_ABLATION(f,state,[],N,job.seedSearch);
+    case 'SGWO_SSSA'
+        [Best,T,info]=SGWO_SSSA(f,state,[],N,job.seedSearch);
     case 'ANGWO'
         [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
     case 'DMSGWO'
@@ -96,6 +98,11 @@ idx=idx(idx>=1 & idx<=budget);
 S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',NaN, ...
     'ArchiveSize',NaN,'QuotaAct1Pct',NaN,'QuotaAct2Pct',NaN,'QuotaAct3Pct',NaN, ...
     'ImpCnt',nan(1,4),'ImpMag',nan(1,4), ...
+    'SSSAOn',NaN,'SSSASwap',NaN,'SSSACap',NaN,'SSSAMin',NaN, ...
+    'SigmaG2Mean',NaN,'SigmaEMean',NaN,'SigmaG2End',NaN,'SigmaEEnd',NaN, ...
+    'SigmaRatioMean',NaN,'G2SuccessHistoryN',NaN,'E1SuccessHistoryN',NaN, ...
+    'G2SuccessCount',NaN,'E1SuccessCount',NaN,'E1EvalCount',NaN, ...
+    'G2SuccessRate',NaN,'E1SuccessRate',NaN, ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
@@ -108,6 +115,22 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
     S.QActionCounts=info.QActionCounts; S.QStateVisits=info.QStateVisits; S.QTable=info.QTable;
     if isfield(info,'QuotaTrace'), S.QuotaTrace=info.QuotaTrace; end
     if isfield(info,'ImpCnt'), S.ImpCnt=info.ImpCnt; S.ImpMag=info.ImpMag; end
+    if isfield(info,'SSSAOn'), S.SSSAOn=info.SSSAOn; end
+    if isfield(info,'SSSASwap'), S.SSSASwap=info.SSSASwap; end
+    if isfield(info,'SSSACap'), S.SSSACap=info.SSSACap; end
+    if isfield(info,'SSSAMin'), S.SSSAMin=info.SSSAMin; end
+    if isfield(info,'SigmaG2Mean'), S.SigmaG2Mean=info.SigmaG2Mean; end
+    if isfield(info,'SigmaEMean'), S.SigmaEMean=info.SigmaEMean; end
+    if isfield(info,'SigmaG2End'), S.SigmaG2End=info.SigmaG2End; end
+    if isfield(info,'SigmaEEnd'), S.SigmaEEnd=info.SigmaEEnd; end
+    if isfield(info,'SigmaRatioMean'), S.SigmaRatioMean=info.SigmaRatioMean; end
+    if isfield(info,'G2SuccessHistoryN'), S.G2SuccessHistoryN=info.G2SuccessHistoryN; end
+    if isfield(info,'E1SuccessHistoryN'), S.E1SuccessHistoryN=info.E1SuccessHistoryN; end
+    if isfield(info,'G2SuccessCount'), S.G2SuccessCount=info.G2SuccessCount; end
+    if isfield(info,'E1SuccessCount'), S.E1SuccessCount=info.E1SuccessCount; end
+    if isfield(info,'E1EvalCount'), S.E1EvalCount=info.E1EvalCount; end
+    if isfield(info,'G2SuccessRate'), S.G2SuccessRate=info.G2SuccessRate; end
+    if isfield(info,'E1SuccessRate'), S.E1SuccessRate=info.E1SuccessRate; end
     if na>=3 && ~isempty(qt)
         nz=qt(:,3)>0;
         if any(nz)
