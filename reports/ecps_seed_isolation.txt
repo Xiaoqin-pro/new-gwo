@@ -1,0 +1,5 @@
+ECPS P1 seed isolation scan
+seeds: 3196-3205
+searched: all runs.csv under new-gwo-g2tr-branch and 拯救G2
+hits before launch: 0
+status: PASS (no historical run used these seeds)
