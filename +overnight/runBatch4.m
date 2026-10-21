@@ -48,6 +48,13 @@ parfor jj=1:numel(todo)
         record.status='ok';
     catch ME
         record.error=sprintf('%s: %s',ME.identifier,ME.message);
+        try
+            ef=fullfile(outDir,sprintf('error_%05d.txt',k));
+            fid=fopen(ef,'w');
+            fprintf(fid,'JOB %d\n%s\n',k,getReport(ME,'extended','hyperlinks','off'));
+            fclose(fid);
+        catch
+        end
     end
     record.seconds=toc(t);
     % Helper function avoids MATLAB parfor workspace transparency restrictions.

@@ -1,0 +1,6 @@
+Historical scan before AMC P1; amc_* result files excluded.
+csv_files_scanned=286
+P1_target=3176:3185
+P1_target_used=[]
+smoke_seed=3987
+smoke_used=False

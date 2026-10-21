@@ -1,0 +1,12 @@
+{
+  "sparse_q\\src\\SGWO_AMC.m": "7e438db6c4e78a0b30f4e11c733602debc9553cad7b8f57496277948cfdee064",
+  "sparse_q\\experiments\\runner_sgwo_amc.m": "c5f219095d85314873e14cc91e7176911da488aeef0d158a33c61800b3bdb400",
+  "sparse_q\\experiments\\runner_sgwo.m": "e3dbd1b89fb639a0f9d654249565cf91638d99a84c504ec2583f40332a5d0d4e",
+  "sparse_q\\experiments\\collect_sq.m": "a24836507d9071f2ef99009d5437ffdd627c22b6ccc0375757e63cd4273d47eb",
+  "sparse_q\\experiments\\run_batch_sq.m": "fb8588530a086fb0a07d80cb361d8be435867d15ef8853118331d0a2f52bc6a0",
+  "sparse_q\\experiments\\screen32_amc.m": "85428a5de54b2f419e3b8dfeade28958fadbee4e8d18861a2e93ec6d108dfe12",
+  "sparse_q\\experiments\\analyze_amc_p1.py": "bd65f9a6e6bef03da7d655a82dab1d181f4f0026fa6c0513f4b88535f3059b80",
+  "sparse_q\\tests\\test_amc_contract.m": "16c448cf1c6b0a210d0b352ca6e43ed1d705dd58a1f8da643fc7d916a6460a3a",
+  "sparse_q\\results\\amc_p0j_20261021_045956\\runs.csv": "557742935630a328c66e5a33caed047411aa3e47b227970e3d790673b0d233d1",
+  "sparse_q\\results\\amc_p1c_20261021_050342\\runs.csv": "b216fb2dd9c4080f4fb63043d70788c6ef352a03012056782e0a981180df43b2"
+}

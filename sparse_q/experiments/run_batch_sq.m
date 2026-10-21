@@ -45,6 +45,12 @@ if ~exist(outDir,'dir'), mkdir(outDir); end
 
 h=struct();
 h.SGWO=fileSha256(fullfile(sqRoot,'src','SGWO.m'));
+if exist(fullfile(sqRoot,'src','SGWO_AMC.m'),'file')
+    h.SGWO_AMC=fileSha256(fullfile(sqRoot,'src','SGWO_AMC.m'));
+end
+if exist(fullfile(sqRoot,'experiments','runner_sgwo_amc.m'),'file')
+    h.runner_sgwo_amc=fileSha256(fullfile(sqRoot,'experiments','runner_sgwo_amc.m'));
+end
 h.runner_sgwo=fileSha256(fullfile(sqRoot,'experiments','runner_sgwo.m'));
 h.ANGWO_frozen=fileSha256(fullfile(cfg.root,'src','ANGWO.m'));
 h.GWO_frozen=fileSha256(fullfile(cfg.root,'src','GWO.m'));
