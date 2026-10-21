@@ -53,6 +53,8 @@ switch job.algorithm
         [Best,T,info]=SGWO(f,state,[],N,job.seedSearch);
     case 'SGWOAB'
         [Best,T,info]=SGWO_ABLATION(f,state,[],N,job.seedSearch);
+    case 'SGWO_VACG'
+        [Best,T,info]=SGWO_VACG(f,state,[],N,job.seedSearch);
     case 'ANGWO'
         [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
     case 'DMSGWO'
@@ -96,6 +98,10 @@ idx=idx(idx>=1 & idx<=budget);
 S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',NaN, ...
     'ArchiveSize',NaN,'QuotaAct1Pct',NaN,'QuotaAct2Pct',NaN,'QuotaAct3Pct',NaN, ...
     'ImpCnt',nan(1,4),'ImpMag',nan(1,4), ...
+    'VACGOn',NaN,'VACGMode',"",'VACGGenCount',NaN,'VACGLineCount',NaN, ...
+    'VACGEvalCount',NaN,'VACGSuccessCount',NaN,'VACGSuccessRate',NaN, ...
+    'VACGArchiveImpCount',NaN,'VACGImpMagMean',NaN,'VACGLowFrac',NaN, ...
+    'VACGHighFrac',NaN,'VACGCstarMeanRank',NaN, ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
@@ -108,6 +114,18 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
     S.QActionCounts=info.QActionCounts; S.QStateVisits=info.QStateVisits; S.QTable=info.QTable;
     if isfield(info,'QuotaTrace'), S.QuotaTrace=info.QuotaTrace; end
     if isfield(info,'ImpCnt'), S.ImpCnt=info.ImpCnt; S.ImpMag=info.ImpMag; end
+    if isfield(info,'VACGOn'), S.VACGOn=info.VACGOn; end
+    if isfield(info,'VACGMode'), S.VACGMode=info.VACGMode; end
+    if isfield(info,'VACGGenCount'), S.VACGGenCount=info.VACGGenCount; end
+    if isfield(info,'VACGLineCount'), S.VACGLineCount=info.VACGLineCount; end
+    if isfield(info,'VACGEvalCount'), S.VACGEvalCount=info.VACGEvalCount; end
+    if isfield(info,'VACGSuccessCount'), S.VACGSuccessCount=info.VACGSuccessCount; end
+    if isfield(info,'VACGSuccessRate'), S.VACGSuccessRate=info.VACGSuccessRate; end
+    if isfield(info,'VACGArchiveImpCount'), S.VACGArchiveImpCount=info.VACGArchiveImpCount; end
+    if isfield(info,'VACGImpMagMean'), S.VACGImpMagMean=info.VACGImpMagMean; end
+    if isfield(info,'VACGLowFrac'), S.VACGLowFrac=info.VACGLowFrac; end
+    if isfield(info,'VACGHighFrac'), S.VACGHighFrac=info.VACGHighFrac; end
+    if isfield(info,'VACGCstarMeanRank'), S.VACGCstarMeanRank=info.VACGCstarMeanRank; end
     if na>=3 && ~isempty(qt)
         nz=qt(:,3)>0;
         if any(nz)

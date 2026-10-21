@@ -1,0 +1,6 @@
+Historical scan before CD-VACG P1; VACG result files excluded.
+csv_files_scanned=258
+P1_target=3131:3140
+P1_target_used=[]
+smoke_seed=3991
+smoke_used=False

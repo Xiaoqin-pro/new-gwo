@@ -1,0 +1,10 @@
+{
+  "sparse_q\\src\\SGWO_VACG.m": "ce6f45202a4de7f07843155eb6f4341ce5b5d5ea15b7e7450c6ae9746826e08f",
+  "sparse_q\\experiments\\runner_sgwo.m": "4d884de553d12ea2ab6967eb66b3a2f2949c73cb1801ea7c3d6d154f6423d0dd",
+  "sparse_q\\experiments\\collect_sq.m": "5fa9aa098b880b5611c8af90902c96b4e318763ad08f28e23f757765d41827eb",
+  "sparse_q\\experiments\\run_batch_sq.m": "040fba3c8a20be33f97578893f37acfa2bb3056011ee000551e4c568169537c4",
+  "sparse_q\\experiments\\screen27_vacg.m": "6582cab88c17fd45124c74c6856e64684fb511f94de9776ae6a0d489f8c44b3f",
+  "sparse_q\\experiments\\analyze_vacg_p1.py": "07c3892124b85fdb9069e1e5f9e03a0e56dfdd280c45423dd70104539e4239f3",
+  "sparse_q\\tests\\test_vacg_contract.m": "cb26e0ef1ed5fbb7438767288504b831e25e58974759dcb99cace6970fda01cf",
+  "sparse_q\\results\\vacg_p1_20261021_003037\\runs.csv": "b0c5b9e7c43f24b5fbc002bb3902f849272417c7e9903db2dfdcd9132ad99bee"
+}
