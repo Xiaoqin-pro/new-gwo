@@ -53,6 +53,8 @@ switch job.algorithm
         [Best,T,info]=SGWO(f,state,[],N,job.seedSearch);
     case 'SGWOAB'
         [Best,T,info]=SGWO_ABLATION(f,state,[],N,job.seedSearch);
+    case 'SGWO_TR'
+        [Best,T,info]=SGWO_TR(f,state,[],N,job.seedSearch);
     case 'ANGWO'
         [Best,T,info]=ANGWO(f,state,[],N,job.seedSearch);   % frozen, read-only
     case 'DMSGWO'
@@ -96,6 +98,9 @@ idx=idx(idx>=1 & idx<=budget);
 S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',NaN, ...
     'ArchiveSize',NaN,'QuotaAct1Pct',NaN,'QuotaAct2Pct',NaN,'QuotaAct3Pct',NaN, ...
     'ImpCnt',nan(1,4),'ImpMag',nan(1,4), ...
+    'EvalCnt',nan(1,4),'G2EvalCount',NaN,'G2AlphaImp',NaN,'G2PopImp',NaN, ...
+    'G2NoImp',NaN,'G2GlobalImp',NaN,'G2RadiusStart',NaN,'G2RadiusEnd',NaN, ...
+    'G2RadiusMean',NaN,'G2RadiusMin',NaN,'G2RadiusMax',NaN,'G2RadiusTrace',zeros(0,7), ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
@@ -108,6 +113,18 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
     S.QActionCounts=info.QActionCounts; S.QStateVisits=info.QStateVisits; S.QTable=info.QTable;
     if isfield(info,'QuotaTrace'), S.QuotaTrace=info.QuotaTrace; end
     if isfield(info,'ImpCnt'), S.ImpCnt=info.ImpCnt; S.ImpMag=info.ImpMag; end
+    if isfield(info,'EvalCnt'), S.EvalCnt=info.EvalCnt; end
+    if isfield(info,'G2EvalCount'), S.G2EvalCount=info.G2EvalCount; end
+    if isfield(info,'G2AlphaImp'), S.G2AlphaImp=info.G2AlphaImp; end
+    if isfield(info,'G2PopImp'), S.G2PopImp=info.G2PopImp; end
+    if isfield(info,'G2NoImp'), S.G2NoImp=info.G2NoImp; end
+    if isfield(info,'G2GlobalImp'), S.G2GlobalImp=info.G2GlobalImp; end
+    if isfield(info,'G2RadiusStart'), S.G2RadiusStart=info.G2RadiusStart; end
+    if isfield(info,'G2RadiusEnd'), S.G2RadiusEnd=info.G2RadiusEnd; end
+    if isfield(info,'G2RadiusMean'), S.G2RadiusMean=info.G2RadiusMean; end
+    if isfield(info,'G2RadiusMin'), S.G2RadiusMin=info.G2RadiusMin; end
+    if isfield(info,'G2RadiusMax'), S.G2RadiusMax=info.G2RadiusMax; end
+    if isfield(info,'G2RadiusTrace'), S.G2RadiusTrace=info.G2RadiusTrace; end
     if na>=3 && ~isempty(qt)
         nz=qt(:,3)>0;
         if any(nz)

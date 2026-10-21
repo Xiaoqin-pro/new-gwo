@@ -1,0 +1,10 @@
+{
+  "sparse_q\\src\\SGWO.m": "259db95d1d48604ba32040ff0873e6e5df2167c9bfe6c5b2de047d29b50e2a1e",
+  "sparse_q\\src\\SGWO_ABLATION.m": "886e4d6ab4da0dae6f706774e284b5a43d45b85476aa1cf1faf493f0c88e9eca",
+  "sparse_q\\src\\SGWO_TR.m": "610412b28267dd426ba7e1584c32e7ef7b7b067b6231968361632fbd7f7973ec",
+  "sparse_q\\experiments\\runner_sgwo.m": "6086e77eaab470753d2122ce7be9aafef7b3785a5620347e51a9a882aef0469f",
+  "sparse_q\\experiments\\collect_sq.m": "8de4244b41b94d2f109c77e28b5b5e0f7b77655e8ea07371da5d7c14689afca2",
+  "sparse_q\\experiments\\run_batch_sq.m": "3289a8bd28f77a2c8efe78a718e728c8e420d5009fb0f170e804c51265a88526",
+  "sparse_q\\experiments\\screen23_g2tr.m": "58b01aea4290adec1ca2889159e73f76fda86f7fafda39cff63e1e320976d97b",
+  "sparse_q\\results\\g2tr_p1_20261020_225903\\runs.csv": "0e9c84d3f69594893bd0f4e2b931dc0ca36ce4e1aacd14a8141b3bfdab966cf6"
+}

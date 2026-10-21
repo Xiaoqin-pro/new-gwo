@@ -1,0 +1,5 @@
+arm,median_ratio_vs_A2,wins_vs_A2,losses_vs_A2,catastrophic_gt1_20
+V1-frozen,1.0652110369131615,2,6,3
+A4-G2fixedmin,0.9271969064703999,5,3,3
+G2-subset20,1.0454101919411407,4,4,3
+G2-TR,0.9994509124742537,4,4,2

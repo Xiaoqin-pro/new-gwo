@@ -113,6 +113,7 @@ qStateCount=zeros(1,6);
 qTrace=zeros(0,6);   % [fe, qE, action, stateStart, reward, gbImproved]
 gen1Src=[NaN NaN NaN NaN];
 impCnt=zeros(1,4); impMag=zeros(1,4);   % 消融：来源级真实改善次数/幅度
+evalCnt=zeros(1,4);                       % 来源级真实评价候选数（仅测量，不改变搜索）
 winEnd=fe+opt.qWindow; winGBStart=Alpha.Cost; winRecImp=0; winEvals=0;
 stagnThresh=max(500,round(opt.stagnFrac*budget));
 rounds=0;
@@ -259,6 +260,7 @@ while fe<budget
         y=Y(j,:);
         v=f(y);
         fe=fe+1;
+        evalCnt(src(j))=evalCnt(src(j))+1;
         gbImpBefore=v<Alpha.Cost;
         [Alpha,Beta,Delta]=insertLeader(Alpha,Beta,Delta,y,v);
         T(fe)=Alpha.Cost;
@@ -387,6 +389,7 @@ info.FarN=FarN;
 info.FarE=opt.farE;
 info.ImpCnt=impCnt;
 info.ImpMag=impMag;
+info.EvalCnt=evalCnt;
 end
 
 % ==================== 辅助函数 ====================
