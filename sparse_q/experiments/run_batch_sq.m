@@ -78,6 +78,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_REF.m'),'file')
     h.SGWO_REF=fileSha256(fullfile(sqRoot,'src','SGWO_REF.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_PCSS.m'),'file')
+    h.SGWO_PCSS=fileSha256(fullfile(sqRoot,'src','SGWO_PCSS.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_TSDR.m'),'file')
     h.SGWO_TSDR=fileSha256(fullfile(sqRoot,'src','SGWO_TSDR.m'));
 end
