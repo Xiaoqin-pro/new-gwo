@@ -90,6 +90,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_STEER.m'),'file')
     h.SGWO_STEER=fileSha256(fullfile(sqRoot,'src','SGWO_STEER.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_STEER3.m'),'file')
+    h.SGWO_STEER3=fileSha256(fullfile(sqRoot,'src','SGWO_STEER3.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end

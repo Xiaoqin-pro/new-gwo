@@ -83,6 +83,8 @@ switch job.algorithm
         [Best,T,info]=SGWO_RED(f,state,[],N,job.seedSearch);
     case 'SGWO_STEER'
         [Best,T,info]=SGWO_STEER(f,state,[],N,job.seedSearch);
+    case 'SGWO_STEER3'
+        [Best,T,info]=SGWO_STEER3(f,state,[],N,job.seedSearch);
     case 'SGWO_DSE'
         [Best,T,info]=SGWO_DSE(f,state,[],N,job.seedSearch);
     case 'SGWO_TSDR'
