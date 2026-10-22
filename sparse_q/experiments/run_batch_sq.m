@@ -84,6 +84,12 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_LLT.m'),'file')
     h.SGWO_LLT=fileSha256(fullfile(sqRoot,'src','SGWO_LLT.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_RED.m'),'file')
+    h.SGWO_RED=fileSha256(fullfile(sqRoot,'src','SGWO_RED.m'));
+end
+if exist(fullfile(sqRoot,'src','SGWO_STEER.m'),'file')
+    h.SGWO_STEER=fileSha256(fullfile(sqRoot,'src','SGWO_STEER.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_TSDR.m'),'file')
     h.SGWO_TSDR=fileSha256(fullfile(sqRoot,'src','SGWO_TSDR.m'));
 end

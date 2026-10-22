@@ -1,0 +1,21 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\red_dev_20261022_054609",
+  "runs": 450,
+  "median_BA": 1.031825122097663,
+  "wins_BA": 6,
+  "cat_BA": 2,
+  "runtime_BA": 1.1307026038456964,
+  "median_CA": 1.0117907588193282,
+  "wins_CA": 6,
+  "cat_CA": 1,
+  "median_BC": 1.000897162500391,
+  "wins_BC": 7,
+  "H1_pass": false,
+  "premise_dup_imp_lower": 18,
+  "premise_dup_arc_lower": 150,
+  "premise_runs": 150,
+  "dup_rate_audit": 1.0,
+  "dup_rate_red002": 1.0,
+  "dup_rate_mild": 0.3,
+  "verdict": "STOP_RED"
+}
