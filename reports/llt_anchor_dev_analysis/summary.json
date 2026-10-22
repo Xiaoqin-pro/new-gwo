@@ -1,0 +1,16 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\llt_anchor_dev_20261022_050302",
+  "runs": 160,
+  "median_anchor_vs_frozen": 1.102972777315091,
+  "max_anchor_vs_frozen": 1.2149327649994757,
+  "median_anchor_vs_control": 0.9253073489116685,
+  "winners_anchor_vs_control": 6,
+  "median_ring_vs_frozen": 1.054998982827617,
+  "max_ring_vs_frozen": 1.9122321154330197,
+  "gates": {
+    "median_le": 0.9,
+    "max_le": 1.2
+  },
+  "gate_pass": false,
+  "verdict": "STOP_LLT"
+}

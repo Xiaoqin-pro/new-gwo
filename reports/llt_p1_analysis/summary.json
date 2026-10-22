@@ -1,0 +1,26 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\llt_p1_20261022_043703",
+  "runs": 750,
+  "median_BA": 0.7938573788732058,
+  "wins_BA": 11,
+  "cat_BA": 2,
+  "median_BC": 0.9760146260158264,
+  "wins_BC": 9,
+  "cat_BC": 0,
+  "median_DE": 0.8351392453723951,
+  "wins_DE": 12,
+  "cat_DE": 2,
+  "median_CA": 0.9925918963759579,
+  "runtime_BA": 0.9840048242625579,
+  "runtime_BC": 0.9928111915749999,
+  "runtime_DE": 0.9799891386076037,
+  "H1_pass": false,
+  "H2_pass": false,
+  "H3_pass": false,
+  "verdict": "STOP_LLT_P1",
+  "interaction_median": 0.11746011859593786,
+  "interaction_ci": [
+    -0.09597112763508982,
+    0.3548720196231284
+  ]
+}
