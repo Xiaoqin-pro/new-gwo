@@ -1,0 +1,34 @@
+{
+  "B/A": {
+    "median_ratio": 1.0374784418029694,
+    "wins": 4,
+    "functions": 15,
+    "cats": 2,
+    "max_ratio": 1.8069105420559977,
+    "wilcoxon_p": 0.1353759765625,
+    "med_log": 0.0339827394291623
+  },
+  "B/C": {
+    "median_ratio": 1.0056681641481497,
+    "wins": 7,
+    "functions": 15,
+    "cats": 0,
+    "max_ratio": 1.1724764370416692,
+    "wilcoxon_p": 0.33026123046875,
+    "med_log": 0.004364639728898112
+  },
+  "C/A": {
+    "median_ratio": 1.0045581199225657,
+    "wins": 6,
+    "functions": 15,
+    "cats": 1,
+    "max_ratio": 1.8780509982459044,
+    "wilcoxon_p": 0.67877197265625,
+    "med_log": 0.004246801937823452
+  },
+  "runtime_BA": 1.232878895057722,
+  "runtime_BC": 0.9932548151634367,
+  "H1_pass": false,
+  "H2_pass": false,
+  "verdict": "STOP_DLH_P1"
+}
