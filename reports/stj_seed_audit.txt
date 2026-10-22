@@ -1,0 +1,6 @@
+STJ confirmation seed audit
+arm: C-STJ (steerMode=stj)
+seeds: 3071-3100
+A2/A0/B/C/D used this block legitimately; STJ has never run anywhere
+files containing STJ-like arms on this block: 0
+status: PASS (STJ is fresh)

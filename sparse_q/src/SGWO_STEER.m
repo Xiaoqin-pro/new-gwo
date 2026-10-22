@@ -1,5 +1,8 @@
 function [Best,T,info]=SGWO_STEER(f,state,~,N,seed)
 %SGWO_STEER  Equal-length perturbation of G1 candidates on top of the frozen G1+E scaffold.
+%   STJ variant (steerMode='stj'): identical perturbation, but only applied while the global best
+%   has been stagnant for stjTau = max(stjTauMin, stjTauFrac*budget) real evaluations.
+%   Gate off => frozen behaviour for that generation (no extra RNG consumption).
 %   steerMode='none' : identical to SGWO_ABLATION (frozen behaviour)
 %             'rand' : with probability succSteer, extend the G1 candidate by a random unit
 %                      direction of length steerLambda*||xg-xwolf|| (vectorised implementation)
@@ -51,6 +54,7 @@ opt=struct( ...
     'archiveCap',24, 'dSepFrac',0.02, ...
     'succCap',25, 'stagnFrac',0.02, 'stagnBoost',0, 'boostThreshFrac',0.02, ...
     'steerMode','none', 'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, ...
+    'stjTauFrac',0.02, 'stjTauMin',500, ...
     'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'ablateG2',0, 'ablateE',0, 'alphaSingleE',0, 'sigmaFixFrac',0, ...  % 消融开关（默认全关 = 冻结行为）
     'farReserve',0, 'farMinDist',0.15, 'farE',0);
@@ -60,7 +64,11 @@ for k=1:numel(fn)
         opt.(fn{k})=state.(fn{k});
     end
 end
-assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf'})),'Unknown steerMode.');
+assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf','stj'})),'Unknown steerMode.');
+isStj=strcmpi(opt.steerMode,'stj');
+if isStj
+    assert(strcmpi(opt.sdirSource,'random'),'STJ uses the random-direction perturbation.');
+end
 assert(opt.succSteer>=0 && opt.succSteer<=1,'succSteer out of range.');
 isRandDir=strcmp(opt.sdirSource,'random');
 recG1 = ~strcmp(opt.sdirSource,'g2e') && ~isRandDir;
@@ -75,6 +83,7 @@ assert(budget>=N && budget==floor(budget),'Budget must be integer >= N.');
 assert(all(isfinite(X),'all') && all(X>=lb & X<=ub,'all'), ...
     'Initial population must be finite and inside the bounds.');
 span=norm(ub-lb);
+stjTau=max(opt.stjTauMin,round(opt.stjTauFrac*budget));
 
 if isnan(opt.nG2), opt.nG2=max(1,round(N/2)); end
 if isnan(opt.nE),  opt.nE=N-opt.nG2; end
@@ -122,6 +131,7 @@ qStateCount=zeros(1,6);
 qTrace=zeros(0,6);   % [fe, qE, action, stateStart, reward, gbImproved]
 gen1Src=[NaN NaN NaN NaN];
 steerTriggers=0; steerApplied=0;
+stjGateGens=0; stjApplied=0;
 
 impCnt=zeros(1,4); impMag=zeros(1,4);   % 消融：来源级真实改善次数/幅度
 winEnd=fe+opt.qWindow; winGBStart=Alpha.Cost; winRecImp=0; winEvals=0;
@@ -170,6 +180,11 @@ while fe<budget
     % ---- 1) 生成候选池（廉价；不消耗真实 FE） ----
     Y=zeros(M,D); src=zeros(M,1); par=zeros(M,1); ctr=zeros(M,1);
     m=0;
+    stjGateNow=false;
+    if isStj
+        stjGateNow=(fe-lastGB)>=stjTau;
+        if stjGateNow, stjGateGens=stjGateGens+1; end
+    end
     if any(strcmpi(opt.steerMode,{'vec','rand','dir'}))   % 'perwolf' 走冻结逐狼路径（与 SGWO_ABLATION 逐位一致）
         % ---- G1（向量化扰动版；none 仍走冻结逐狼路径） ----
         A1m=2*aA*rand(N,D)-aA; C1m=2*rand(N,D);
@@ -209,15 +224,19 @@ while fe<budget
         X2=Beta.Vector -A2.*abs(C2.*Beta.Vector -Xv(i,:));
         X3=Delta.Vector-A3.*abs(C3.*Delta.Vector-Xv(i,:));
         xg=(X1+X2+X3)/3;
+        succEff=opt.succSteer;
+        if isStj && ~stjGateNow, succEff=0; end
         if isRandDir
-            if opt.succSteer>0 && rand(sAux)<opt.succSteer
+            if succEff>0 && rand(sAux)<succEff
                 sd=randn(1,D); nrm=norm(sd);
                 if nrm>0
                     stepv=norm(xg-Xv(i,:));
-                    xg=xg+opt.steerLambda*(sd/nrm)*stepv;   % 等长随机方向对照（非方向信息）
+                    xg=xg+opt.steerLambda*(sd/nrm)*stepv;
+                    if isStj, stjApplied=stjApplied+1; else, steerApplied=steerApplied+1; end
+                    if isStj, stjApplied=stjApplied+1; else, steerApplied=steerApplied+1; end   % 等长随机方向对照（非方向信息）
                 end
             end
-        elseif opt.succSteer>0 && sdirN>0 && rand(sAux)<opt.succSteer
+        elseif succEff>0 && sdirN>0 && rand(sAux)<succEff
             j=randi(sAux,sdirN);
             sd=sdir(j,:); nrm=norm(sd);
             if nrm>0
@@ -433,6 +452,11 @@ info.FarE=opt.farE;
 info.ImpCnt=impCnt;
 info.ImpMag=impMag;
 info.SteerOn=~strcmpi(opt.steerMode,'none');
+info.StjOn=isStj;
+info.StjTau=stjTau;
+info.StjGateGens=stjGateGens;
+info.StjApplied=stjApplied;
+info.StjGateRate=stjGateGens/max(rounds,1);
 info.SteerMode=opt.steerMode;
 info.SteerProb=opt.succSteer;
 info.SteerLambda=opt.steerLambda;

@@ -42,5 +42,35 @@ for spec={ {'random'}, {'g1'} }
     assert(isequal(T1,T2) && B1.Cost==B2.Cost,sprintf('perwolf %s differs from SGWO_ABLATION',src));
     fprintf('  perwolf %-6s bitwise identical to SGWO_ABLATION (cost=%.6g)\n',src,B2.Cost);
 end
+% STJ: gate always on must equal the always-on STEER arm (bitwise)
+sB=base; sB.steerMode='perwolf'; sB.succSteer=0.5; sB.steerLambda=0.5; sB.sdirSource='random';
+[BB,TB]=SGWO_STEER(fc,sB,[],N,seed+1000000);
+sOn=base; sOn.steerMode='stj'; sOn.succSteer=0.5; sOn.steerLambda=0.5; sOn.sdirSource='random';
+sOn.stjTauMin=0; sOn.stjTauFrac=0;
+[Bon,Ton,iOn]=SGWO_STEER(fc,sOn,[],N,seed+1000000);
+assert(isequal(TB,Ton) && BB.Cost==Bon.Cost,'STJ with tau=0 must equal the always-on STEER arm');
+fprintf('  STJ tau=0  == perwolf STEER (bitwise), gateGens=%d applied=%d\n',iOn.StjGateGens,iOn.StjApplied);
+% STJ: gate never on must equal frozen
+sOff=base; sOff.steerMode='stj'; sOff.succSteer=0.5; sOff.steerLambda=0.5; sOff.sdirSource='random';
+sOff.stjTauMin=1e9; sOff.stjTauFrac=0;
+[~,Toff,iOff]=SGWO_STEER(fc,sOff,[],N,seed+1000000);
+assert(isequal(TA,Toff),'STJ with tau=inf must equal the frozen scaffold');
+fprintf('  STJ tau=inf == frozen (bitwise), gateGens=%d applied=%d\n',iOff.StjGateGens,iOff.StjApplied);
+% STJ with the repo stagnation window on a 3000-FE run: exact FE, gate fires, trace differs
+sStj=base; sStj.steerMode='stj'; sStj.succSteer=0.5; sStj.steerLambda=0.5; sStj.sdirSource='random';
+sStj.stjTauMin=500; sStj.stjTauFrac=0.02;
+[Bs,Ts,iS]=SGWO_STEER(fc,sStj,[],N,seed+1000000);
+assert(iS.Evaluations==budget && all(diff(Ts)<=0),'STJ run broken');
+assert(iS.StjGateGens>0 && iS.StjApplied>0,sprintf('STJ gate never fired (gens=%d applied=%d)',iS.StjGateGens,iS.StjApplied));
+fprintf('  STJ tau=500 ok FE=%d gateGens=%d/%d applied=%d cost=%.6g (trace may coincide on a 3k smoke run)\n',iS.Evaluations,iS.StjGateGens,iS.Rounds,iS.StjApplied,Bs.Cost);
+% longer budget: the gated perturbation must change the search trajectory
+budget2=20000; sBase2=base; sBase2.maxEvaluations=budget2;
+[~,T2f]=SGWO_ABLATION(fc,sBase2,[],N,seed+1000000);
+s2=base; s2.maxEvaluations=budget2; s2.steerMode='stj'; s2.succSteer=0.5; s2.steerLambda=0.5;
+s2.sdirSource='random'; s2.stjTauMin=2000; s2.stjTauFrac=0.02;
+[B2,T2,i2]=SGWO_STEER(fc,s2,[],N,seed+1000000);
+assert(i2.Evaluations==budget2,'STJ long FE mismatch');
+assert(~isequal(T2,T2f),'STJ did not change the search at a 20k budget');
+fprintf('  STJ 20k: differs from frozen, gateGens=%d/%d applied=%d\n',i2.StjGateGens,i2.Rounds,i2.StjApplied);
 fprintf('test_steer_contract PASS.\n');
 end
