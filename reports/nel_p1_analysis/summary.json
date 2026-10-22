@@ -1,0 +1,15 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\nel_p1_20261022_021413",
+  "runs": 120,
+  "median_BA": 0.928280511078682,
+  "wins_BA": 6,
+  "cat_BA": 0,
+  "median_BC": 1.0580757881328557,
+  "wins_BC": 3,
+  "cat_BC": 1,
+  "runtime_BA": 5.279876782963404,
+  "runtime_BC": 1.1957220867846206,
+  "H1_pass": false,
+  "H2_pass": false,
+  "verdict": "STOP_NEL_PILOT"
+}
