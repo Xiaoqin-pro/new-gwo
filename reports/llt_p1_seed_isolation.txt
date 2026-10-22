@@ -1,0 +1,7 @@
+LLT P1 seed isolation scan
+seeds: 3342-3351
+searched: all runs.csv under new-gwo-g2tr-branch and 拯救G2
+csv files scanned: 121
+hits before launch: 0
+note: seeds 3326/3352/3353 are engineering timing pilots and are excluded from P1
+status: PASS
