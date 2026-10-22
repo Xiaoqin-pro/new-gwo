@@ -1,0 +1,5 @@
+Sparse-DLH P0 audit seed isolation
+seeds: 3419-3423
+scan: 134 runs.csv files across new-gwo-g2tr-branch and 拯救G2 (all historical seeds)
+result: 0 hits -> block unused
+status: PASS

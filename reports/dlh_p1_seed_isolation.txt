@@ -1,0 +1,5 @@
+Sparse-DLH P1 seed isolation
+seeds: 3424-3433
+scan: all historical runs.csv (new-gwo-g2tr-branch + 拯救G2); DLH has never run anywhere
+result: 0 hits
+status: PASS

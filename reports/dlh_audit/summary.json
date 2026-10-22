@@ -1,0 +1,10 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\dlh_audit_20261022_105506",
+  "runs": 40,
+  "functions_neigh_ge5": 8,
+  "functions_deg_le030": 8,
+  "functions_vsgwo_ge001": 8,
+  "functions_vse_ge002": 8,
+  "gate_pass": true,
+  "verdict": "PROMOTE_DLH_TO_P1"
+}
