@@ -1,0 +1,22 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\steer_dev_20261022_060804",
+  "runs": 600,
+  "median_VA": 1.0260126439989907,
+  "cat_VA": 3,
+  "impl_check_pass": false,
+  "median_BV": 0.9742562332042215,
+  "wins_BV": 10,
+  "cat_BV": 1,
+  "runtime_BV": 1.0603016394342597,
+  "median_CV": 1.001728873185133,
+  "wins_CV": 7,
+  "cat_CV": 1,
+  "runtime_CV": 1.0481025110706994,
+  "median_CB": 1.0227595176131339,
+  "wins_CB": 4,
+  "median_BA": 0.9510040423590791,
+  "median_CA": 1.027948020080177,
+  "H1_pass": false,
+  "H2_pass": false,
+  "verdict": "INCONCLUSIVE_VECTORISATION"
+}

@@ -1,0 +1,12 @@
+STEER confirmation seed audit
+seeds: 3071-3100 (baseline block)
+Note: A2/A0 baselines legitimately reuse this block; the steer arms are new on these seeds.
+csv files scanned: 126
+files containing these seeds: 6
+  D:\111\Desktop\噜噜\new-gwo-g2tr-branch\sparse_q\results\ablcore_20261017_062209\runs.csv (30 seeds)
+  D:\111\Desktop\噜噜\new-gwo-g2tr-branch\sparse_q\results\rgi_confirm_20261022_003633\runs.csv (30 seeds)
+  D:\111\Desktop\噜噜\new-gwo-g2tr-branch\sparse_q\results\tsdr_confirm_20261021_232608\runs.csv (30 seeds)
+  D:\111\Desktop\噜噜\new-gwo-g2tr-branch\sparse_q\results\tsdr_confirm_pilot_20261021_232520\runs.csv (2 seeds)
+  D:\111\Desktop\噜噜\new-gwo-g2tr-branch\sparse_q\results\tsd_confirm_bc_20261021_101017\runs.csv (30 seeds)
+  D:\111\Desktop\噜噜\new-gwo-g2tr-branch\sparse_q\results\tsd_confirm_bc_pilot_20261021_100859\runs.csv (2 seeds)
+status: recorded

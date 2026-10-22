@@ -32,5 +32,15 @@ s0=base; s0.steerMode='rand'; s0.succSteer=0;
 [~,T0]=SGWO_STEER(fc,s0,[],N,seed+1000000);
 assert(isequal(T0,TV),'rand with prob 0 must equal the vectorised control trace');
 fprintf('  prob=0 rand path == vec control (bitwise)\n');
+% perwolf 模式必须与 SGWO_ABLATION 的同一机制逐位一致
+for spec={ {'random'}, {'g1'} }
+    src=spec{1}{1};
+    s1=base; s1.succSteer=0.5; s1.steerLambda=0.5; s1.sdirSource=src;
+    [B1,T1]=SGWO_ABLATION(fc,s1,[],N,seed+1000000);
+    s2=s1; s2.steerMode='perwolf';
+    [B2,T2,i2]=SGWO_STEER(fc,s2,[],N,seed+1000000);
+    assert(isequal(T1,T2) && B1.Cost==B2.Cost,sprintf('perwolf %s differs from SGWO_ABLATION',src));
+    fprintf('  perwolf %-6s bitwise identical to SGWO_ABLATION (cost=%.6g)\n',src,B2.Cost);
+end
 fprintf('test_steer_contract PASS.\n');
 end

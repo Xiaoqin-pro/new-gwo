@@ -60,7 +60,7 @@ for k=1:numel(fn)
         opt.(fn{k})=state.(fn{k});
     end
 end
-assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir'})),'Unknown steerMode.');
+assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf'})),'Unknown steerMode.');
 assert(opt.succSteer>=0 && opt.succSteer<=1,'succSteer out of range.');
 isRandDir=strcmp(opt.sdirSource,'random');
 recG1 = ~strcmp(opt.sdirSource,'g2e') && ~isRandDir;
@@ -170,7 +170,7 @@ while fe<budget
     % ---- 1) 生成候选池（廉价；不消耗真实 FE） ----
     Y=zeros(M,D); src=zeros(M,1); par=zeros(M,1); ctr=zeros(M,1);
     m=0;
-    if any(strcmpi(opt.steerMode,{'vec','rand','dir'}))
+    if any(strcmpi(opt.steerMode,{'vec','rand','dir'}))   % 'perwolf' 走冻结逐狼路径（与 SGWO_ABLATION 逐位一致）
         % ---- G1（向量化扰动版；none 仍走冻结逐狼路径） ----
         A1m=2*aA*rand(N,D)-aA; C1m=2*rand(N,D);
         A2m=2*aA*rand(N,D)-aA; C2m=2*rand(N,D);
@@ -227,6 +227,9 @@ while fe<budget
         end
         Y(m,:)=min(max(xg,lb),ub);
         src(m)=1; par(m)=i;
+    end
+    if strcmpi(opt.steerMode,'perwolf') && opt.succSteer>0
+        steerTriggers=steerTriggers+0;   % 逐狼路径的触发计数由下方 SteerTrace 统计
     end
     end
     sig=shellSigma(succ,span,D);
