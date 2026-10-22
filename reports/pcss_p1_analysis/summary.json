@@ -1,0 +1,19 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\pcss_p1_20261022_035251",
+  "runs": 450,
+  "median_BA": 1.0217149767260545,
+  "wins_BA": 6,
+  "cat_BA": 2,
+  "median_BC": 0.9589664401706828,
+  "wins_BC": 9,
+  "cat_BC": 2,
+  "median_CA": 1.0176722592411644,
+  "runtime_BA": 1.44725966036767,
+  "runtime_BC": 1.3683905954073745,
+  "H1_pass": false,
+  "H2_pass": false,
+  "verdict": "STOP_PCSS_ACTIVE",
+  "functions_guided_rate_above_random": 15,
+  "mean_gRate": 0.8320603635150909,
+  "mean_rRate": 0.6611850091712522
+}

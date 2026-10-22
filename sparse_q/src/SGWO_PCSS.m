@@ -50,7 +50,7 @@ opt=struct( ...
     'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'ablateG2',0, 'ablateE',0, 'alphaSingleE',0, 'sigmaFixFrac',0, ...  % 消融开关（默认全关 = 冻结行为）
     'farReserve',0, 'farMinDist',0.15, 'farE',0, ...
-    'pcssMode','none', 'pcssK',5, 'pcssCap',256);
+    'pcssMode','none', 'pcssK',5, 'pcssCap',256, 'pcssGuide',2);
 fn=fieldnames(state);
 for k=1:numel(fn)
     if isfield(opt,fn{k}) && ~isempty(state.(fn{k}))
@@ -70,7 +70,7 @@ assert(budget>=N && budget==floor(budget),'Budget must be integer >= N.');
 assert(all(isfinite(X),'all') && all(X>=lb & X<=ub,'all'), ...
     'Initial population must be finite and inside the bounds.');
 span=norm(ub-lb);
-assert(any(strcmpi(opt.pcssMode,{'none','audit'})),'Unknown pcssMode.');
+assert(any(strcmpi(opt.pcssMode,{'none','audit','active','control'})),'Unknown pcssMode.');
 
 if isnan(opt.nG2), opt.nG2=max(1,round(N/2)); end
 if isnan(opt.nE),  opt.nE=N-opt.nG2; end
@@ -82,6 +82,7 @@ if strcmp(opt.mode,'dense-async')
 else
     K=opt.K; M=N+opt.nG2+opt.nE;
     assert(K<=M && K>=1,'K must be in [1, M]');
+    assert(opt.pcssGuide>=1 && opt.pcssGuide<K,'pcssGuide must be in [1, K-1].');
 end
 
 % ==================== RNG 与状态 ====================
@@ -112,7 +113,9 @@ sdir=zeros(opt.succDirCap,D); sdirN=0; sdirPtr=0;   % 已验证成功位移方�
 Far=zeros(max(opt.farReserve,1),D); Farv=inf(max(opt.farReserve,1),1); FarN=0;  % 远处已验证盆地储备
 nCandGen=0; nDistOps=0; nArcIns=0;
 pcssX=zeros(opt.pcssCap,D); pcssY=zeros(opt.pcssCap,1); pcssN=0; pcssPtr=0;
-pcssPred=[]; pcssTrue=[];
+pcssPred=[]; pcssTrue=[]; pcssFE=[]; pcssGen=[];
+pcssGuideEval=0; pcssGuideBetter=0; pcssRandEval=0; pcssRandBetter=0;
+pcssFallbackGens=0; pcssGuidedGens=0;
 Q=zeros(6,numel(opt.quotaActions));
 if opt.qInitPrior~=0, Q(:,1)=opt.qInitPrior; end   % 先验偏好动作1（q25）；仍为独立初始化
 qActCount=zeros(1,numel(opt.quotaActions));
@@ -250,8 +253,12 @@ while fe<budget
     nCandGen=nCandGen+M;
 
     % ---- 2) 筛选 K 个候选 ----（统一入口：selectCandidates 子函数）
+    isGuided=zeros(M,1);
     if strcmp(opt.mode,'dense-sync')
         sel=1:M;
+    elseif any(strcmpi(opt.pcssMode,{'active','control'}))
+        [sel,isGuided,didFallback]=pcssSelect(opt,sAux,Y,pcssX,pcssY,pcssN,K);
+        if didFallback, pcssFallbackGens=pcssFallbackGens+1; else, pcssGuidedGens=pcssGuidedGens+1; end
     else
         [sel,nd]=selectCandidates(opt,qE,K,Y,src,par,ctr,Alpha,Arc,ArcN,ArcCred,span,sAux,gensSince);
         nDistOps=nDistOps+nd;
@@ -264,14 +271,20 @@ while fe<budget
         if fe>=budget, break; end
         j=sel(t);
         y=Y(j,:);
+        worstBefore=max(fv);
         pcssP=NaN;
         if strcmpi(opt.pcssMode,'audit'), pcssP=knnPredict(y,pcssX,pcssY,pcssN,opt.pcssK); end
         v=f(y);
         fe=fe+1;
-        if strcmpi(opt.pcssMode,'audit') && isfinite(pcssP)
-            pcssPred(end+1,1)=pcssP; pcssTrue(end+1,1)=v; %#ok<AGROW>
+        if isGuided(j)
+            pcssGuideEval=pcssGuideEval+1; pcssGuideBetter=pcssGuideBetter+(v<worstBefore);
+        elseif any(strcmpi(opt.pcssMode,{'active','control'}))
+            pcssRandEval=pcssRandEval+1; pcssRandBetter=pcssRandBetter+(v<worstBefore);
         end
-        if strcmpi(opt.pcssMode,'audit')
+        if strcmpi(opt.pcssMode,'audit') && isfinite(pcssP)
+            pcssPred(end+1,1)=pcssP; pcssTrue(end+1,1)=v; pcssFE(end+1,1)=fe; pcssGen(end+1,1)=rounds; %#ok<AGROW>
+        end
+        if strcmpi(opt.pcssMode,'audit') || strcmpi(opt.pcssMode,'active')
             pcssPtr=mod(pcssPtr,opt.pcssCap)+1; pcssX(pcssPtr,:)=y; pcssY(pcssPtr)=v;
             pcssN=min(pcssN+1,opt.pcssCap);
         end
@@ -408,6 +421,16 @@ info.PcssMode=opt.pcssMode;
 info.PcssN=pcssN;
 info.PcssPred=pcssPred;
 info.PcssTrue=pcssTrue;
+info.PcssFE=pcssFE;
+info.PcssGen=pcssGen;
+info.PcssGuideEval=pcssGuideEval;
+info.PcssGuideBetter=pcssGuideBetter;
+info.PcssGuideRate=pcssGuideBetter/max(pcssGuideEval,1);
+info.PcssRandEval=pcssRandEval;
+info.PcssRandBetter=pcssRandBetter;
+info.PcssRandRate=pcssRandBetter/max(pcssRandEval,1);
+info.PcssFallbackGens=pcssFallbackGens;
+info.PcssGuidedGens=pcssGuidedGens;
 end
 
 % ==================== 辅助函数 ====================
@@ -592,6 +615,41 @@ pred=NaN;
 if n<max(2,k+1), return; end
 dd=sqrt(sum((X(1:n,:)-x).^2,2)); [ds,ix]=sort(dd,'ascend'); kk=min(k,n);
 w=1./(ds(1:kk)+1e-12); pred=sum(w.*Y(ix(1:kk)))/sum(w);
+end
+
+function [sel,isGuided,didFallback]=pcssSelect(opt,sAux,Y,pcssX,pcssY,pcssN,K)
+%PCSSSELECT  active/control 共用同一筛选结构：pcssGuide 个引导名额 + 其余随机名额。
+%   active  : 引导名额取代理预测最优的候选（缓冲区不足时退化为随机并记 fallback）
+%   control : 引导名额均匀随机；与 active 消耗完全相同的随机数调用
+M=size(Y,1); nG=min(opt.pcssGuide,K);
+permG=randperm(sAux,M);                       % 两臂均消耗
+didFallback=false;
+if strcmpi(opt.pcssMode,'active')
+    if pcssN>=opt.pcssK+1
+        pred=knnPredictBatch(Y,pcssX,pcssY,pcssN,opt.pcssK);
+        [~,ord]=sort(pred,'ascend');
+        guided=ord(1:nG);
+    else
+        guided=permG(1:nG)'; didFallback=true;
+    end
+else
+    guided=permG(1:nG)';
+end
+guided=guided(:);
+elig=setdiff((1:M)',guided);
+permR=randperm(sAux,numel(elig));             % 两臂均消耗
+sel=sort([guided; elig(permR(1:K-nG))]);
+isGuided=zeros(M,1); isGuided(guided)=1;
+end
+
+function pred=knnPredictBatch(Xq,X,Y,n,k)
+%KNNPREDICTBATCH  向量化 kNN 预测（与 knnPredict 相同的距离与权重定义）
+pred=nan(size(Xq,1),1);
+if n<max(2,k+1), return; end
+D2=sum(Xq.^2,2)+sum(X(1:n,:).^2,2)'-2*(Xq*X(1:n,:)');
+[ds,ix]=mink(D2,min(k,n),2);
+w=1./(sqrt(max(ds,0))+1e-12);
+pred=sum(w.*Y(ix),2)./sum(w,2);
 end
 
 function sig=shellSigma(succ,span,D)

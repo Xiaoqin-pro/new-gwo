@@ -1,0 +1,32 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\pcss_p0b_20261022_033830",
+  "batch": "p0b",
+  "runs": 40,
+  "valid_runs": 40,
+  "functions": [
+    1,
+    3,
+    4,
+    7,
+    10,
+    13,
+    20,
+    30
+  ],
+  "seeds": [
+    3321,
+    3322,
+    3323,
+    3324,
+    3325
+  ],
+  "nperm": 1000,
+  "functions_median_pool_gt020": 8,
+  "functions_sig3_pool": 8,
+  "functions_median_wms_gt015": 8,
+  "functions_sig3_wms": 8,
+  "gate_pooled": true,
+  "gate_within": true,
+  "gate_pass": true,
+  "verdict": "PROMOTE_PCSS_TO_ACTIVE"
+}
