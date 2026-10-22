@@ -53,7 +53,8 @@ opt=struct( ...
     'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'ablateG2',0, 'ablateE',0, 'alphaSingleE',0, 'sigmaFixFrac',0, ...  % 消融开关（默认全关 = 冻结行为）
     'farReserve',0, 'farMinDist',0.15, 'farE',0, ...
-    'tsdMode','none');
+    'tsdMode','none', ...
+    'vitfMode','none', 'vitfLambda',0.5);
 fn=fieldnames(state);
 for k=1:numel(fn)
     if isfield(opt,fn{k}) && ~isempty(state.(fn{k}))
@@ -74,6 +75,7 @@ assert(all(isfinite(X),'all') && all(X>=lb & X<=ub,'all'), ...
     'Initial population must be finite and inside the bounds.');
 span=norm(ub-lb);
 assert(any(strcmpi(opt.tsdMode,{'none','audit','base','full'})),'Unknown tsdMode.');
+assert(any(strcmpi(opt.vitfMode,{'none','audit'})),'Unknown vitfMode.');
 isTsd=strcmpi(opt.tsdMode,'base') || strcmpi(opt.tsdMode,'full');
 
 if isnan(opt.nG2), opt.nG2=max(1,round(N/2)); end
@@ -113,6 +115,10 @@ Ps=Xv; Pf=fv; Zs=Xv; Zf=fv;
 tsdG1Eval=0; tsdG1Split=0; tsdEEval=0; tsdECursorOnly=0;
 tsdOEEval=0; tsdOECursorOnly=0; tsdProtectUpdates=0;
 tsdGapDistSum=0; tsdGapFitSum=0; tsdGapCount=0; tsdMaxGapDist=0;
+vitfG1Opp=0; vitfEvents=0; vitfAngleSum=0; vitfAngle10=0; vitfAngle30=0;
+vitfFeedbackNormSum=0; vitfGWOstepNormSum=0; vitfArcEvents=0; vitfArcDistSum=0; vitfAngleCount=0;
+vitfIndependent=0; vitfCovered=0; vitfPBetterArcBest=0; vitfPBetterArcMedian=0; vitfPBetterArcWorst=0;
+vitfUsefulIndependent=0;
 
 % ---- 模块状态 ----
 Arc=zeros(opt.archiveCap,D); Arcv=inf(opt.archiveCap,1); ArcN=0; ArcCred=zeros(opt.archiveCap,1);
@@ -183,6 +189,36 @@ while fe<budget
         X2=Beta.Vector -A2.*abs(C2.*Beta.Vector -Xv(i,:));
         X3=Delta.Vector-A3.*abs(C3.*Delta.Vector-Xv(i,:));
         xg=(X1+X2+X3)/3;
+        if strcmpi(opt.vitfMode,'audit')
+            vitfG1Opp=vitfG1Opp+1;
+            dv=Ps(i,:)-Zs(i,:);
+            gv=xg-Zs(i,:);
+            nd=norm(dv); ng=norm(gv);
+            if nd>0
+                vitfEvents=vitfEvents+1;
+                vitfFeedbackNormSum=vitfFeedbackNormSum+nd;
+                vitfGWOstepNormSum=vitfGWOstepNormSum+ng;
+                if ng>0
+                    vitfAngleCount=vitfAngleCount+1;
+                    cs=dot(dv,gv)/(nd*ng); cs=max(-1,min(1,cs));
+                    ang=acosd(cs);
+                    vitfAngleSum=vitfAngleSum+ang;
+                    vitfAngle10=vitfAngle10+(ang>10);
+                    vitfAngle30=vitfAngle30+(ang>30);
+                end
+                if ArcN>0
+                    darc=min(sqrt(sum((Arc(1:ArcN,:)-Ps(i,:)).^2,2)))/span;
+                    vitfArcEvents=vitfArcEvents+1;
+                    vitfArcDistSum=vitfArcDistSum+darc;
+                    if darc>=opt.dSepFrac, vitfIndependent=vitfIndependent+1; else, vitfCovered=vitfCovered+1; end
+                    pbest=min(Arcv(1:ArcN)); pmed=median(Arcv(1:ArcN)); pworst=max(Arcv(1:ArcN));
+                    vitfPBetterArcBest=vitfPBetterArcBest+(Pf(i)<pbest);
+                    vitfPBetterArcMedian=vitfPBetterArcMedian+(Pf(i)<pmed);
+                    vitfPBetterArcWorst=vitfPBetterArcWorst+(Pf(i)<pworst);
+                    vitfUsefulIndependent=vitfUsefulIndependent+((darc>=opt.dSepFrac)&&(Pf(i)<pmed));
+                end
+            end
+        end
         if isRandDir
             if opt.succSteer>0 && rand(sAux)<opt.succSteer
                 sd=randn(1,D); nrm=norm(sd);
@@ -517,6 +553,26 @@ info.TsdOECursorOnly=tsdOECursorOnly;
 info.TsdOECursorOnlyRate=tsdOECursorOnly/max(tsdOEEval,1);
 info.TsdProtectUpdates=tsdProtectUpdates;
 info.TsdMeanGapDist=tsdGapDistSum/max(tsdGapCount,1);
+info.VitfOn=~strcmpi(opt.vitfMode,'none');
+info.VitfMode=opt.vitfMode;
+info.VitfLambda=opt.vitfLambda;
+info.VitfG1Opp=vitfG1Opp;
+info.VitfEvents=vitfEvents;
+info.VitfActiveRate=vitfEvents/max(vitfG1Opp,1);
+info.VitfMeanAngle=vitfAngleSum/max(vitfAngleCount,1);
+info.VitfAngle10Rate=vitfAngle10/max(vitfAngleCount,1);
+info.VitfAngle30Rate=vitfAngle30/max(vitfAngleCount,1);
+info.VitfMeanFeedbackNorm=vitfFeedbackNormSum/max(vitfEvents,1);
+info.VitfMeanGWOstepNorm=vitfGWOstepNormSum/max(vitfAngleCount,1);
+info.VitfAngleCount=vitfAngleCount;
+info.VitfArcEvents=vitfArcEvents;
+info.VitfMeanArcDist=vitfArcDistSum/max(vitfArcEvents,1);
+info.VitfIndependentRate=vitfIndependent/max(vitfArcEvents,1);
+info.VitfCoveredRate=vitfCovered/max(vitfArcEvents,1);
+info.VitfPBetterArcBestRate=vitfPBetterArcBest/max(vitfArcEvents,1);
+info.VitfPBetterArcMedianRate=vitfPBetterArcMedian/max(vitfArcEvents,1);
+info.VitfPBetterArcWorstRate=vitfPBetterArcWorst/max(vitfArcEvents,1);
+info.VitfUsefulIndependentRate=vitfUsefulIndependent/max(vitfArcEvents,1);
 info.TsdMeanGapFit=tsdGapFitSum/max(tsdGapCount,1);
 info.TsdMaxGapDist=tsdMaxGapDist;
 end
