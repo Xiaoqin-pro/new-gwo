@@ -53,7 +53,8 @@ opt=struct( ...
     'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'ablateG2',0, 'ablateE',0, 'alphaSingleE',0, 'sigmaFixFrac',0, ...  % 消融开关（默认全关 = 冻结行为）
     'farReserve',0, 'farMinDist',0.15, 'farE',0, ...
-    'tsdMode','none');
+    'tsdMode','none', ...
+    'tsdrMode','none', 'tsdrConsecFail',3, 'tsdrGainIQR',1);
 fn=fieldnames(state);
 for k=1:numel(fn)
     if isfield(opt,fn{k}) && ~isempty(state.(fn{k}))
@@ -74,6 +75,7 @@ assert(all(isfinite(X),'all') && all(X>=lb & X<=ub,'all'), ...
     'Initial population must be finite and inside the bounds.');
 span=norm(ub-lb);
 assert(any(strcmpi(opt.tsdMode,{'none','audit','base','full'})),'Unknown tsdMode.');
+assert(any(strcmpi(opt.tsdrMode,{'none','on'})),'Unknown tsdrMode.');
 isTsd=strcmpi(opt.tsdMode,'base') || strcmpi(opt.tsdMode,'full');
 
 if isnan(opt.nG2), opt.nG2=max(1,round(N/2)); end
@@ -113,6 +115,7 @@ Ps=Xv; Pf=fv; Zs=Xv; Zf=fv;
 tsdG1Eval=0; tsdG1Split=0; tsdEEval=0; tsdECursorOnly=0;
 tsdOEEval=0; tsdOECursorOnly=0; tsdProtectUpdates=0;
 tsdGapDistSum=0; tsdGapFitSum=0; tsdGapCount=0; tsdMaxGapDist=0;
+cR=zeros(N,1); tsdrTriggers=0; tsdrRecoveries=0; tsdrTrace=zeros(0,4);
 
 % ---- 模块状态 ----
 Arc=zeros(opt.archiveCap,D); Arcv=inf(opt.archiveCap,1); ArcN=0; ArcCred=zeros(opt.archiveCap,1);
@@ -173,9 +176,23 @@ while fe<budget
 
     % ---- 1) 生成候选池（廉价；不消耗真实 FE） ----
     Y=zeros(M,D); src=zeros(M,1); par=zeros(M,1); ctr=zeros(M,1);
+    iqrTsdr=0;
+    if isTsd && strcmpi(opt.tsdrMode,'on')
+        vf=fv(isfinite(fv));
+        if numel(vf)>=4, iqrTsdr=quantile(vf,0.75)-quantile(vf,0.25); end
+        if ~isfinite(iqrTsdr) || iqrTsdr<=0, iqrTsdr=1e-12; end
+    end
     m=0;
     for i=1:N     % G1
         m=m+1;
+        if isTsd && strcmpi(opt.tsdrMode,'on')
+            gtsd=max(0,fv(i)-Pf(i))/(iqrTsdr+1e-12);
+            if cR(i)>=opt.tsdrConsecFail && gtsd>=opt.tsdrGainIQR
+                Xv(i,:)=Ps(i,:); fv(i)=Pf(i); cR(i)=0;
+                tsdrTriggers=tsdrTriggers+1; tsdrRecoveries=tsdrRecoveries+1;
+                tsdrTrace(end+1,:)=[fe,i,gtsd,1]; %#ok<AGROW>
+            end
+        end
         A1=2*aA*rand(1,D)-aA;  C1=2*rand(1,D);
         A2=2*aA*rand(1,D)-aA;  C2=2*rand(1,D);
         A3=2*aA*rand(1,D)-aA;  C3=2*rand(1,D);
@@ -294,7 +311,9 @@ while fe<budget
             end
             Xv(i,:)=y; fv(i)=v;
             if isTsd
-                tsdG1Eval=tsdG1Eval+1; tsdG1Split=tsdG1Split+(v>=Pf(i));
+                didP=(v<Pf(i));
+                tsdG1Eval=tsdG1Eval+1; tsdG1Split=tsdG1Split+didP;
+                if strcmpi(opt.tsdrMode,'on'), if didP, cR(i)=0; else, cR(i)=cR(i)+1; end; end
             end
             if isTsd && v<Pf(i), Ps(i,:)=y; Pf(i)=v; end
             if isTsd
@@ -322,6 +341,7 @@ while fe<budget
                         ref=Xv(wiP,:);
                         Ps(wiP,:)=y; Pf(wiP)=v; Xv(wiP,:)=y; fv(wiP)=v;
                         tsdProtectUpdates=tsdProtectUpdates+1;
+                        if strcmpi(opt.tsdrMode,'on'), cR(wiP)=0; end
                         recImp=true;
                         d=norm(y-ref);
                         impCnt(src(j))=impCnt(src(j))+1; impMag(src(j))=impMag(src(j))+(worstP-v);
@@ -354,6 +374,7 @@ while fe<budget
                         ref=Xv(wiP,:);
                         Ps(wiP,:)=y; Pf(wiP)=v; Xv(wiP,:)=y; fv(wiP)=v;
                         tsdProtectUpdates=tsdProtectUpdates+1;
+                        if strcmpi(opt.tsdrMode,'on'), cR(wiP)=0; end
                         recImp=true;
                         d=norm(y-ref);
                         impCnt(src(j))=impCnt(src(j))+1; impMag(src(j))=impMag(src(j))+(worstP-v);
@@ -379,7 +400,10 @@ while fe<budget
                         sdirN=min(sdirN+1,opt.succDirCap);
                         sdir(sdirPtr,:)=y-ref;
                     end
-                    if v<Pf(wiZ), Ps(wiZ,:)=y; Pf(wiZ)=v; end
+                    if v<Pf(wiZ)
+                        Ps(wiZ,:)=y; Pf(wiZ)=v;
+                        if strcmpi(opt.tsdrMode,'on'), cR(wiZ)=0; end
+                    end
                 end
             end
         else
@@ -517,6 +541,11 @@ info.TsdOECursorOnly=tsdOECursorOnly;
 info.TsdOECursorOnlyRate=tsdOECursorOnly/max(tsdOEEval,1);
 info.TsdProtectUpdates=tsdProtectUpdates;
 info.TsdMeanGapDist=tsdGapDistSum/max(tsdGapCount,1);
+info.TsdrOn=~strcmpi(opt.tsdrMode,'none');
+info.TsdrMode=opt.tsdrMode;
+info.TsdrTriggers=tsdrTriggers;
+info.TsdrRecoveries=tsdrRecoveries;
+info.TsdrTrace=tsdrTrace;
 info.TsdMeanGapFit=tsdGapFitSum/max(tsdGapCount,1);
 info.TsdMaxGapDist=tsdMaxGapDist;
 end
