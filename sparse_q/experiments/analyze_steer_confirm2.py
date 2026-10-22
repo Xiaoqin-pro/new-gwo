@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Analyze the confirmation-grade STEER batch (3 new arms x 29 funcs x 30 seeds + reused A2/A0)."""
 from __future__ import annotations
-import json
+import json, os
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -33,9 +33,35 @@ def holm(p):
     return out
 
 
+
+def load_partial(dirp):
+    """Build a runs-like frame from the per-run .mat files (used before collect_sq writes runs.csv)."""
+    rows = []
+    for f in sorted((dirp / 'runs').glob('run_*.mat')):
+        try:
+            r = loadmat(f, struct_as_record=False, squeeze_me=True)['record']
+            res = r.result
+            rows.append(dict(RunID=float(r.id), Algorithm=str(res.Algorithm), FunctionID=float(res.FunctionID),
+                             Seed=float(res.Seed), Status=str(r.status), FinalError=float(res.BestCost) - 100.0*float(res.FunctionID),
+                             Evaluations=float(res.Evaluations), Seconds=float(res.Seconds)))
+        except Exception:
+            continue
+    return pd.DataFrame(rows)
+
+
 def load_run(df, arm, f):
     x = df[(df.Algorithm == arm) & (df.FunctionID == f)].sort_values('Seed')
     return x.FinalError.to_numpy(float), x.Seed.to_numpy(int)
+
+
+def aligned_pair(df_a, arm_a, df_b, arm_b, f):
+    """Return per-seed errors for the two arms on their common seeds."""
+    a = df_a[(df_a.Algorithm == arm_a) & (df_a.FunctionID == f)].set_index('Seed').FinalError
+    b = df_b[(df_b.Algorithm == arm_b) & (df_b.FunctionID == f)].set_index('Seed').FinalError
+    common = sorted(set(a.index) & set(b.index))
+    if len(common) < 10:
+        return None, None
+    return a.loc[common].to_numpy(float), b.loc[common].to_numpy(float)
 
 
 def ratio_stats(x, y):
@@ -43,7 +69,7 @@ def ratio_stats(x, y):
     return float(np.median(r)), int((r < 1).sum()), int((r > 1.20).sum())
 
 
-def trace_ratio(new_dir, new_arm, base_df, base_arm, f):
+def trace_ratio(new_dir, new_df, new_arm, base_df, base_arm, f):
     """median trace ratio (new/old) at FE checkpoints, interpolated from run records."""
     def series(dirp, df, arm):
         vals = []
@@ -55,23 +81,35 @@ def trace_ratio(new_dir, new_arm, base_df, base_arm, f):
             fe = np.asarray(res.TraceFE, float).ravel(); T = np.asarray(res.Trace, float).ravel()
             vals.append(np.interp(np.array(CHECKPOINTS) * 100000, fe, T))
         return np.median(np.array(vals), axis=0) if vals else None
-    a = series(new_dir, new_df_cache, new_arm); b = series(BASE_DIR, base_df, base_arm)
+    a = series(new_dir, new_df, new_arm); b = series(BASE_DIR, base_df, base_arm)
     if a is None or b is None:
         return None
     return (a / b).tolist()
 
 
 if __name__ == '__main__':
-    global new_df_cache
     p = latest('steer_confirm2_*')
-    new_df = pd.read_csv(p / 'runs.csv'); new_df_cache = new_df
+    csv_p = p / 'runs.csv'
+    new_df = pd.read_csv(csv_p) if csv_p.exists() else load_partial(p)
+    new_df_cache = new_df
     base_df = pd.read_csv(BASE_DIR / 'runs.csv')
     rep = ROOT / 'reports' / 'steer_confirm2_analysis'
     rep.mkdir(parents=True, exist_ok=True)
-    assert sorted(new_df.FunctionID.unique().tolist()) == FUNCS, 'function mismatch'
+    if not (os.environ.get('STEER_PARTIAL') == '1'):
+        assert sorted(new_df.FunctionID.unique().tolist()) == FUNCS, 'function mismatch'
     assert sorted(new_df.Seed.unique().tolist()) == SEEDS, 'seed mismatch'
     assert set(new_df.Algorithm.unique()) == set(NEW_ARMS), 'arm mismatch'
-    assert len(new_df) == 3 * len(FUNCS) * len(SEEDS) and (new_df.Status == 'ok').all(), 'batch incomplete'
+    import os
+    partial = os.environ.get('STEER_PARTIAL') == '1'
+    if not partial:
+        assert len(new_df) == 3 * len(FUNCS) * len(SEEDS) and (new_df.Status == 'ok').all(), 'batch incomplete'
+    else:
+        new_df = new_df.copy()
+        keep = sorted(new_df.groupby(['FunctionID']).size().index)[:]
+        funcs_num = sorted(new_df.FunctionID.unique().tolist())
+        new_df = new_df[new_df.FunctionID.isin(funcs_num)]
+        FUNCS_USE = funcs_num
+        print('[dry-run] partial batch:', len(new_df), 'runs,', len(funcs_num), 'functions')
     assert (new_df.Evaluations == 100000).all(), 'FE mismatch'
     pairs = [(a, b, lab) for a, b, lab in [
         ('B-Steer-Rand', 'A2-G1E', 'B/A2'), ('C-Steer-Dir', 'A2-G1E', 'C/A2'),
@@ -83,8 +121,12 @@ if __name__ == '__main__':
     for a, b, lab in pairs:
         rr = []
         for f in FUNCS:
-            x, _ = load_run(new_df, a, f) if a in NEW_ARMS else load_run(base_df, a, f)
-            y, _ = load_run(base_df, b, f) if b not in NEW_ARMS else load_run(new_df, b, f)
+            x, y = aligned_pair(new_df, a, base_df, b, f) if a in NEW_ARMS and b not in NEW_ARMS else \
+                aligned_pair(base_df, a, new_df, b, f) if a not in NEW_ARMS and b in NEW_ARMS else \
+                aligned_pair(new_df, a, new_df, b, f) if a in NEW_ARMS and b in NEW_ARMS else \
+                aligned_pair(base_df, a, base_df, b, f)
+            if x is None:
+                continue
             med, w, cat = ratio_stats(x, y)
             rr.append(med)
             try:
@@ -97,9 +139,6 @@ if __name__ == '__main__':
         summary[f'median_{lab}'] = float(np.median(rr))
         summary[f'wins_{lab}'] = int((rr < 1).sum())
         summary[f'cats_{lab}'] = int((rr > 1.20).sum())
-    for lab, sub in pd.DataFrame(tests).groupby('comparison'):
-        q = holm(sub.p_raw.to_numpy(float))
-        pd.DataFrame(tests).loc[sub.index, 'p_holm'] = q
     tdf = pd.DataFrame(tests)
     tdf['p_holm'] = np.concatenate([holm(g.p_raw.to_numpy(float)) for _, g in tdf.groupby('comparison')])
     tdf.to_csv(rep / 'pairwise_wilcoxon_holm.csv', index=False)
@@ -118,7 +157,7 @@ if __name__ == '__main__':
     for arm in NEW_ARMS:
         rows = []
         for f in FUNCS:
-            tr = trace_ratio(p, arm, base_df, 'A2-G1E' if arm != 'D-Steer-NoE' else 'A0-GWOonly', f)
+            tr = trace_ratio(p, new_df, arm, base_df, 'A2-G1E' if arm != 'D-Steer-NoE' else 'A0-GWOonly', f)
             if tr is not None:
                 rows.append(tr)
         if rows:
