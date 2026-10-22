@@ -139,8 +139,12 @@ if __name__ == '__main__':
         summary[f'median_{lab}'] = float(np.median(rr))
         summary[f'wins_{lab}'] = int((rr < 1).sum())
         summary[f'cats_{lab}'] = int((rr > 1.20).sum())
+    for lab in {t['comparison'] for t in tests}:
+        rows_lab = [t for t in tests if t['comparison'] == lab]
+        q = holm([t['p_raw'] for t in rows_lab])
+        for t, v in zip(rows_lab, q):
+            t['p_holm'] = float(v) if np.isfinite(v) else np.nan
     tdf = pd.DataFrame(tests)
-    tdf['p_holm'] = np.concatenate([holm(g.p_raw.to_numpy(float)) for _, g in tdf.groupby('comparison')])
     tdf.to_csv(rep / 'pairwise_wilcoxon_holm.csv', index=False)
     rt_new = new_df.groupby('Algorithm').Seconds.mean().to_dict()
     rt_base = base_df.groupby('Algorithm').Seconds.mean().to_dict()
