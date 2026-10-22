@@ -1,0 +1,13 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\dse_audit_20261022_090540",
+  "runs": 40,
+  "tau": 2000,
+  "runs_with_trigger": 35,
+  "functions_with_3of5_triggers": 7,
+  "arc_gap_max_overall": 58890,
+  "arc_gap_max_median": 27999,
+  "arc_imp_median": 559.0,
+  "gate_required_functions": 6,
+  "gate_pass": true,
+  "verdict": "PROMOTE_DSE_TO_P1"
+}

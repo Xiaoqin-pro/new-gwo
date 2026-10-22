@@ -72,5 +72,11 @@ s2.sdirSource='random'; s2.stjTauMin=2000; s2.stjTauFrac=0.02;
 assert(i2.Evaluations==budget2,'STJ long FE mismatch');
 assert(~isequal(T2,T2f),'STJ did not change the search at a 20k budget');
 fprintf('  STJ 20k: differs from frozen, gateGens=%d/%d applied=%d\n',i2.StjGateGens,i2.Rounds,i2.StjApplied);
+% DSE premise audit must be bitwise identical to the frozen scaffold
+sDa=base; sDa.steerMode='dsaudit'; sDa.stjTauMin=2000; sDa.stjTauFrac=0.02; sDa.succSteer=0.5; sDa.sdirSource='random';
+[BDa,TDa,iDa]=SGWO_STEER(fc,sDa,[],N,seed+1000000);
+assert(isequal(TA,TDa) && BA.Cost==BDa.Cost,'dsaudit differs from frozen scaffold');
+fprintf('  dsaudit ok FE=%d (bitwise frozen); arcImp=%d maxArcGap=%d dualFE=%d firstDual=%d\n', ...
+    iDa.Evaluations,iDa.DaArcImpCnt,iDa.DaArcGapMax,iDa.DaDualFE,iDa.DaFirstDualFE);
 fprintf('test_steer_contract PASS.\n');
 end

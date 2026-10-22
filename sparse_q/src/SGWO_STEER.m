@@ -64,7 +64,8 @@ for k=1:numel(fn)
         opt.(fn{k})=state.(fn{k});
     end
 end
-assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf','stj'})),'Unknown steerMode.');
+assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf','stj','dsaudit'})),'Unknown steerMode.');
+isDsAudit=strcmpi(opt.steerMode,'dsaudit');   % passive: frozen behaviour + DSE premise logging
 isStj=strcmpi(opt.steerMode,'stj');
 if isStj
     assert(strcmpi(opt.sdirSource,'random'),'STJ uses the random-direction perturbation.');
@@ -132,6 +133,7 @@ qTrace=zeros(0,6);   % [fe, qE, action, stateStart, reward, gbImproved]
 gen1Src=[NaN NaN NaN NaN];
 steerTriggers=0; steerApplied=0;
 stjGateGens=0; stjApplied=0;
+daLastArc=0; daLastGB=0; daDualFE=0; daFirstDualFE=-1; daArcGapMax=0; daArcImpCnt=0;
 
 impCnt=zeros(1,4); impMag=zeros(1,4);   % 消融：来源级真实改善次数/幅度
 winEnd=fe+opt.qWindow; winGBStart=Alpha.Cost; winRecImp=0; winEvals=0;
@@ -226,6 +228,7 @@ while fe<budget
         xg=(X1+X2+X3)/3;
         succEff=opt.succSteer;
         if isStj && ~stjGateNow, succEff=0; end
+        if isDsAudit, succEff=0; end
         if isRandDir
             if succEff>0 && rand(sAux)<succEff
                 sd=randn(1,D); nrm=norm(sd);
@@ -403,6 +406,15 @@ while fe<budget
         if recImp || arcImp, winRecImp=winRecImp+1; end
         winEvals=winEvals+1;
         if gbImpBefore, lastGB=fe; end
+        if isDsAudit
+            if gbImpBefore, daLastGB=fe; end
+            if arcImp, daLastArc=fe; daArcImpCnt=daArcImpCnt+1; end
+            daArcGapMax=max(daArcGapMax,fe-daLastArc);
+            if (fe-daLastGB)>=stjTau && (fe-daLastArc)>=stjTau
+                daDualFE=daDualFE+1;
+                if daFirstDualFE<0, daFirstDualFE=fe; end
+            end
+        end
 
         % ---- 配额窗口结算（每 qWindow 真实 FE 一次） ----
         if fe>=winEnd
@@ -452,6 +464,12 @@ info.FarE=opt.farE;
 info.ImpCnt=impCnt;
 info.ImpMag=impMag;
 info.SteerOn=~strcmpi(opt.steerMode,'none');
+info.DsAuditOn=isDsAudit;
+info.DaArcImpCnt=daArcImpCnt;
+info.DaArcGapMax=daArcGapMax;
+info.DaDualFE=daDualFE;
+info.DaFirstDualFE=daFirstDualFE;
+info.DaTau=stjTau;
 info.StjOn=isStj;
 info.StjTau=stjTau;
 info.StjGateGens=stjGateGens;

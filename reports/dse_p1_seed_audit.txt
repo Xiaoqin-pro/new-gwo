@@ -1,0 +1,5 @@
+DSE P1 seed audit
+arms: C-DSE-Cauchy / D-STEER+DSE-Cauchy / E-STEER+DSE-Gauss (all new)
+seeds: 3071-3080 (reused block; A2 and B-Steer-Rand are reused as baselines on the same seeds)
+DSE (SGWO_DSE) has never been run anywhere before this batch; contract test none == SGWO_ABLATION bitwise
+status: PASS
