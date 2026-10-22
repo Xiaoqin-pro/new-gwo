@@ -1,0 +1,6 @@
+nE sweep (with STEER) seed isolation
+seeds: 3404-3413
+rationale: the draft block 3369-3378 was consumed by the RED experiment; re-scanned all runs.csv
+scan: 131 runs.csv files across new-gwo-g2tr-branch and 拯救G2, 353 distinct seeds ever used
+result: 3404-3413 is the first fully unused 10-seed block at or above 3400
+status: PASS
