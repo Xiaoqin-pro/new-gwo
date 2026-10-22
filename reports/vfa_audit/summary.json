@@ -1,0 +1,14 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\vfa_audit_20261022_104049",
+  "runs": 40,
+  "functions_admits_ge20": 8,
+  "functions_size_ge4": 8,
+  "functions_distE_ge004": 0,
+  "functions_lift_ge1": 6,
+  "gate_admits": true,
+  "gate_occupancy": true,
+  "gate_distinctness": false,
+  "gate_relevance": true,
+  "gate_pass": false,
+  "verdict": "STOP_VFA_P0"
+}
