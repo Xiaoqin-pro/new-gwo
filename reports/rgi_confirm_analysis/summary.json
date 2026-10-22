@@ -1,0 +1,48 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\rgi_confirm_20261022_003633",
+  "a2_source": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\ablcore_20261017_062209\\runs.csv",
+  "runs": 2610,
+  "median_BA": 1.034421022934347,
+  "CI_BA": [
+    1.0057850417894934,
+    1.0571774733922061
+  ],
+  "wins_BA": 8,
+  "cat_BA": 5,
+  "max_BA": 1.5919491053155954,
+  "median_BC": 0.706450656672716,
+  "CI_BC": [
+    0.628409760687906,
+    0.8226165421866976
+  ],
+  "wins_BC": 28,
+  "cat_BC": 0,
+  "max_BC": 1.099107464005116,
+  "runtime_B_A": 1.0353520401671454,
+  "runtime_B_C": 0.9559745070466902,
+  "families": {
+    "unimodal": {
+      "BA": 1.1594574664842099,
+      "BC": 0.37562433103572096
+    },
+    "simple_multimodal": {
+      "BA": 1.0456318324314968,
+      "BC": 0.6593842920506596
+    },
+    "hybrid": {
+      "BA": 1.0692979661830424,
+      "BC": 0.6551576292519209
+    },
+    "composition": {
+      "BA": 1.0049873833289817,
+      "BC": 0.8561445028236323
+    }
+  },
+  "H1_B_A": false,
+  "H2_B_C": true,
+  "comparison_level_holm": {
+    "B/A": 0.021553177386522293,
+    "B/C": 5.21540641784668e-08
+  },
+  "verdict": "RANK_GATING_EFFECT_BUT_NO_NET_GAIN"
+}
