@@ -1,0 +1,54 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\stj_confirm_20261022_083504",
+  "runs": 870,
+  "comparisons": {
+    "C/A2": {
+      "median_ratio_of_medians": 1.0055060207502624,
+      "wins": 14,
+      "losses": 15,
+      "wilcoxon_p": 0.7655419819056988,
+      "sign_p": 1.0,
+      "med_log": 0.005490918029909864,
+      "ci_lo": -0.007289208263959068,
+      "ci_hi": 0.015550714802490262,
+      "n_holm_sig": 0
+    },
+    "C/B": {
+      "median_ratio_of_medians": 1.0230360567989831,
+      "wins": 7,
+      "losses": 22,
+      "wilcoxon_p": 0.0035108327865600586,
+      "sign_p": 0.008130058646202087,
+      "med_log": 0.022774732486172233,
+      "ci_lo": 0.008803541156357397,
+      "ci_hi": 0.13665786942795854,
+      "n_holm_sig": 1
+    },
+    "B/A2": {
+      "median_ratio_of_medians": 0.9769430648222868,
+      "wins": 21,
+      "losses": 8,
+      "wilcoxon_p": 0.007456466555595398,
+      "sign_p": 0.0241195447742939,
+      "med_log": -0.023326904151986128,
+      "ci_lo": -0.11462775130833336,
+      "ci_hi": -0.002442550221843476,
+      "n_holm_sig": 3
+    }
+  },
+  "cats_CA2": 0,
+  "runtime_CA2": 0.9953026699532849,
+  "runtime_CB": 0.800194729915639,
+  "H1_pass": false,
+  "H2_pass": false,
+  "verdict": "KEEP_STEER (STJ fails H1)",
+  "checkpoint_median_STJ_over_STEER": {
+    "0.1": 0.9960744035615241,
+    "0.2": 0.995816284338872,
+    "0.5": 0.9958369289878861,
+    "0.8": 0.9963479874266163,
+    "1.0": 1.0045825302070974
+  },
+  "stj_gate_rate_median": 0.1662269129287599,
+  "stj_gate_rate_mean": 0.15889970581991328
+}
