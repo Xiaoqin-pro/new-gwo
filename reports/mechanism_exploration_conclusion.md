@@ -1837,3 +1837,28 @@ OCMA 的失败说明仅改变采样方向不够。下一步只测试 **Active-CM
 - mirrored、orthogonal、active covariance。
 
 当前唯一可信的主核仍是 **CMA50**。如果继续寻找新算法，应转向 **LSHADE-cnEpSin 或 covariance-aware differential evolution** 作为独立强核，而不是在单 CMA 上继续叠加采样补丁。
+
+
+## 九十八、LSHADE-CML：dev 有信号，P0 未复现
+
+保留 LSHADE 的 archive/pbest/F-CR，每 10 代用上半种群协方差把 50% 的 DE 变异旋转到特征基。8×2 dev：
+
+- CML/LSHADE：中位 0.954、7/8 胜、0 个 >1.20；
+- CML/jSO：中位 0.928、6/8 胜、1 个 >1.20。
+
+独立 8×5 P0（4114–4118，160 次，0 失败）：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 | 时间 |
+|---|---:|---:|---:|---:|---:|
+| CML / LSHADE | 1.0019 | 3 | 1 | 1.224 | 1.103× |
+| CML / jSO | 1.0110 | 4 | 2 | 1.517 | — |
+| CML / CMA | 1.4087 | 2 | 4 | 6.22e15 | — |
+
+`STOP_LSHADE_CML_P0`。简化 CML 不是稳健新机制；若继续该家族，必须实现完整的 LSHADE-cnEpSin 协方差学习，而不是继续调 `cmlFrac/cmlEvery`。
+
+## 九十九、路线选择
+
+至此，CMA 采样/更新、jSO 混合、多生态位、restart、sparse、archive、CML 都没有通过独立 P0。下一步优先级：
+
+1. **LSHADE-cnEpSin 的完整实现**（不是简化旋转）；
+2. 若完整 cnEpSin 仍不能超过 CMA，转向 **CMA 主核 + 应用层结构**，把论文创新放到问题建模/约束处理/真实场景，而不是继续伪造通用优化器改进。

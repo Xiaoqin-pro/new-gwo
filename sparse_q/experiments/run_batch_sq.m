@@ -165,6 +165,9 @@ end
 if exist(fullfile(sqRoot,'src','REHEAT_CMA_CEC.m'),'file')
     h.REHEAT_CMA_CEC=fileSha256(fullfile(sqRoot,'src','REHEAT_CMA_CEC.m'));
 end
+if exist(fullfile(sqRoot,'src','LSHADE_CML_CEC.m'),'file')
+    h.LSHADE_CML_CEC=fileSha256(fullfile(sqRoot,'src','LSHADE_CML_CEC.m'));
+end
 if exist(fullfile(sqRoot,'src','jSO_CEC.m'),'file')
     h.jSO_CEC=fileSha256(fullfile(sqRoot,'src','jSO_CEC.m'));
 end

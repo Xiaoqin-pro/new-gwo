@@ -178,6 +178,8 @@ switch job.algorithm
         [Best,T,info]=HCCMA_CEC(f,state,[],N,job.seedSearch);
     case 'REHEAT_CMA'
         [Best,T,info]=REHEAT_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'LSHADE_CML'
+        [Best,T,info]=LSHADE_CML_CEC(f,state,[],N,job.seedSearch);
     case {'JSO','jSO'}
         [Best,T,info]=jSO_CEC(f,state,[],N,job.seedSearch);
     case 'PORTFOLIO2'
