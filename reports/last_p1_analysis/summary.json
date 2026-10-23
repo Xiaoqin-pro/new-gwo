@@ -1,0 +1,16 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\last_p1_20261023_092447",
+  "median": 0.9937813757790152,
+  "wins": 8,
+  "cats": 3,
+  "max_ratio": 1.2681523001248103,
+  "worst_f": 1,
+  "p": 0.52447509765625,
+  "ci95": [
+    0.9072872965510301,
+    1.0733468157695678
+  ],
+  "runtime": 1.0023777934366274,
+  "gate": false,
+  "verdict": "STOP_LAST_P1"
+}
