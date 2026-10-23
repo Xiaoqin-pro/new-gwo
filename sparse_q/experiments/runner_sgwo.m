@@ -172,6 +172,8 @@ switch job.algorithm
         [Best,T,info]=SCMA_CEC(f,state,[],N,job.seedSearch);
     case 'LS_CMA'
         [Best,T,info]=LS_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'ACMA'
+        [Best,T,info]=ACMA_CEC(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID'
         [Best,T,info]=SGWO_HYBRID(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID2'

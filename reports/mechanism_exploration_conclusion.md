@@ -1692,3 +1692,31 @@ G1E 的多样性确实帮助了 G1E 自身，但会污染 CMA 的初始分布。
 5. 先 8×5 P0，目标是在 F13/F30 改善的同时不损伤 F1/F4/F7。
 
 如果 ACMA 仍失败，下一步不应继续在 CMA 上加小模块，而应把 CMA 作为主核重写论文骨架，并寻找一个与 CMA 正交的**结构级**机制（例如多尺度协方差或预算分解），而不是继续做 restart/portfolio/sparse/multi-niche。
+
+
+## 八十五、ACMA（Archive-Covariance CMA）：失败
+
+让真实评价的空间分离精英以低权重参与 CMA 协方差更新，保留完整 mean/C 轨迹，不重启、不注入样本。8×2 dev：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 |
+|---|---:|---:|---:|---:|
+| ACMA / CMA | 6.50 | 0 | 7 | 1.51e21 |
+
+archive 的远历史差方向会放大成不合适的协方差，F1/F4/F7/F10/F13/F20/F24/F30 均受损。`STOP_ACMA_DEV`。
+
+## 八十六、CMA 方向收口
+
+在这轮所有 CMA 变体中，只有两个事实稳定：
+
+1. **CMA50 是强核**：相对 LSHADE 中位 0.6845、7/8 胜；相对当前 G1E+STEER 的 dev 中位约 0.13、8/8 胜。
+2. **CMA 的弱点是 F13/F30**，但所有补丁都失败：
+   - hard/soft/far archive restart；
+   - IPOP/current-best restart；
+   - λ=100、自适应 λ；
+   - multi-niche、80/20 scouts；
+   - shared-covariance multi-mean；
+   - sparse CMA；
+   - archive covariance；
+   - G1E→CMA、LSHADE→CMA。
+
+这不是“再调一个参数”能解决的问题。下一步应该把 **CMA50 作为新主核**，重新定义论文的算法骨架，并寻找一个**与 CMA 的采样/协方差更新正交的结构级机制**；在找到之前，不把任何 CMA 变体写成论文贡献，也不进入 30 种子或场景实验。

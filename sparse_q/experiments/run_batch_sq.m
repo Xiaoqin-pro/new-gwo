@@ -156,6 +156,9 @@ end
 if exist(fullfile(sqRoot,'src','LS_CMA_CEC.m'),'file')
     h.LS_CMA_CEC=fileSha256(fullfile(sqRoot,'src','LS_CMA_CEC.m'));
 end
+if exist(fullfile(sqRoot,'src','ACMA_CEC.m'),'file')
+    h.ACMA_CEC=fileSha256(fullfile(sqRoot,'src','ACMA_CEC.m'));
+end
 if exist(fullfile(sqRoot,'src','CMAES_RESUME.m'),'file')
     h.CMAES_RESUME=fileSha256(fullfile(sqRoot,'src','CMAES_RESUME.m'));
 end
