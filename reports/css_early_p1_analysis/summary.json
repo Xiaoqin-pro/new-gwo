@@ -1,0 +1,16 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\css_early_p1_20261023_113424",
+  "median": 0.9437658930867776,
+  "wins": 9,
+  "cats": 2,
+  "max": 1.5615246719995726,
+  "worst_f": 20,
+  "p": 0.890380859375,
+  "ci95": [
+    0.8882852812630337,
+    1.1816469970029095
+  ],
+  "runtime": 1.0921100488871407,
+  "gate": true,
+  "verdict": "PROMOTE_CSS_EARLY_TO_CONFIRM"
+}

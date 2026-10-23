@@ -1,0 +1,16 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\css_p1_20261023_111458",
+  "median": 1.0245194365019719,
+  "wins": 6,
+  "cats": 3,
+  "max": 1.9221940954993402,
+  "worst_f": 14,
+  "p": 0.638671875,
+  "ci95": [
+    0.942444991902156,
+    1.1138152970990802
+  ],
+  "runtime": 1.1710202799707008,
+  "gate": false,
+  "verdict": "STOP_CSS_P1"
+}
