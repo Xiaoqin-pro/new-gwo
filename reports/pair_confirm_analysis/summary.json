@@ -1,0 +1,51 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\pair_confirm_20261023_055601",
+  "base_batch": "steer_robust_20261022_213856",
+  "base_arm": "A-Final-SteerOn",
+  "B_A": {
+    "median": 1.1271081234674543,
+    "wins": 7,
+    "cats": 12,
+    "max_ratio": 600.5123317031785,
+    "min_ratio": 0.49982458281914904,
+    "worst_f": 9,
+    "wilcoxon_p": 0.0008089840412139893,
+    "ci95": [
+      1.035221334717837,
+      1.2680603841198823
+    ]
+  },
+  "C_A": {
+    "median": 0.9924478154095526,
+    "wins": 16,
+    "cats": 2,
+    "max_ratio": 1.3874533329021874,
+    "min_ratio": 0.6817333814142885,
+    "worst_f": 20,
+    "wilcoxon_p": 0.346684567630291,
+    "ci95": [
+      0.9273966650011267,
+      1.0160664014874516
+    ]
+  },
+  "B_C": {
+    "median": 1.1685353528326676,
+    "wins": 7,
+    "cats": 13,
+    "max_ratio": 1456.1848910639994,
+    "min_ratio": 0.6092882435553018,
+    "worst_f": 9,
+    "wilcoxon_p": 0.0004987679421901703,
+    "ci95": [
+      1.046158169900189,
+      1.294968502856812
+    ]
+  },
+  "runtime": {
+    "B": 1.0642466192228437,
+    "C": 1.1532141708178316
+  },
+  "gate_BA": false,
+  "gate_BC": false,
+  "verdict": "STOP_PAIR_CONFIRM"
+}
