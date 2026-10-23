@@ -1,0 +1,25 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\km_protocol_20261023_000828",
+  "B_K15_over_A": {
+    "median": 1.048015692311251,
+    "wins": 5,
+    "cats": 1,
+    "max_ratio": 1.224503912856734,
+    "worst_f": 20,
+    "wilcoxon_p": 0.67877197265625
+  },
+  "C_K20_over_A": {
+    "median": 1.008538919512832,
+    "wins": 6,
+    "cats": 1,
+    "max_ratio": 1.2970224023793668,
+    "worst_f": 1,
+    "wilcoxon_p": 0.846923828125
+  },
+  "runtime_B": 0.7927504520151564,
+  "runtime_C": 0.689986360994683,
+  "gate_B": false,
+  "gate_C": false,
+  "winner": null,
+  "verdict": "STOP_KM_PROTOCOL"
+}
