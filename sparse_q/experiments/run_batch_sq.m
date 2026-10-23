@@ -123,6 +123,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_MIS.m'),'file')
     h.SGWO_MIS=fileSha256(fullfile(sqRoot,'src','SGWO_MIS.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_CROWD.m'),'file')
+    h.SGWO_CROWD=fileSha256(fullfile(sqRoot,'src','SGWO_CROWD.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end
