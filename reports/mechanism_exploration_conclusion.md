@@ -1811,3 +1811,29 @@ OCMA 的失败说明仅改变采样方向不够。下一步只测试 **Active-CM
 - 不改变 mean、初始池、FE 或采样分布；
 - 做 base、active、active+orthogonal 三臂；
 - 先 8×2 dev，再 8×5 P0；不能再把 P0 当作 dev。
+
+
+## 九十六、Active-CMA：失败
+
+对当前代最差样本加入受限负权重，保留其余 CMA 更新。8×2 dev：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 |
+|---|---:|---:|---:|---:|
+| Active / CMA | 2.704 | 0 | 7 | 4.77e17 |
+| Active+Orthogonal / CMA | 2.958 | 1 | 7 | 54.2 |
+
+`STOP_ACTIVE_CMA_DEV`。负权重在当前 CEC2017 问题上破坏了协方差稳定性；不再扫描负权重比例或 active 变体。
+
+## 九十七、采样/更新层收口
+
+已经排除的 CMA 结构包括：
+
+- 独立多生态位、共享协方差多均值；
+- hard/soft/far archive restart；
+- IPOP/current-best restart；
+- λ=100、adaptive λ；
+- sparse CMA；
+- archive covariance；
+- mirrored、orthogonal、active covariance。
+
+当前唯一可信的主核仍是 **CMA50**。如果继续寻找新算法，应转向 **LSHADE-cnEpSin 或 covariance-aware differential evolution** 作为独立强核，而不是在单 CMA 上继续叠加采样补丁。

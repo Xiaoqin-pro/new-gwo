@@ -60,7 +60,12 @@ while info.Evaluations<budget
     hsig=norm(ps)/sqrt(1-(1-cs)^(2*info.Rounds))/chiN < (1.4+2/(D+1));
     pc=(1-cc)*pc+double(hsig)*sqrt(cc*(2-cc)*mueff)*(xmean-xold)/sigma;
     C=(1-c1-cmu)*C+c1*(pc'*pc+double(~hsig)*cc*(2-cc)*C)+cmu*(Y'*diag(w)*Y);
-    C=(C+C')/2;
+    if isfield(state,'cmaActive') && state.cmaActive
+        [~,ow]=sort(vals,'descend'); ma=min(mu,floor(count/2)); wa=log(ma+0.5)-log(1:ma)'; wa=wa/sum(wa);
+        YA=(X(ow(1:ma),:)-repmat(xold,ma,1))/sigma; Ca=YA'*diag(wa)*YA; sc=mean(diag(Ca));
+        if sc>1e-12, C=C-0.05*Ca/(sc+1e-12)*mean(diag(C)); end
+    end
+    C=(C+C')/2; [Ec,Lc]=eig(C); Lc=max(diag(Lc),1e-12); C=Ec*diag(Lc)*Ec'; C=(C+C')/2;
     sigma=sigma*exp((cs/damps)*(norm(ps)/chiN-1));
     sigma=min(max(sigma,1e-10),1e4);
 end
