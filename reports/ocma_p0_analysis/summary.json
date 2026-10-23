@@ -1,0 +1,37 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\ocma_p0_20261023_181307",
+  "comparisons": {
+    "B_A": {
+      "median": 0.9982468732944457,
+      "wins": 4,
+      "cats": 3,
+      "max": 8.0,
+      "worst_f": 1,
+      "p": 0.8125,
+      "ci95": [
+        0.8206491525041596,
+        4.30323808895371
+      ]
+    },
+    "C_A": {
+      "median": 1.075583946023165,
+      "wins": 4,
+      "cats": 3,
+      "max": 8.0,
+      "worst_f": 1,
+      "p": 0.6875,
+      "ci95": [
+        0.9680755106844833,
+        2.0271884497118093
+      ]
+    }
+  },
+  "runtime_B_over_A": 1.0512437225861218,
+  "gate": false,
+  "verdict": "STOP_OCMA_P0",
+  "seconds": {
+    "A-CMA": 3.0400232875,
+    "B-OCMA": 3.1958053975,
+    "C-OMCMA": 3.18049152
+  }
+}

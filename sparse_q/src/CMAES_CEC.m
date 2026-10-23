@@ -28,7 +28,11 @@ if n0<mu, xmean=pop(ord(1),:); end
 info.Evaluations=n0; info.Rounds=0; info.InitialCost=Best.Cost;
 while info.Evaluations<budget
     [B,lam]=eig((C+C')/2); lam=max(diag(lam),1e-14); B=B*diag(sqrt(lam));
-    if isfield(state,'cmaMirror') && state.cmaMirror
+    useOrth=isfield(state,'cmaOrthogonal') && state.cmaOrthogonal;
+    useMir=isfield(state,'cmaMirror') && state.cmaMirror;
+    if useOrth
+        Z=orthogonalDirections(lambda,D,useMir);
+    elseif useMir
         Z=randn(lambda/2,D); Z=[Z;-Z];
     else
         Z=randn(lambda,D);
@@ -66,6 +70,19 @@ info.FinalCMAState=struct('Mean',xmean,'C',C,'Sigma',sigma,'PC',pc,'PS',ps, ...
     'Generation',info.Rounds,'Best',Best,'Evaluations',info.Evaluations);
 end
 
+function Z=orthogonalDirections(lambda,D,mirrorFlag)
+if mirrorFlag
+    Z=orthogonalBlock(lambda/2,D); Z=[Z;-Z];
+else
+    Z=orthogonalBlock(lambda,D);
+end
+end
+function Z=orthogonalBlock(n,D)
+Z=zeros(n,D); filled=0;
+while filled<n
+    [Q,~]=qr(randn(D,D)); take=min(D,n-filled); Z(filled+1:filled+take,:)=sqrt(D)*Q(:,1:take)'; filled=filled+take;
+end
+end
 function X=reflectBounds(X,lb,ub)
 lo=repmat(lb,size(X,1),1); hi=repmat(ub,size(X,1),1);
 for k=1:8
