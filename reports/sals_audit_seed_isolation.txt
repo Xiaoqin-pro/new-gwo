@@ -1,0 +1,5 @@
+SALS P0 audit seed isolation
+seeds: 3434-3438
+scan: all historical runs.csv (new-gwo-g2tr-branch + 拯救G2); SALS has never run anywhere
+result: 0 hits
+status: PASS

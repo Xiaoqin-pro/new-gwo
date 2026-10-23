@@ -1,0 +1,12 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\sals_audit_20261022_200128",
+  "runs": 40,
+  "strat_realised": true,
+  "functions_disp_ratio_ge101": 8,
+  "functions_shift_ge001": 8,
+  "gate_strat": true,
+  "gate_dispersion": true,
+  "gate_shift": true,
+  "gate_pass": true,
+  "verdict": "PROMOTE_SALS_TO_P1"
+}

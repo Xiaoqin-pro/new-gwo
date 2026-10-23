@@ -99,6 +99,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_DLH.m'),'file')
     h.SGWO_DLH=fileSha256(fullfile(sqRoot,'src','SGWO_DLH.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_SALS.m'),'file')
+    h.SGWO_SALS=fileSha256(fullfile(sqRoot,'src','SGWO_SALS.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end

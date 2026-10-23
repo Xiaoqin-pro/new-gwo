@@ -1,0 +1,5 @@
+SALS P1 seed isolation
+seeds: 3439-3448
+scan: all historical runs.csv (new-gwo-g2tr-branch + 拯救G2); SALS arms never ran on these seeds
+result: 0 hits
+status: PASS
