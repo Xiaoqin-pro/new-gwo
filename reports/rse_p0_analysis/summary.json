@@ -1,0 +1,24 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\rse_p0_20261023_101918",
+  "B_A": {
+    "median": 1.0382322703844693,
+    "wins": 4,
+    "cats": 2,
+    "max": 1.512199587298588
+  },
+  "C_A": {
+    "median": 1.0680055142784903,
+    "wins": 4,
+    "cats": 2,
+    "max": 1.8503385956651375
+  },
+  "B_C": {
+    "median": 1.004620703211193,
+    "wins": 4,
+    "cats": 1,
+    "max": 1.3411258497249459
+  },
+  "gate_BA": false,
+  "gate_BC": false,
+  "verdict": "STOP_RSE_P0"
+}
