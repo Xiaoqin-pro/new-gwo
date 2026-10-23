@@ -150,6 +150,12 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_RSE.m'),'file')
     h.SGWO_RSE=fileSha256(fullfile(sqRoot,'src','SGWO_RSE.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_AGLM.m'),'file')
+    h.SGWO_AGLM=fileSha256(fullfile(sqRoot,'src','SGWO_AGLM.m'));
+end
+if exist(fullfile(sqRoot,'src','SGWO_HDR.m'),'file')
+    h.SGWO_HDR=fileSha256(fullfile(sqRoot,'src','SGWO_HDR.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end
