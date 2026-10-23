@@ -10,11 +10,14 @@ damps=1+2*max(0,sqrt((mueff-1)/(D+1))-1)+cs;
 chiN=sqrt(D)*(1-1/(4*D)+1/(21*D^2));
 xmean=state.cmaState.Mean; C=state.cmaState.C; sigma=state.cmaState.Sigma;
 pc=state.cmaState.PC; ps=state.cmaState.PS; Best=state.cmaState.Best;
-gen0=state.cmaState.Generation; evals=0; T=nan(budget,1);
+gen0=state.cmaState.Generation; evals=0; T=nan(budget,1); firstBlock=true;
 while evals<budget
     [B,lam]=eig((C+C')/2); lam=max(diag(lam),1e-14); B=B*diag(sqrt(lam));
     Z=randn(lambda,D); X=repmat(xmean,lambda,1)+sigma*(Z*B');
-    X=reflectBounds(X,lb,ub);
+    if firstBlock && isfield(state,'cmaInject') && ~isempty(state.cmaInject)
+        inj=state.cmaInject; ni=min(size(inj,1),size(X,1)); X(1:ni,:)=inj(1:ni,:);
+    end
+    X=reflectBounds(X,lb,ub); firstBlock=false;
     count=min(lambda,budget-evals); X=X(1:count,:); vals=zeros(count,1);
     for i=1:count
         vals(i)=f(X(i,:)); evals=evals+1; Best=UpdateBest(Best,X(i,:),vals(i)); T(evals)=Best.Cost;

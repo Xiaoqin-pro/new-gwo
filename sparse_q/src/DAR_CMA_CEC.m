@@ -3,6 +3,7 @@ function [Best,T,info]=DAR_CMA_CEC(f,state,~,N,seed)
 budget=state.maxEvaluations; block=max(2*N,round(0.20*budget)); tol=5e-4;
 if isfield(state,'darTol') && ~isempty(state.darTol), tol=state.darTol; end
 forceRestart=false; if isfield(state,'darForceRestart') && ~isempty(state.darForceRestart), forceRestart=logical(state.darForceRestart); end
+soft=false; if isfield(state,'darSoft') && ~isempty(state.darSoft), soft=logical(state.darSoft); end
 used=0; Tparts=cell(0,1); archiveX=zeros(0,size(state.initialPopulation,2)); archiveF=zeros(0,1);
 s=state; s.maxEvaluations=min(block,budget); [Best,Tb,ib]=CMAES_CEC(f,s,[],N,seed+111111);
 Tparts{end+1}=Tb; used=used+ib.Evaluations; cmaState=ib.FinalCMAState; [archiveX,archiveF]=addArchive(archiveX,archiveF,Best.Vector,Best.Cost);
@@ -13,9 +14,15 @@ while used<budget
     doRestart=forceRestart || rel<tol;
     if doRestart
         base=chooseArchive(archiveX,archiveF,Best.Vector);
-        X=makeRestartPool(base,N,state.lowerBound,state.upperBound);
-        s=state; s.maxEvaluations=b; s.initialPopulation=X;
-        [B,Tb,ib]=CMAES_CEC(f,s,[],N,seed+333333+used);
+        if soft
+            inj=makeInjection(base,max(2,round(0.10*N)),state.lowerBound,state.upperBound);
+            s=state; s.maxEvaluations=b; s.cmaState=cmaState; s.cmaInject=inj;
+            [B,Tb,ib]=CMAES_RESUME(f,s,[],N,seed+333333+used);
+        else
+            X=makeRestartPool(base,N,state.lowerBound,state.upperBound);
+            s=state; s.maxEvaluations=b; s.initialPopulation=X;
+            [B,Tb,ib]=CMAES_CEC(f,s,[],N,seed+333333+used);
+        end
         restarts=restarts+1; triggerFE(end+1,1)=used; %#ok<AGROW>
     else
         s=state; s.maxEvaluations=b; s.cmaState=cmaState;
@@ -29,7 +36,7 @@ end
 T=zeros(0,1); for k=1:numel(Tparts), T=[T;Tparts{k}(:)]; end %#ok<AGROW>
 T=min(T,Best.Cost); T=cummin(T); if numel(T)>budget,T=T(1:budget); elseif numel(T)<budget,T(end+1:budget)=T(end); end; T(end)=Best.Cost;
 info.Algorithm='DAR-CMA'; info.Evaluations=budget; info.Rounds=used; info.Restarts=restarts;
-info.TriggerFE=triggerFE; info.ArchiveSize=size(archiveX,1); info.Tol=tol; info.BlockFE=block; info.FinalCMAState=cmaState;
+info.TriggerFE=triggerFE; info.ArchiveSize=size(archiveX,1); info.Tol=tol; info.BlockFE=block; info.Soft=double(soft); info.FinalCMAState=cmaState;
 end
 function [X,F]=addArchive(X,F,x,v)
 cap=20;
@@ -45,6 +52,10 @@ function base=chooseArchive(X,F,best)
 if isempty(X), base=best; return; end
 [~,ord]=sort(F); top=ord(1:min(numel(ord),max(2,ceil(0.5*numel(ord)))));
 d=sqrt(sum((X(top,:)-repmat(best,numel(top),1)).^2,2)); [~,i]=max(d); base=X(top(i),:);
+end
+function X=makeInjection(base,n,lb,ub)
+D=numel(base); G=base+20*randn(n,D); U=-100+200*rand(n,D); X=[G(1:ceil(n/2),:);U(1:floor(n/2),:)];
+lo=repmat(lb,size(X,1),1); hi=repmat(ub,size(X,1),1); X=max(min(X,hi),lo);
 end
 function X=makeRestartPool(base,N,lb,ub)
 D=numel(base); nmax=max(2,round(0.5*N)); G=base+20*randn(nmax,D);
