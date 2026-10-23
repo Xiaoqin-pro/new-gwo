@@ -165,6 +165,12 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_CSS.m'),'file')
     h.SGWO_CSS=fileSha256(fullfile(sqRoot,'src','SGWO_CSS.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_GHS.m'),'file')
+    h.SGWO_GHS=fileSha256(fullfile(sqRoot,'src','SGWO_GHS.m'));
+end
+if exist(fullfile(sqRoot,'src','SGWO_DWG.m'),'file')
+    h.SGWO_DWG=fileSha256(fullfile(sqRoot,'src','SGWO_DWG.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end

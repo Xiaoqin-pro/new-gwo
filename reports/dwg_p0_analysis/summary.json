@@ -1,0 +1,10 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\dwg_p0_20261023_124422",
+  "median": 1.1270392324239047,
+  "wins": 4,
+  "cats": 4,
+  "max": 9.71078588527918,
+  "worst_f": 30,
+  "gate": false,
+  "verdict": "STOP_DWG_P0"
+}

@@ -1,0 +1,10 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\ghs_late_p0_20261023_130218",
+  "median": 0.9992562510928442,
+  "wins": 4,
+  "cats": 2,
+  "max": 3.117280824552815,
+  "worst_f": 7,
+  "gate": false,
+  "verdict": "STOP_GHS_LATE_P0"
+}
