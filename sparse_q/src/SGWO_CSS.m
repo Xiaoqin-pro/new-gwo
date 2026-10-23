@@ -77,7 +77,7 @@ opt=struct( ...
     'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'ablateG2',0, 'ablateE',0, 'alphaSingleE',0, 'sigmaFixFrac',0, ...  % 消融开关（默认全关 = 冻结行为）
     'farReserve',0, 'farMinDist',0.15, 'farE',0, ...
-    'cssMode','off', 'cssN',20, 'cssDims',15, 'cssPhaseFrac',1.0);
+    'cssMode','off', 'cssN',20, 'cssDims',15, 'cssPhaseFrac',1.0, 'cssSelect','first');
 fn=fieldnames(state);
 for k=1:numel(fn)
     if isfield(opt,fn{k}) && ~isempty(state.(fn{k}))
@@ -93,6 +93,7 @@ end
 assert(opt.succSteer>=0 && opt.succSteer<=1,'succSteer out of range.');
 assert(any(strcmpi(opt.cssMode,{'off','on'})),'Unknown cssMode.');
 assert(opt.cssN>=0 && opt.cssN<=N && opt.cssDims>=1 && opt.cssPhaseFrac>0 && opt.cssPhaseFrac<=1,'Invalid CSS settings.');
+assert(any(strcmpi(opt.cssSelect,{'first','elite'})),'Unknown cssSelect.');
 if ~strcmpi(opt.cssMode,'off'), assert(strcmpi(opt.steerMode,'perwolf'),'CSS requires steerMode=perwolf.'); end
 isRandDir=strcmp(opt.sdirSource,'random');
 recG1 = ~strcmp(opt.sdirSource,'g2e') && ~isRandDir;
@@ -223,6 +224,15 @@ while fe<budget
         stjGateNow=(fe-lastGB)>=stjTau;
         if stjGateNow, stjGateGens=stjGateGens+1; end
     end
+    if cssOn
+        if strcmpi(opt.cssSelect,'elite')
+            [~,ordCss]=sort(fv); cssSet=ordCss(1:min(opt.cssN,N));
+        else
+            cssSet=1:opt.cssN;
+        end
+    else
+        cssSet=[];
+    end
     if any(strcmpi(opt.steerMode,{'vec','rand','dir'}))   % 'perwolf' 走冻结逐狼路径（与 SGWO_ABLATION 逐位一致）
         % ---- G1（向量化扰动版；none 仍走冻结逐狼路径） ----
         A1m=2*aA*rand(N,D)-aA; C1m=2*rand(N,D);
@@ -255,7 +265,7 @@ while fe<budget
     else
     for i=1:N     % G1
         m=m+1;
-        isSub=cssOn && i<=opt.cssN && fe<round(opt.cssPhaseFrac*budget);
+        isSub=cssOn && any(cssSet==i) && fe<round(opt.cssPhaseFrac*budget);
         if isSub
             subDims=randperm(sAux,D,opt.cssDims);
             subKeep=true(1,D); subKeep(subDims)=false;
@@ -501,7 +511,7 @@ end
 % ==================== 输出 ====================
 Best=struct('Cost',Alpha.Cost,'Vector',Alpha.Vector);
 info=baseInfo(fe,rounds,T,clockStart,opt);
-info.CssMode=opt.cssMode; info.CssN=opt.cssN; info.CssDims=opt.cssDims; info.CssPhaseFrac=opt.cssPhaseFrac; info.CssApplied=cssApplied;
+info.CssMode=opt.cssMode; info.CssN=opt.cssN; info.CssDims=opt.cssDims; info.CssPhaseFrac=opt.cssPhaseFrac; info.CssSelect=opt.cssSelect; info.CssApplied=cssApplied;
 info.QuotaTrace=qTrace;
 info.QTable=Q;
 info.QActionCounts=qActCount;
