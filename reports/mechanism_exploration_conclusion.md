@@ -851,4 +851,15 @@ E-STEER 批次的有效性检查暴露了一个更重要的风险：**冻结终�
 - 与 E 非加性（E 关时 STEER 效应更大：0.674、28/29）必须如实写为限制；
 - D=100 主表尚无 STEER 臂（`d100_formal_20261018` 的 VAST-GWO 为 G1+E），若正文改用 G1+E+STEER，
   需补一批 D=100 的 STEER 臂（29 函数 × 30 种子 ≈ 870 次，约 25–30 分钟）。
+### 实现一致性检查（新增，2026-10-22 深夜）
+
+论文/应用目前使用的冻结实现 `sparse_q/src/SGWO.m` 与承载全部 STEER 证据的实现 `SGWO_STEER3` **不是逐位等价的**：
+同一单元（F7, seed 3986+1e6, D=30, 3k FE, succSteer=0.5）下
+`SGWO.m` = 968.619 vs `SGWO_STEER3`(perwolf/random) = 972.853，Trace 不同。
+同时 `sparse_q/app_uav3d/uav_run_one.m` 的 `VAST-GWO` 分支目前是 `nG2=12`（G2 开）+ 无 STEER。
+
+因此若正文改用 G1+E+STEER，**必须先把"证据实现"与"发布实现"统一**：
+1. 论文方法以 `SGWO_STEER3`（`steerMode='perwolf'`、`sdirSource='random'`、`succSteer=0.5`、`steerLambda=0.5`、`ablateG2=1`、`nE=38`）为准；
+2. 或把该语义移植进 `SGWO.m` 并逐位验证（当前不等价，不能直接混用）；
+3. UAV 应用与 D=100 表同样要以统一后的实现重跑（D=100 目前只有 G1+G2+E 的 VAST-GWO 臂）。
 
