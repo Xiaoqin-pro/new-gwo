@@ -1569,3 +1569,27 @@ Asymmetric Pilot 在 CMA 胜者上从 pilot 协方差续跑、LSHADE 胜者重�
 4. 不在正常阶段替换 CMA 的搜索轨迹，也不把 LSHADE 的缩小种群硬塞进来；
 5. 消融：CMA base、CMA + uniform restart、CMA + archive restart、CMA + archive restart + stagnation trigger；
 6. 先 8×5 P0，确认 F13/F30 改善且 F1/F4/F7 不退化，再 P1。
+
+
+## 七十四、DAR-CMA 硬重启：dev 失败
+
+在 CMA 的 20k 平台上，从已验证的“离当前 best 最远精英”重建初始种群并重置 CMA。8 函数 × 2 种子 dev：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 | 时间 |
+|---|---:|---:|---:|---:|---:|
+| DAR-CMA / CMA | 2.877 | 3 | 4 | 4.44e16 | 1.02× |
+
+F1、F13、F30 被明显破坏。**STOP_DAR_HARD_RESTART_DEV**：硬重置 CMA 会把已经收敛的强核打回随机起点，不能作为主机制。
+
+## 七十五、下一候选：ASR-CMA（Archive-guided Soft Restart）
+
+硬重启失败后的唯一合理修正不是继续换核，而是**软重启**：
+
+- 保留 CMA 的 `mean/C/sigma/pc/ps`；
+- 只在平台期从 VNB 中选一个已验证的远精英；
+- 用少量（例如 10–20%）的下一代采样替换为该精英周围的局部样本，或把 mean 向它移动一个小的 `eta`；
+- 不重置协方差，不重跑 CMA，不把 LSHADE 的种群注入；
+- 消融：CMA base、硬重启、uniform 注入、archive 注入；
+- 先 8×5 P0，只有 F13/F30 改善且 F1/F4/F7 不退化才允许 P1。
+
+这条线的关键是“保持强核，只增加少量新信息”，而不是再次用平台期做出激烈结构切换。
