@@ -1,0 +1,23 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\mse_confirm_20261022_233917",
+  "base_batch": "steer_robust_20261022_213856",
+  "base_arm": "A-Final-SteerOn",
+  "new_arm": "B-MSE-Mix",
+  "n_pairs": 870,
+  "median": 1.0086098755487898,
+  "wins": 11,
+  "losses": 18,
+  "cats": 0,
+  "max_ratio": 1.1895174267382638,
+  "min_ratio": 0.7387875682340119,
+  "worst_f": 19,
+  "best_f": 9,
+  "wilcoxon_p": 0.8815100230276585,
+  "ci95": [
+    0.9696502373426528,
+    1.022673773308363
+  ],
+  "runtime_B_over_A": 0.982053910675125,
+  "H_pass": false,
+  "verdict": "STOP_MSE_CONFIRMED"
+}
