@@ -1,0 +1,12 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\gaas_p0_20261023_084008",
+  "branch_gate": 8,
+  "gate_required": 6,
+  "performance": {
+    "median": 1.06207536569827,
+    "wins": 3,
+    "cats": 0,
+    "max": 1.1738605901970047
+  },
+  "verdict": "PROMOTE_GAAS_TO_P1"
+}
