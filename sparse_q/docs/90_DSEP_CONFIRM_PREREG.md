@@ -1,6 +1,6 @@
 # 90. DSEP（自适应分离尺）确认级预注册
 
-日期：2026-10-23　状态：**运行前冻结**
+日期：2026-10-23　状态：**确认完成；按门槛 STOP（强 near-miss）**
 
 ## 1. 前提（现有数据，零成本）
 
@@ -39,3 +39,13 @@
 ## 5. 记录
 
 `reports/dsep_confirm_analysis/`；结论追加小节；registry 一行。
+
+## 6. 运行后结果（2026-10-23）
+
+- 批次：`dsep_confirm_20261023_070454`，1740/1740 ok，0 failed；
+- B(pop)/A：0.9812，23/29 胜，0 个 >1.20，p=0.00055；比 0.98 门槛高 0.0012；
+- C(half)/A：0.9925，18/29 胜，0 个 >1.20；
+- B/C：0.9789，25/29 胜，0 个 >1.20，p=1.0e-05；
+- 判定：**STOP_DSEP_CONFIRM**（预注册门槛未过；不得事后改门槛）。
+
+完整结果见 `reports/dsep_confirm_analysis/report.md`，结论见 `reports/mechanism_exploration_conclusion.md` 第四十六节。

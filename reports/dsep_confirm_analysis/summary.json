@@ -1,0 +1,65 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\dsep_confirm_20261023_070454",
+  "base_batch": "steer_robust_20261022_213856",
+  "base_arm": "A-Final-SteerOn",
+  "B_A": {
+    "median": 0.9812462848474056,
+    "wins": 23,
+    "cats": 0,
+    "max_ratio": 1.0328327838710623,
+    "min_ratio": 0.29793521974348913,
+    "worst_f": 13,
+    "wilcoxon_p": 0.0005505755543708801,
+    "ci95": [
+      0.9393158892272374,
+      0.9933245799921573
+    ]
+  },
+  "C_A": {
+    "median": 0.9924625153176411,
+    "wins": 18,
+    "cats": 0,
+    "max_ratio": 1.1078580069711876,
+    "min_ratio": 0.6714655477701386,
+    "worst_f": 1,
+    "wilcoxon_p": 0.05919632688164711,
+    "ci95": [
+      0.9669197371036102,
+      1.002597864109367
+    ]
+  },
+  "B_C": {
+    "median": 0.978900520167155,
+    "wins": 25,
+    "cats": 0,
+    "max_ratio": 1.0287019954492527,
+    "min_ratio": 0.7446534261165241,
+    "worst_f": 1,
+    "wilcoxon_p": 1.0278075933456421e-05,
+    "ci95": [
+      0.9656382456198946,
+      0.9961655639272586
+    ]
+  },
+  "runtime": {
+    "B": 0.9606377349579897,
+    "C": 0.9476123129308508
+  },
+  "births": {
+    "B-DSEP-Pop": 24.0,
+    "C-DSEP-Half": 24.0
+  },
+  "span_median": {
+    "DSepSpanMean": {
+      "B-DSEP-Pop": 123.24795081043,
+      "C-DSEP-Half": 707.106781186536
+    },
+    "DSepSpanLast": {
+      "B-DSEP-Pop": 0.369859749011759,
+      "C-DSEP-Half": 707.106781186548
+    }
+  },
+  "gate_BA": false,
+  "gate_BC": true,
+  "verdict": "STOP_DSEP_CONFIRM"
+}

@@ -52,14 +52,19 @@ def main():
     gBC = bool(S['B/C']['median'] <= 0.98 and S['B/C']['wins'] >= 18)
     verdict = 'PROMOTE_DSEP' if (gBA and gBC) else ('DSEP_UNATTRIBUTED' if gBA else 'STOP_DSEP_CONFIRM')
     births = df.groupby('Algorithm').DSepBirth.mean().to_dict()
+    spans = df.groupby('Algorithm')[['DSepSpanMean', 'DSepSpanLast']].median().to_dict()
     out = dict(results_dir=str(p), base_batch=BASE_BATCH, base_arm=BASE_ARM,
                **{k.replace('/', '_'): {kk: vv for kk, vv in v.items() if kk != 'per'} for k, v in S.items()},
-               runtime=dict(B=rtB, C=rtC), births=births, gate_BA=gBA, gate_BC=gBC, verdict=verdict)
+               runtime=dict(B=rtB, C=rtC), births=births, span_median=spans,
+               gate_BA=gBA, gate_BC=gBC, verdict=verdict)
     (rep / 'summary.json').write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8')
     pd.DataFrame({k: v['per'] for k, v in S.items()}).to_csv(rep / 'per_function_ratio.csv')
     lines = ['# DSEP 确认级结果（自适应分离尺 vs 常数半尺对照；29 函数 × 30 种子 3459–3488）', '',
              f'- 结果目录：`{p}`（{len(df)} 次运行，0 失败）',
-             f'- 冻结臂（复用）：`{BASE_BATCH}` / `{BASE_ARM}`；新中心出生数：pop {births.get(B_ARM,float("nan")):.0f} / half {births.get(C_ARM,float("nan")):.0f}', '',
+             f'- 冻结臂（复用）：`{BASE_BATCH}` / `{BASE_ARM}`',
+             f'- 过程指标（中位）：pop 的平均/末期分离尺 {spans["DSepSpanMean"][B_ARM]:.1f} / {spans["DSepSpanLast"][B_ARM]:.1f}；'
+             f'half 为 {spans["DSepSpanMean"][C_ARM]:.1f} / {spans["DSepSpanLast"][C_ARM]:.1f}。'
+             f'新中心出生数 pop {births.get(B_ARM,float("nan")):.0f} / half {births.get(C_ARM,float("nan")):.0f}（受 archiveCap=24 截断，不能单独解释为出生时机不变）', '',
              '| 对比 | 中位比 | 胜/29 | >1.20 | 最大 | 最差函数 | p | 95% CI | 时间比 |', '|---|---:|---:|---:|---:|---:|---:|---:|---:|']
     for lab, key in [('B 自适应 / A', 'B'), ('C 常数半尺 / A', 'C')]:
         s = S['B/A'] if key == 'B' else S['C/A']; rt = rtB if key == 'B' else rtC
