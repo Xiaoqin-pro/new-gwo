@@ -1,0 +1,102 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\slshade_p0_20261023_140927",
+  "comparisons": {
+    "D_A": {
+      "median": 1.1912216351136462,
+      "wins": 3,
+      "cats": 3,
+      "max": 1.6335932587723847,
+      "worst_f": 7,
+      "p": 0.84375,
+      "ci95": [
+        0.22925636442263508,
+        1.4922448221986833
+      ]
+    },
+    "D_B": {
+      "median": 1.1634228488978908,
+      "wins": 2,
+      "cats": 2,
+      "max": 1.3670726167299958,
+      "worst_f": 20,
+      "p": 0.25,
+      "ci95": [
+        0.9721366155529746,
+        1.2965650771288757
+      ]
+    },
+    "D_C": {
+      "median": 0.9987953853096914,
+      "wins": 4,
+      "cats": 1,
+      "max": 1.5273094990875526,
+      "worst_f": 4,
+      "p": 0.546875,
+      "ci95": [
+        0.2236984769822405,
+        1.1243024432445403
+      ]
+    },
+    "B_A": {
+      "median": 1.2313591108581736,
+      "wins": 1,
+      "cats": 4,
+      "max": 1.6440826446438699,
+      "worst_f": 1,
+      "p": 0.1953125,
+      "ci95": [
+        1.1037644908362882,
+        1.5780815367371115
+      ]
+    },
+    "C_A": {
+      "median": 1.2339792814151092,
+      "wins": 1,
+      "cats": 4,
+      "max": 40.92676124050803,
+      "worst_f": 1,
+      "p": 0.0390625,
+      "ci95": [
+        1.0086215954774116,
+        2.666884609842439
+      ]
+    }
+  },
+  "runtime_D_over_A": 2.140407213633974,
+  "gate": false,
+  "verdict": "STOP_SLSHADE_P0",
+  "diagnostics": {
+    "A-Dense": {
+      "seconds_mean": 2.701009515,
+      "rounds_mean": 5500.0,
+      "generated_mean": 99952.0,
+      "selected_mean": 99952.0,
+      "near_mean": 0.0,
+      "far_mean": 0.0
+    },
+    "B-RandomK": {
+      "seconds_mean": 3.2742318050000003,
+      "rounds_mean": 10692.0,
+      "generated_mean": 273686.0,
+      "selected_mean": 99952.0,
+      "near_mean": 0.0,
+      "far_mean": 0.0
+    },
+    "C-NearK": {
+      "seconds_mean": 3.23492698,
+      "rounds_mean": 10692.0,
+      "generated_mean": 273686.0,
+      "selected_mean": 99952.0,
+      "near_mean": 99952.0,
+      "far_mean": 0.0
+    },
+    "D-DualK": {
+      "seconds_mean": 5.78126025,
+      "rounds_mean": 10692.0,
+      "generated_mean": 273686.0,
+      "selected_mean": 99952.0,
+      "near_mean": 50469.0,
+      "far_mean": 49483.0
+    }
+  }
+}

@@ -129,6 +129,8 @@ function [Best,T,info] = LSHADE_CEC(f,state,~,Particle_Number,seed)
     info.Seed=seed;
     info.MemoryF=memoryF;
     info.MemoryCR=memoryCR;
+    info.FinalMemoryF=memoryF; info.FinalMemoryCR=memoryCR; info.FinalMemoryPos=memoryPos;
+    info.FinalBest=Best;
     info.FinalPopulationSize=sizepop;
     info.FinalPopulation=pop; info.FinalFitness=fitness; info.FinalArchive=archive;
     info.Seconds=toc(clockStart);

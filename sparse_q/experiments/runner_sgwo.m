@@ -36,6 +36,7 @@ if isfield(job,'state') && ~isempty(job.state)
         if ~isempty(job.state.(fn{k})), state.(fn{k})=job.state.(fn{k}); end
     end
 end
+if isfield(job,'fid'), state.functionID=job.fid; end
 
 useProbe=true; if isfield(job,'useProbe'), useProbe=logical(job.useProbe); end
 probe=[]; fraw=@(x)CEC2017Function(x,fid);
@@ -131,6 +132,30 @@ switch job.algorithm
         [Best,T,info]=SGWO_DWG(f,state,[],N,job.seedSearch);
     case 'LSHADE'
         [Best,T,info]=LSHADE_CEC(f,state,[],N,job.seedSearch);
+    case 'NELSHADE'
+        [Best,T,info]=NELSHADE(f,state,[],N,job.seedSearch);
+    case 'NMLSHADE'
+        [Best,T,info]=NMLSHADE(f,state,[],N,job.seedSearch);
+    case 'SLSHADE'
+        [Best,T,info]=SLSHADE(f,state,[],N,job.seedSearch);
+    case 'ASLSHADE'
+        [Best,T,info]=ASLSHADE(f,state,[],N,job.seedSearch);
+    case 'CMAES'
+        [Best,T,info]=CMAES_CEC(f,state,[],N,job.seedSearch);
+    case 'PORTFOLIO'
+        [Best,T,info]=PORTFOLIO_CEC(f,state,[],N,job.seedSearch);
+    case 'PILOT'
+        [Best,T,info]=PILOT_CEC(f,state,[],N,job.seedSearch);
+    case 'PILOT_RESUME'
+        [Best,T,info]=PILOT_RESUME_CEC(f,state,[],N,job.seedSearch);
+    case 'PILOT_ASYM'
+        [Best,T,info]=PILOT_ASYM_CEC(f,state,[],N,job.seedSearch);
+    case 'CMA_LS'
+        [Best,T,info]=CMA_LS_CEC(f,state,[],N,job.seedSearch);
+    case 'CMA2'
+        [Best,T,info]=CMA2_CEC(f,state,[],N,job.seedSearch);
+    case 'ADAPT_CORE'
+        [Best,T,info]=ADAPT_CORE_CEC(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID'
         [Best,T,info]=SGWO_HYBRID(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID2'
@@ -266,6 +291,15 @@ S=struct('K',NaN,'NCandidateGenerated',NaN,'NDistanceOps',NaN,'NArchiveInserts',
     'PcssRandBetter',NaN,'PcssRandRate',NaN,'PcssFallbackGens',NaN,'PcssGuidedGens',NaN, ...
     'RgiRestarts',NaN,'RgiEvaluatedRestarts',NaN,'RgiRestartRate',NaN,'RgiTrace',[], ...
     'RewardMean',NaN,'GBWindowPct',NaN,'QTable',nan(6,3),'QActionCounts',nan(1,3),'QStateVisits',nan(1,6));
+S.EcoMode=""; S.EcoOn=NaN; S.EcoAdaptive=NaN; S.EcoNicheBankSize=NaN; S.EcoNicheBankMax=NaN;
+S.MigMode=""; S.MigOn=NaN; S.MigPeriodic=NaN; S.MigBankSize=NaN; S.MigBankMax=NaN; S.MigHistSize=NaN; S.MigProgressWindow=NaN; S.MigPlateauTol=NaN; S.MigPeriodicEvery=NaN; S.MigFrac=NaN; S.MigTriggers=NaN; S.MigRounds=NaN; S.MigMigrants=NaN; S.MigBetter=NaN;
+S.ScreenPolicy=""; S.SparseK=NaN; S.ScreenNearFrac=NaN; S.TrialsGenerated=NaN; S.TrialsSelected=NaN; S.NearSelected=NaN; S.FarSelected=NaN;
+S.ScreenMode=""; S.KWindow=NaN; S.K10Count=NaN; S.K25Count=NaN; S.K50Count=NaN; S.K10MeanReward=NaN; S.K25MeanReward=NaN; S.K50MeanReward=NaN;
+S.PilotRule=""; S.Winner=""; S.PilotFE=NaN; S.FinalFE=NaN; S.CMAESPilot=NaN; S.LSHADEPilot=NaN; S.PilotInitialBest=NaN; S.PilotCMARel=NaN; S.PilotLSRel=NaN; S.FinalCoreCost=NaN; S.PilotBest=NaN;
+S.AdaptSwitched=NaN; S.AdaptSwitchFE=NaN; S.AdaptBlockFE=NaN; S.AdaptTol=NaN; S.AdaptFirstCMA=NaN;
+S.EcoNicheAdmits=NaN; S.EcoNicheReplaces=NaN; S.EcoBankEval=NaN; S.EcoGens=NaN; S.EcoStagGens=NaN;
+S.EcoNicheSrcGen=NaN; S.EcoNicheEval=NaN; S.EcoBaseEval=NaN; S.EcoNicheSuccess=NaN; S.EcoBaseSuccess=NaN;
+S.EcoNicheEvalRate=NaN; S.EcoNicheSuccessRate=NaN; S.EcoBaseSuccessRate=NaN; S.EcoPFinal=NaN; S.EcoPMean=NaN; S.EcoPMax=NaN;
 if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info 里也有 K，不能用作守卫）
     qt=info.QuotaTrace;
     S.K=info.K;
@@ -312,6 +346,8 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
         'DrgMode','DrgExploreN','DrgApplied', ...
         'CssMode','CssN','CssDims','CssPhaseFrac','CssSelect','CssApplied', ...
         'HybMode','HybN','ShadeApplied','ShadeSuccess','ShadeArchiveSize', ...
+        'EcoMode','EcoOn','EcoAdaptive','EcoNicheBankSize','EcoNicheBankMax','EcoNicheAdmits','EcoNicheReplaces','EcoBankEval','EcoGens','EcoStagGens', ...
+        'EcoNicheSrcGen','EcoNicheEval','EcoBaseEval','EcoNicheSuccess','EcoBaseSuccess','EcoNicheEvalRate','EcoNicheSuccessRate','EcoBaseSuccessRate','EcoPFinal','EcoPMean','EcoPMax', ...
         'DwgMode','DwgN1','DwgApplied','DwgSuccess', ...
         'DsAuditOn','DaArcImpCnt','DaArcGapMax','DaDualFE','DaFirstDualFE','DaTau', ...
         'DseOn','DseMode','DseRho','DseTau','DseCap','DseGateGens','DseUsed','DseUsedFrac','DseFirstFE','DsePopAcc','DseArcAcc','DsePopAccRate','DseArcAccRate', ...
@@ -332,6 +368,38 @@ if isfield(info,'QuotaTrace')   % 仅 SGWO 系列具备该字段（IGWO 的 info
         S.RewardMean=mean(qt(:,5));
         S.GBWindowPct=mean(qt(:,6)>0);
     end
+end
+
+ecoNames={'EcoMode','EcoOn','EcoAdaptive','EcoNicheBankSize','EcoNicheBankMax','EcoNicheAdmits','EcoNicheReplaces','EcoBankEval','EcoGens','EcoStagGens','EcoNicheSrcGen','EcoNicheEval','EcoBaseEval','EcoNicheSuccess','EcoBaseSuccess','EcoNicheEvalRate','EcoNicheSuccessRate','EcoBaseSuccessRate','EcoPFinal','EcoPMean','EcoPMax'};
+for ii=1:numel(ecoNames)
+    if isfield(info,ecoNames{ii}), S.(ecoNames{ii})=info.(ecoNames{ii}); end
+end
+
+migNames={'MigMode','MigOn','MigPeriodic','MigBankSize','MigBankMax','MigHistSize','MigProgressWindow','MigPlateauTol','MigPeriodicEvery','MigFrac','MigTriggers','MigRounds','MigMigrants','MigBetter'};
+for ii=1:numel(migNames)
+    if isfield(info,migNames{ii}), S.(migNames{ii})=info.(migNames{ii}); end
+end
+
+sNames={'ScreenPolicy','SparseK','ScreenNearFrac','TrialsGenerated','TrialsSelected','NearSelected','FarSelected'};
+for ii=1:numel(sNames)
+    if isfield(info,sNames{ii}), S.(sNames{ii})=info.(sNames{ii}); end
+end
+pNames={'PilotRule','Winner','PilotFE','FinalFE','CMAESPilot','LSHADEPilot','PilotInitialBest','PilotCMARel','PilotLSRel','FinalCoreCost','PilotBest'};
+aNames={'Switched','SwitchFE','BlockFE','StagnationTol','FirstCMA'};
+for ii=1:numel(aNames)
+    if isfield(info,aNames{ii}), S.(['Adapt' aNames{ii}])=info.(aNames{ii}); end
+end
+for ii=1:numel(pNames)
+    if isfield(info,pNames{ii}), S.(pNames{ii})=info.(pNames{ii}); end
+end
+if isfield(info,'KChoices')
+    kc=info.KChoices(:)';
+    for qi=1:min(3,numel(kc))
+        nm=sprintf('K%d',kc(qi));
+        if isfield(info,'KCounts') && qi<=numel(info.KCounts), S.([nm 'Count'])=info.KCounts(qi); end
+        if isfield(info,'KMeanReward') && qi<=numel(info.KMeanReward), S.([nm 'MeanReward'])=info.KMeanReward(qi); end
+    end
+    S.KWindow=info.KWindow; S.ScreenMode=info.ScreenMode;
 end
 
 if isfield(job,'label') && ~isempty(job.label), label=job.label; else, label=job.algorithm; end

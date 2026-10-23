@@ -14,7 +14,11 @@ end
 T=nan(budget,1); if budget>0, T(1)=Best.Cost; end
 info.Evaluations=0; info.Algorithm='LSHADE-RESUME'; info.Rounds=0;
 info.PopulationHistory=sizepop; info.ArchiveSizeHistory=0; info.InitialCost=Best.Cost;
-memoryF=0.5*ones(5,1); memoryCR=0.5*ones(5,1); memoryPos=1;
+memorySize=5; if isfield(state,'initialMemoryF') && ~isempty(state.initialMemoryF), memorySize=numel(state.initialMemoryF); end
+memoryF=0.5*ones(memorySize,1); memoryCR=0.5*ones(memorySize,1); memoryPos=1;
+if isfield(state,'initialMemoryF') && ~isempty(state.initialMemoryF), memoryF=state.initialMemoryF; end
+if isfield(state,'initialMemoryCR') && ~isempty(state.initialMemoryCR), memoryCR=state.initialMemoryCR; end
+if isfield(state,'initialMemoryPos') && ~isempty(state.initialMemoryPos), memoryPos=state.initialMemoryPos; end
 archive=zeros(0,D);
 if isfield(state,'initialArchive') && ~isempty(state.initialArchive), archive=state.initialArchive; end
 archiveCapacity=round(1.4*sizepop);
@@ -22,7 +26,7 @@ if size(archive,1)>archiveCapacity, archive=archive(randperm(size(archive,1),arc
 while info.Evaluations<budget
     info.Rounds=info.Rounds+1;
     [~,order]=sort(fitness);
-    memoryIndex=ceil(5*rand(sizepop,1)); muF=memoryF(memoryIndex); muCR=memoryCR(memoryIndex);
+    memoryIndex=ceil(memorySize*rand(sizepop,1)); muF=memoryF(memoryIndex); muCR=memoryCR(memoryIndex);
     CR=muCR+0.1*randn(sizepop,1); CR(max(muCR,0)==0)=0; CR=max(0,min(1,CR));
     F=muF+0.1*tan(pi*(rand(sizepop,1)-0.5)); bad=find(F<=0);
     while ~isempty(bad), F(bad)=muF(bad)+0.1*tan(pi*(rand(numel(bad),1)-0.5)); bad=find(F<=0); end
@@ -49,9 +53,13 @@ while info.Evaluations<budget
     if ~isempty(goodF)
         weights=gain/sum(gain); memoryF(memoryPos)=sum(weights.*goodF.^2)/sum(weights.*goodF);
         if max(goodCR)==0 || memoryCR(memoryPos)==-1, memoryCR(memoryPos)=-1; else, memoryCR(memoryPos)=sum(weights.*goodCR.^2)/sum(weights.*goodCR); end
-        memoryPos=mod(memoryPos,5)+1;
+        memoryPos=mod(memoryPos,memorySize)+1;
     end
-    planned=max(4,round(sizepop+(4-sizepop)*info.Evaluations/budget));
+    startFE=0; totalBudget=budget; initialSize=sizepop;
+if isfield(state,'resumeStartFE') && ~isempty(state.resumeStartFE), startFE=state.resumeStartFE; end
+if isfield(state,'resumeTotalBudget') && ~isempty(state.resumeTotalBudget), totalBudget=state.resumeTotalBudget; end
+if isfield(state,'resumeInitialSize') && ~isempty(state.resumeInitialSize), initialSize=state.resumeInitialSize; end
+planned=max(4,round(initialSize+(4-initialSize)*(startFE+info.Evaluations)/max(totalBudget,1)));
     if sizepop>planned
         [~,order]=sort(fitness); pop=pop(order(1:planned),:); fitness=fitness(order(1:planned)); sizepop=planned; archiveCapacity=round(1.4*sizepop);
         if size(archive,1)>archiveCapacity, archive=archive(randperm(size(archive,1),archiveCapacity),:); end
@@ -59,6 +67,7 @@ while info.Evaluations<budget
     info.PopulationHistory(end+1)=sizepop; info.ArchiveSizeHistory(end+1)=size(archive,1);
 end
 info.FinalPopulation=pop; info.FinalFitness=fitness; info.FinalArchive=archive; info.FinalPopulationSize=sizepop;
+info.FinalMemoryF=memoryF; info.FinalMemoryCR=memoryCR; info.FinalMemoryPos=memoryPos; info.FinalBest=Best;
 end
 function [r1,r2]=randomParents(sizepop,poolSize)
 r0=1:sizepop; r1=floor(rand(1,sizepop)*sizepop)+1; bad=r1==r0;

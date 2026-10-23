@@ -1,0 +1,53 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\pilot_p0b_20261023_153032",
+  "comparisons": {
+    "C_A": {
+      "median": 0.6268853363843339,
+      "wins": 6,
+      "cats": 2,
+      "max": 2.4138910027112215,
+      "worst_f": 13,
+      "p": 0.25,
+      "ci95": [
+        0.4652517480662344,
+        1.210844422713791
+      ]
+    },
+    "C_B": {
+      "median": 0.9735543433284468,
+      "wins": 5,
+      "cats": 2,
+      "max": 5.832319833579179,
+      "worst_f": 4,
+      "p": 0.375,
+      "ci95": [
+        0.918570794107122,
+        2.0
+      ]
+    },
+    "B_A": {
+      "median": 0.6090756664260359,
+      "wins": 6,
+      "cats": 2,
+      "max": 2.6371449621410434,
+      "worst_f": 13,
+      "p": 0.1953125,
+      "ci95": [
+        0.04719378551447919,
+        1.3186501610183083
+      ]
+    }
+  },
+  "runtime_C_over_A": 1.0884766814507647,
+  "gate": false,
+  "verdict": "STOP_PILOT_RESTART_P0B",
+  "winners": {
+    "CMAES": 31,
+    "LSHADE": 9
+  },
+  "seconds": {
+    "A-LSHADE": 2.7163820574999997,
+    "B-CMAES": 3.06985296,
+    "C-PilotRestartScale2": 2.9567185275
+  }
+}

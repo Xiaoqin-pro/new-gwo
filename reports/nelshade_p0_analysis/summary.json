@@ -1,0 +1,106 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\nelshade_p0_20261023_135147",
+  "comparisons": {
+    "D_A": {
+      "median": 1.0125423187664961,
+      "wins": 2,
+      "cats": 2,
+      "max": 4.356972699135427,
+      "worst_f": 1,
+      "p": 0.3828125,
+      "ci95": [
+        0.9546342508823905,
+        1.279555348314925
+      ]
+    },
+    "D_B": {
+      "median": 0.947183663837968,
+      "wins": 5,
+      "cats": 2,
+      "max": 1.4800509731869027,
+      "worst_f": 4,
+      "p": 0.640625,
+      "ci95": [
+        0.8156016125056349,
+        1.4303775054416785
+      ]
+    },
+    "D_C": {
+      "median": 0.9453249210556289,
+      "wins": 6,
+      "cats": 1,
+      "max": 1.229245328562936,
+      "worst_f": 30,
+      "p": 0.3125,
+      "ci95": [
+        0.5728905709018381,
+        1.13922524317585
+      ]
+    },
+    "B_A": {
+      "median": 1.0915536955542215,
+      "wins": 3,
+      "cats": 2,
+      "max": 5.302846431153189,
+      "worst_f": 1,
+      "p": 0.4609375,
+      "ci95": [
+        0.8871576502887155,
+        1.2846530360987336
+      ]
+    },
+    "C_A": {
+      "median": 0.9743136153518382,
+      "wins": 4,
+      "cats": 1,
+      "max": 1.4947515460488174,
+      "worst_f": 20,
+      "p": 0.640625,
+      "ci95": [
+        0.7760431858825105,
+        1.1307681112251269
+      ]
+    }
+  },
+  "runtime_D_over_A": 1.2309457327789632,
+  "gate": false,
+  "verdict": "STOP_NELSHADE_P0",
+  "diagnostics": {
+    "A-LS-Off": {
+      "seconds_mean": 3.2357912225,
+      "niche_eval_rate": 0.0,
+      "niche_success_rate": 0.0,
+      "base_success_rate": 0.0,
+      "p_mean": 0.0,
+      "p_max": 0.0,
+      "bank_mean": 0.0
+    },
+    "B-RandomAdaptive": {
+      "seconds_mean": 3.6618534325,
+      "niche_eval_rate": 0.2578311655827914,
+      "niche_success_rate": 0.27139698945610435,
+      "base_success_rate": 0.24815699839138738,
+      "p_mean": 0.25495216308843094,
+      "p_max": 0.459818220760296,
+      "bank_mean": 0.0
+    },
+    "C-NicheFixed": {
+      "seconds_mean": 3.8869753099999995,
+      "niche_eval_rate": 0.25606353176588315,
+      "niche_success_rate": 0.2987091544507091,
+      "base_success_rate": 0.26348248389226325,
+      "p_mean": 0.25,
+      "p_max": 0.25,
+      "bank_mean": 24.0
+    },
+    "D-NicheAdaptive": {
+      "seconds_mean": 3.9830833975000006,
+      "niche_eval_rate": 0.26107303651825925,
+      "niche_success_rate": 0.28346300688588527,
+      "base_success_rate": 0.24912406675860693,
+      "p_mean": 0.25650276152645707,
+      "p_max": 0.410204721533757,
+      "bank_mean": 24.0
+    }
+  }
+}

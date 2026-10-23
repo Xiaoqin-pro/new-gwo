@@ -93,6 +93,48 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_STEER3.m'),'file')
     h.SGWO_STEER3=fileSha256(fullfile(sqRoot,'src','SGWO_STEER3.m'));
 end
+if exist(fullfile(sqRoot,'src','LSHADE_CEC.m'),'file')
+    h.LSHADE_CEC=fileSha256(fullfile(sqRoot,'src','LSHADE_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','NELSHADE.m'),'file')
+    h.NELSHADE=fileSha256(fullfile(sqRoot,'src','NELSHADE.m'));
+end
+if exist(fullfile(sqRoot,'src','NMLSHADE.m'),'file')
+    h.NMLSHADE=fileSha256(fullfile(sqRoot,'src','NMLSHADE.m'));
+end
+if exist(fullfile(sqRoot,'src','SLSHADE.m'),'file')
+    h.SLSHADE=fileSha256(fullfile(sqRoot,'src','SLSHADE.m'));
+end
+if exist(fullfile(sqRoot,'src','ASLSHADE.m'),'file')
+    h.ASLSHADE=fileSha256(fullfile(sqRoot,'src','ASLSHADE.m'));
+end
+if exist(fullfile(sqRoot,'src','CMAES_CEC.m'),'file')
+    h.CMAES_CEC=fileSha256(fullfile(sqRoot,'src','CMAES_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','PORTFOLIO_CEC.m'),'file')
+    h.PORTFOLIO_CEC=fileSha256(fullfile(sqRoot,'src','PORTFOLIO_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','PILOT_CEC.m'),'file')
+    h.PILOT_CEC=fileSha256(fullfile(sqRoot,'src','PILOT_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','PILOT_RESUME_CEC.m'),'file')
+    h.PILOT_RESUME_CEC=fileSha256(fullfile(sqRoot,'src','PILOT_RESUME_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','PILOT_ASYM_CEC.m'),'file')
+    h.PILOT_ASYM_CEC=fileSha256(fullfile(sqRoot,'src','PILOT_ASYM_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','CMA_LS_CEC.m'),'file')
+    h.CMA_LS_CEC=fileSha256(fullfile(sqRoot,'src','CMA_LS_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','CMA2_CEC.m'),'file')
+    h.CMA2_CEC=fileSha256(fullfile(sqRoot,'src','CMA2_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','ADAPT_CORE_CEC.m'),'file')
+    h.ADAPT_CORE_CEC=fileSha256(fullfile(sqRoot,'src','ADAPT_CORE_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','CMAES_RESUME.m'),'file')
+    h.CMAES_RESUME=fileSha256(fullfile(sqRoot,'src','CMAES_RESUME.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_VFA.m'),'file')
     h.SGWO_VFA=fileSha256(fullfile(sqRoot,'src','SGWO_VFA.m'));
 end

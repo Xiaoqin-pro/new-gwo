@@ -148,6 +148,33 @@ for i=1:n
             row.HybMode=S.HybMode; row.HybN=S.HybN; row.ShadeApplied=S.ShadeApplied;
             row.ShadeSuccess=S.ShadeSuccess; row.ShadeArchiveSize=S.ShadeArchiveSize;
         end
+        if isfield(S,'AdaptSwitched') && ~isnan(S.AdaptSwitched)
+            row.AdaptSwitched=S.AdaptSwitched; row.AdaptSwitchFE=S.AdaptSwitchFE; row.AdaptBlockFE=S.AdaptBlockFE; row.AdaptTol=S.AdaptTol; row.AdaptFirstCMA=S.AdaptFirstCMA;
+        end
+        if isfield(S,'PilotRule') && ~isempty(S.PilotRule)
+            row.PilotRule=S.PilotRule; row.Winner=S.Winner; row.PilotFE=S.PilotFE; row.FinalFE=S.FinalFE;
+            row.CMAESPilot=S.CMAESPilot; row.LSHADEPilot=S.LSHADEPilot; row.PilotInitialBest=S.PilotInitialBest; row.PilotCMARel=S.PilotCMARel; row.PilotLSRel=S.PilotLSRel; row.FinalCoreCost=S.FinalCoreCost; row.PilotBest=S.PilotBest;
+        end
+        if isfield(S,'ScreenMode') && ~isempty(S.ScreenMode)
+            row.ScreenMode=S.ScreenMode; row.KWindow=S.KWindow; row.K10Count=S.K10Count; row.K25Count=S.K25Count; row.K50Count=S.K50Count; row.K10MeanReward=S.K10MeanReward; row.K25MeanReward=S.K25MeanReward; row.K50MeanReward=S.K50MeanReward;
+        end
+        if isfield(S,'ScreenPolicy') && ~isempty(S.ScreenPolicy)
+            row.ScreenPolicy=S.ScreenPolicy; row.SparseK=S.SparseK; row.ScreenNearFrac=S.ScreenNearFrac; row.TrialsGenerated=S.TrialsGenerated; row.TrialsSelected=S.TrialsSelected; row.NearSelected=S.NearSelected; row.FarSelected=S.FarSelected;
+        end
+        if isfield(S,'MigMode') && ~isempty(S.MigMode)
+            row.MigMode=S.MigMode; row.MigOn=S.MigOn; row.MigPeriodic=S.MigPeriodic; row.MigBankSize=S.MigBankSize; row.MigBankMax=S.MigBankMax; row.MigHistSize=S.MigHistSize;
+            row.MigProgressWindow=S.MigProgressWindow; row.MigPlateauTol=S.MigPlateauTol; row.MigPeriodicEvery=S.MigPeriodicEvery; row.MigFrac=S.MigFrac;
+            row.MigTriggers=S.MigTriggers; row.MigRounds=S.MigRounds; row.MigMigrants=S.MigMigrants; row.MigBetter=S.MigBetter;
+        end
+        if isfield(S,'EcoMode') && ~isempty(S.EcoMode)
+            row.EcoMode=S.EcoMode; row.EcoOn=S.EcoOn; row.EcoAdaptive=S.EcoAdaptive;
+            row.EcoNicheBankSize=S.EcoNicheBankSize; row.EcoNicheBankMax=S.EcoNicheBankMax;
+            row.EcoNicheAdmits=S.EcoNicheAdmits; row.EcoNicheReplaces=S.EcoNicheReplaces; row.EcoBankEval=S.EcoBankEval;
+            row.EcoGens=S.EcoGens; row.EcoStagGens=S.EcoStagGens; row.EcoNicheSrcGen=S.EcoNicheSrcGen;
+            row.EcoNicheEval=S.EcoNicheEval; row.EcoBaseEval=S.EcoBaseEval; row.EcoNicheSuccess=S.EcoNicheSuccess; row.EcoBaseSuccess=S.EcoBaseSuccess;
+            row.EcoNicheEvalRate=S.EcoNicheEvalRate; row.EcoNicheSuccessRate=S.EcoNicheSuccessRate; row.EcoBaseSuccessRate=S.EcoBaseSuccessRate;
+            row.EcoPFinal=S.EcoPFinal; row.EcoPMean=S.EcoPMean; row.EcoPMax=S.EcoPMax;
+        end
         if isfield(S,'DwgMode') && ~isempty(S.DwgMode)
             row.DwgMode=S.DwgMode; row.DwgN1=S.DwgN1; row.DwgApplied=S.DwgApplied; row.DwgSuccess=S.DwgSuccess;
         end
@@ -358,6 +385,13 @@ row=struct('RunID',NaN,'Algorithm',"",'Family',"",'FunctionID',NaN,'D',NaN,'Seed
     'DrgMode',"",'DrgExploreN',NaN,'DrgApplied',NaN, ...
     'CssMode',"",'CssN',NaN,'CssDims',NaN,'CssPhaseFrac',NaN,'CssSelect',"",'CssApplied',NaN, ...
     'HybMode',"",'HybN',NaN,'ShadeApplied',NaN,'ShadeSuccess',NaN,'ShadeArchiveSize',NaN, ...
+    'AdaptSwitched',NaN,'AdaptSwitchFE',NaN,'AdaptBlockFE',NaN,'AdaptTol',NaN,'AdaptFirstCMA',NaN, ...
+    'PilotRule',"",'Winner',"",'PilotFE',NaN,'FinalFE',NaN,'CMAESPilot',NaN,'LSHADEPilot',NaN,'PilotInitialBest',NaN,'PilotCMARel',NaN,'PilotLSRel',NaN,'FinalCoreCost',NaN,'PilotBest',NaN, ...
+    'ScreenMode',"",'KWindow',NaN,'K10Count',NaN,'K25Count',NaN,'K50Count',NaN,'K10MeanReward',NaN,'K25MeanReward',NaN,'K50MeanReward',NaN, ...
+    'ScreenPolicy',"",'SparseK',NaN,'ScreenNearFrac',NaN,'TrialsGenerated',NaN,'TrialsSelected',NaN,'NearSelected',NaN,'FarSelected',NaN, ...
+    'MigMode',"",'MigOn',NaN,'MigPeriodic',NaN,'MigBankSize',NaN,'MigBankMax',NaN,'MigHistSize',NaN,'MigProgressWindow',NaN,'MigPlateauTol',NaN,'MigPeriodicEvery',NaN,'MigFrac',NaN,'MigTriggers',NaN,'MigRounds',NaN,'MigMigrants',NaN,'MigBetter',NaN, ...
+    'EcoMode',"",'EcoOn',NaN,'EcoAdaptive',NaN,'EcoNicheBankSize',NaN,'EcoNicheBankMax',NaN,'EcoNicheAdmits',NaN,'EcoNicheReplaces',NaN,'EcoBankEval',NaN,'EcoGens',NaN,'EcoStagGens',NaN, ...
+    'EcoNicheSrcGen',NaN,'EcoNicheEval',NaN,'EcoBaseEval',NaN,'EcoNicheSuccess',NaN,'EcoBaseSuccess',NaN,'EcoNicheEvalRate',NaN,'EcoNicheSuccessRate',NaN,'EcoBaseSuccessRate',NaN,'EcoPFinal',NaN,'EcoPMean',NaN,'EcoPMax',NaN, ...
     'DwgMode',"",'DwgN1',NaN,'DwgApplied',NaN,'DwgSuccess',NaN, ...
     'RedDupImpRate',NaN,'RedDistImpRate',NaN,'RedDupArcRate',NaN,'RedDistArcRate',NaN, ...
     'RedSelDupRate',NaN,'RedDminMedian',NaN, ...

@@ -1,0 +1,106 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\nmlshade_p0_20261023_140253",
+  "comparisons": {
+    "D_A": {
+      "median": 0.9999890826216228,
+      "wins": 5,
+      "cats": 0,
+      "max": 1.0000072158691844,
+      "worst_f": 30,
+      "p": 0.09375,
+      "ci95": [
+        0.9999287770592609,
+        1.0
+      ]
+    },
+    "D_B": {
+      "median": 0.9999543355455502,
+      "wins": 4,
+      "cats": 1,
+      "max": 1.508213188636584,
+      "worst_f": 1,
+      "p": 1.0,
+      "ci95": [
+        0.9764676085102126,
+        1.0261029263057109
+      ]
+    },
+    "D_C": {
+      "median": 1.0,
+      "wins": 2,
+      "cats": 0,
+      "max": 1.0006136330842557,
+      "worst_f": 1,
+      "p": 0.4375,
+      "ci95": [
+        0.9999969147463493,
+        1.0003130431150224
+      ]
+    },
+    "B_A": {
+      "median": 1.0000569456130866,
+      "wins": 4,
+      "cats": 1,
+      "max": 1.2012730311542814,
+      "worst_f": 20,
+      "p": 1.0,
+      "ci95": [
+        0.9745611033391265,
+        1.024102782990027
+      ]
+    },
+    "C_A": {
+      "median": 1.0,
+      "wins": 3,
+      "cats": 0,
+      "max": 1.0000202619547696,
+      "worst_f": 24,
+      "p": 0.4375,
+      "ci95": [
+        0.999698960290665,
+        1.0000054545042136
+      ]
+    }
+  },
+  "runtime_D_over_A": 1.0911177832063783,
+  "gate": false,
+  "verdict": "STOP_NMLSHADE_P0",
+  "diagnostics": {
+    "A-LS-Off": {
+      "seconds_mean": 3.0010854124999993,
+      "trig_mean": 0.0,
+      "rounds_mean": 0.0,
+      "migrants_mean": 0.0,
+      "better_mean": 0.0,
+      "bank_mean": 0.0,
+      "hist_mean": 0.0
+    },
+    "B-PeriodicNiche": {
+      "seconds_mean": 3.230935155,
+      "trig_mean": 9.0,
+      "rounds_mean": 9.0,
+      "migrants_mean": 39.075,
+      "better_mean": 38.85,
+      "bank_mean": 32.0,
+      "hist_mean": 50.0
+    },
+    "C-PlateauRandom": {
+      "seconds_mean": 3.1806934375,
+      "trig_mean": 5.025,
+      "rounds_mean": 5.025,
+      "migrants_mean": 8.25,
+      "better_mean": 7.4,
+      "bank_mean": 32.0,
+      "hist_mean": 50.0
+    },
+    "D-PlateauNiche": {
+      "seconds_mean": 3.2745376625,
+      "trig_mean": 5.125,
+      "rounds_mean": 5.125,
+      "migrants_mean": 8.075,
+      "better_mean": 8.075,
+      "bank_mean": 32.0,
+      "hist_mean": 50.0
+    }
+  }
+}
