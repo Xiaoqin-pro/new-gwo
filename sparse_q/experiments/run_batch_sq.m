@@ -114,6 +114,12 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_IDC.m'),'file')
     h.SGWO_IDC=fileSha256(fullfile(sqRoot,'src','SGWO_IDC.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_DIAG.m'),'file')
+    h.SGWO_DIAG=fileSha256(fullfile(sqRoot,'src','SGWO_DIAG.m'));
+end
+if exist(fullfile(sqRoot,'src','SGWO_EMIX.m'),'file')
+    h.SGWO_EMIX=fileSha256(fullfile(sqRoot,'src','SGWO_EMIX.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end
