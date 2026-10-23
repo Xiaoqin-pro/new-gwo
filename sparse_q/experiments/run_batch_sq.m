@@ -144,6 +144,9 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_GAAS.m'),'file')
     h.SGWO_GAAS=fileSha256(fullfile(sqRoot,'src','SGWO_GAAS.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_SHA.m'),'file')
+    h.SGWO_SHA=fileSha256(fullfile(sqRoot,'src','SGWO_SHA.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end

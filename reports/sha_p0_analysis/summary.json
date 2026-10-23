@@ -1,0 +1,92 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\sha_p0_20261023_100425",
+  "actuation_functions": 2,
+  "gate": false,
+  "per_function": {
+    "1": {
+      "ShaFactorMean": 0.994973786448982,
+      "ShaAUpPct": 0.493146573286643,
+      "ShaADownPct": 0.497048524262131,
+      "ShaEvals": 49950.0,
+      "ShaSuccess": 6530.0,
+      "actuated": false
+    },
+    "4": {
+      "ShaFactorMean": 0.99260033639086,
+      "ShaAUpPct": 0.477238619309655,
+      "ShaADownPct": 0.51335667833917,
+      "ShaEvals": 49920.0,
+      "ShaSuccess": 7054.0,
+      "actuated": false
+    },
+    "7": {
+      "ShaFactorMean": 0.990670505278785,
+      "ShaAUpPct": 0.449524762381191,
+      "ShaADownPct": 0.536668334167084,
+      "ShaEvals": 50051.0,
+      "ShaSuccess": 11677.0,
+      "actuated": false
+    },
+    "10": {
+      "ShaFactorMean": 0.991206340947726,
+      "ShaAUpPct": 0.454027013506753,
+      "ShaADownPct": 0.528964482241121,
+      "ShaEvals": 50052.0,
+      "ShaSuccess": 11660.0,
+      "actuated": false
+    },
+    "13": {
+      "ShaFactorMean": 0.99122809118891,
+      "ShaAUpPct": 0.455027513756878,
+      "ShaADownPct": 0.529364682341171,
+      "ShaEvals": 49940.0,
+      "ShaSuccess": 6803.0,
+      "actuated": false
+    },
+    "20": {
+      "ShaFactorMean": 0.984050011873431,
+      "ShaAUpPct": 0.419309654827414,
+      "ShaADownPct": 0.562381190595298,
+      "ShaEvals": 49936.0,
+      "ShaSuccess": 11565.0,
+      "actuated": true
+    },
+    "24": {
+      "ShaFactorMean": 0.99452558070404,
+      "ShaAUpPct": 0.481640820410205,
+      "ShaADownPct": 0.502551275637819,
+      "ShaEvals": 49951.0,
+      "ShaSuccess": 9218.0,
+      "actuated": false
+    },
+    "30": {
+      "ShaFactorMean": 0.985310592183585,
+      "ShaAUpPct": 0.419709854927464,
+      "ShaADownPct": 0.565882941470735,
+      "ShaEvals": 50052.0,
+      "ShaSuccess": 8157.0,
+      "actuated": true
+    }
+  },
+  "performance": {
+    "B/A": {
+      "median": 0.9865010817521407,
+      "wins": 4,
+      "cats": 0,
+      "max": 1.0722787076494966
+    },
+    "C/A": {
+      "median": 1.01990245915699,
+      "wins": 4,
+      "cats": 0,
+      "max": 1.1834850148663336
+    },
+    "B/C": {
+      "median": 0.9913220039984041,
+      "wins": 5,
+      "cats": 1,
+      "max": 3.024464323511631
+    }
+  },
+  "verdict": "STOP_SHA_P0"
+}
