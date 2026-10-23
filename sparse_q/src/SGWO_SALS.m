@@ -11,6 +11,14 @@ function [Best,T,info]=SGWO_SALS(f,state,~,N,seed)
 %                      coefficient dimensions, permuted independently per dimension).
 %   Both active arms keep the STEER rule (fresh trigger + random direction from the same stream),
 %   so the ONLY difference between them is IID vs stratified coefficient sampling.
+%   实现说明（运行时间）：活跃臂只重建本臂的候选位置，且
+%     (a) 分层结构由两次批量 rand 抽取构成（取代原先 6*D 次标量调用，取值序列逐位一致，
+%         由 tests/test_sals_opt_equivalence.m 的 'none'/'audit' 断言与分层实现率断言覆盖）；
+%     (b) 位置重建由 salsRebuildPos 一次向量化完成（取代逐候选 salsPos 调用，逐元素算术一致，
+%         由 tests/test_sals_rebuild_equivalence.m 断言）；
+%     (c) STEER 触发/方向仍按优化前的 B1,C1,B2,C2,... 交错顺序逐候选抽取（因此四个模式都与
+%         优化前逐位一致），而几何诊断（分层实现率/离散度/位移）只在 audit 模式记录，
+%         活跃臂因此不再支付诊断与逐候选函数调用的开销。
 %SGWO_STEER3  Whole-algorithm runtime optimisation of G1+E+STEER (bitwise-identical semantics).
 %   Optimisations, all of which preserve the random-number CONSUMPTION ORDER exactly (verified by
 %   test_steer_opt_equivalence, which asserts a bitwise-identical trace/cost against SGWO_STEER):
@@ -375,35 +383,43 @@ while fe<budget
         salsGens=salsGens+1; salsNSsum=salsNSsum+nS;
         if nS>0
             mS=6*D;
+            isIidArm=strcmpi(opt.salsMode,'iid');
+            isAuditArm=strcmpi(opt.salsMode,'audit');
+            Xp=Xv(par(g1sel),:);
+            % 三种抽取在所有活跃/审计臂中都执行（与优化前一致：原实现总是同时构造 B、C 两个
+            % 反事实块），以保证随机数消耗顺序逐位不变。批量抽取取代原先 6*D 次标量调用。
             UB=rand(sSals,nS,mS);
-            [~,pord]=sort(rand(sSals,nS,mS),1);
-            UC=zeros(nS,mS);
-            for dd=1:mS
-                UC(:,dd)=((pord(:,dd)-1)+rand(sSals,nS,1))/nS;
+            S=rand(sSals,nS,mS);
+            [~,pord]=sort(S,1);
+            J=rand(sSals,nS,mS);
+            UC=((pord-1)+J)/nS;
+            if isAuditArm
+                % 被动审计：保留冻结候选，只记录几何量（分层实现率、离散度、位移）。
+                Fs=sort(floor(UC*nS),1);
+                salsStratSum=salsStratSum+sum(~any(diff(Fs,1,1)==0,1));
+                salsStratCnt=salsStratCnt+mS;
+                Xor=Y(g1sel,:);
+                [trigB,SdB,trigC,SdC]=salsSteerPair(opt,nS,D,sSals);
+                Xb=salsRebuildPos(UB,aA,Alpha,Beta,Delta,Xp,lb,ub,opt,trigB,SdB);
+                Xc=salsRebuildPos(UC,aA,Alpha,Beta,Delta,Xp,lb,ub,opt,trigC,SdC);
+                if nS>=2
+                    Dpb=sqrt(sum(Xb.^2,2)+sum(Xb.^2,2)'-2*(Xb*Xb')); Dpb(1:nS+1:end)=inf;
+                    Dpc=sqrt(sum(Xc.^2,2)+sum(Xc.^2,2)'-2*(Xc*Xc')); Dpc(1:nS+1:end)=inf;
+                    salsDispBsum=salsDispBsum+mean(min(Dpb,[],2))/span;
+                    salsDispCsum=salsDispCsum+mean(min(Dpc,[],2))/span;
+                end
+                salsDispCnt=salsDispCnt+1;
+                salsShiftBsum=salsShiftBsum+mean(sqrt(sum((Xb-Xor).^2,2)))/span;
+                salsShiftCsum=salsShiftCsum+mean(sqrt(sum((Xc-Xor).^2,2)))/span;
+                salsShiftCnt=salsShiftCnt+1;
+            else
+                [trigB,SdB,trigC,SdC]=salsSteerPair(opt,nS,D,sSals);
+                if isIidArm
+                    Y(g1sel,:)=salsRebuildPos(UB,aA,Alpha,Beta,Delta,Xp,lb,ub,opt,trigB,SdB);
+                else
+                    Y(g1sel,:)=salsRebuildPos(UC,aA,Alpha,Beta,Delta,Xp,lb,ub,opt,trigC,SdC);
+                end
             end
-            for dd=1:mS
-                salsStratSum=salsStratSum+(numel(unique(floor(UC(:,dd)*nS)))==nS);
-            end
-            salsStratCnt=salsStratCnt+mS;
-            Xb=zeros(nS,D); Xc=zeros(nS,D); Xor=zeros(nS,D);
-            for kk=1:nS
-                jj=g1sel(kk); ii=par(jj);
-                Xor(kk,:)=Y(jj,:);
-                Xb(kk,:)=salsPos(UB(kk,:),aA,Alpha,Beta,Delta,Xv(ii,:),lb,ub,D,opt,sSals);
-                Xc(kk,:)=salsPos(UC(kk,:),aA,Alpha,Beta,Delta,Xv(ii,:),lb,ub,D,opt,sSals);
-            end
-            if nS>=2
-                Dpb=sqrt(sum(Xb.^2,2)+sum(Xb.^2,2)'-2*(Xb*Xb')); Dpb(1:nS+1:end)=inf;
-                Dpc=sqrt(sum(Xc.^2,2)+sum(Xc.^2,2)'-2*(Xc*Xc')); Dpc(1:nS+1:end)=inf;
-                salsDispBsum=salsDispBsum+mean(min(Dpb,[],2))/span;
-                salsDispCsum=salsDispCsum+mean(min(Dpc,[],2))/span;
-            end
-            salsDispCnt=salsDispCnt+1;
-            salsShiftBsum=salsShiftBsum+mean(sqrt(sum((Xb-Xor).^2,2)))/span;
-            salsShiftCsum=salsShiftCsum+mean(sqrt(sum((Xc-Xor).^2,2)))/span;
-            salsShiftCnt=salsShiftCnt+1;
-            if strcmpi(opt.salsMode,'iid'), Y(g1sel,:)=Xb; end
-            if strcmpi(opt.salsMode,'lhs'), Y(g1sel,:)=Xc; end
         end
     end
     if rounds==1, gen1Src=[sum(src(sel)==1), sum(src(sel)==2), sum(src(sel)==3), sum(src(sel)==4)]; end
@@ -561,11 +577,17 @@ info.DaFirstDualFE=daFirstDualFE;
 info.DaTau=stjTau;
 info.SalsOn=isSals; info.SalsMode=opt.salsMode; info.SalsGens=salsGens;
 info.SalsNMean=salsNSsum/max(salsGens,1);
-info.SalsDispBMean=salsDispBsum/max(salsDispCnt,1);
-info.SalsDispCMean=salsDispCsum/max(salsDispCnt,1);
-info.SalsShiftBMean=salsShiftBsum/max(salsShiftCnt,1);
-info.SalsShiftCMean=salsShiftCsum/max(salsShiftCnt,1);
-info.SalsStratFrac=salsStratSum/max(salsStratCnt,1);
+if salsStratCnt>0
+    info.SalsDispBMean=salsDispBsum/max(salsDispCnt,1);
+    info.SalsDispCMean=salsDispCsum/max(salsDispCnt,1);
+    info.SalsShiftBMean=salsShiftBsum/max(salsShiftCnt,1);
+    info.SalsShiftCMean=salsShiftCsum/max(salsShiftCnt,1);
+    info.SalsStratFrac=salsStratSum/salsStratCnt;
+else
+    info.SalsDispBMean=NaN; info.SalsDispCMean=NaN;
+    info.SalsShiftBMean=NaN; info.SalsShiftCMean=NaN;
+    info.SalsStratFrac=NaN;   % 几何诊断只在 audit 模式记录
+end
 info.StjOn=isStj;
 info.StjTau=stjTau;
 info.StjGateGens=stjGateGens;
@@ -580,23 +602,24 @@ info.SteerRate=steerApplied/max(N*rounds,1);
 end
 
 % ==================== 辅助函数 ====================
-function y=salsPos(u,aA,A,B,Dl,xw,lb,ub,D,opt,sSals)
-%SALSPOS  Rebuild one G1 candidate from a 6D uniform block (same GWO formula + STEER rule).
-A1=2*aA*u(1:D)-aA;          C1=2*u(D+1:2*D);
-A2=2*aA*u(2*D+1:3*D)-aA;    C2=2*u(3*D+1:4*D);
-A3=2*aA*u(4*D+1:5*D)-aA;    C3=2*u(5*D+1:6*D);
-X1=A.Vector -A1.*abs(C1.*A.Vector -xw);
-X2=B.Vector -A2.*abs(C2.*B.Vector -xw);
-X3=Dl.Vector-A3.*abs(C3.*Dl.Vector-xw);
-y=(X1+X2+X3)/3;
-if opt.succSteer>0 && rand(sSals)<opt.succSteer
-    sd=randn(sSals,1,D); nrm=norm(sd);
-    if nrm>0
-        stepv=norm(y-xw);
-        y=y+opt.steerLambda*(sd/nrm)*stepv;
-    end
+function [trigB,SdB,trigC,SdC]=salsSteerPair(opt,nS,D,sSals)
+%SALSSTEERPAIR  STEER trigger/direction draws for the two counterfactual variants (B: IID block,
+%   C: stratified block), consumed in exactly the interleaved order of the pre-optimisation
+%   per-candidate loop (B1,C1,B2,C2,...).  Keeping that order makes every arm bitwise identical to
+%   the draft implementation (tests/test_sals_opt_equivalence.m), while the rebuild itself is
+%   vectorised.  Directions are drawn only when the trigger fires, as in salsPos.
+trigB=false(nS,1); trigC=false(nS,1); SdB=zeros(nS,D); SdC=zeros(nS,D);
+for kk=1:nS
+    [trigB(kk),SdB(kk,:)]=salsSteerOne(opt,D,sSals);
+    [trigC(kk),SdC(kk,:)]=salsSteerOne(opt,D,sSals);
 end
-y=min(max(y,lb),ub);
+end
+
+function [trig,sd]=salsSteerOne(opt,D,sSals)
+trig=false; sd=zeros(1,D);
+if opt.succSteer>0 && rand(sSals)<opt.succSteer
+    trig=true; sd=randn(sSals,1,D);
+end
 end
 
 function info=baseInfo(fe,rounds,T,clockStart,opt)
