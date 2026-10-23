@@ -1,0 +1,40 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\idc_p0_20261023_002647",
+  "runs": 160,
+  "functions": [
+    1,
+    3,
+    4,
+    7,
+    10,
+    13,
+    20,
+    30
+  ],
+  "seeds": [
+    3549,
+    3550,
+    3551,
+    3552,
+    3553
+  ],
+  "gate_wrong": 5,
+  "gate_stale": 5,
+  "gate_leak": 8,
+  "gate_leakmass": 8,
+  "actuation": {
+    "B": 1.0,
+    "C": 1.0,
+    "D": 1.0
+  },
+  "gate_actuation": true,
+  "verdict": "PROMOTE_IDC_TO_P1",
+  "medians": {
+    "IdcCredTotal": 24338.5,
+    "IdcWrongRate": 0.01043972632452765,
+    "IdcStaleRate": 0.01043972632452765,
+    "IdcRefresh": 479.5,
+    "IdcLeakRate": 0.9968697873863905,
+    "IdcLeakMassRatio": 6.3402710418707695
+  }
+}
