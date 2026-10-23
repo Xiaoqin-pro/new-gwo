@@ -129,6 +129,12 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_KNOB.m'),'file')
     h.SGWO_KNOB=fileSha256(fullfile(sqRoot,'src','SGWO_KNOB.m'));
 end
+if exist(fullfile(sqRoot,'src','SGWO_LAST.m'),'file')
+    h.SGWO_LAST=fileSha256(fullfile(sqRoot,'src','SGWO_LAST.m'));
+end
+if exist(fullfile(sqRoot,'src','SGWO_NULL.m'),'file')
+    h.SGWO_NULL=fileSha256(fullfile(sqRoot,'src','SGWO_NULL.m'));
+end
 if exist(fullfile(sqRoot,'src','SGWO_DSE.m'),'file')
     h.SGWO_DSE=fileSha256(fullfile(sqRoot,'src','SGWO_DSE.m'));
 end
