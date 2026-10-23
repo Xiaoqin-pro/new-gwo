@@ -55,7 +55,7 @@ def main():
     j1 = per_function_ratios(b1, A1, b0, D1, FUNCS29)            # first block
     pf1 = j1.groupby('FunctionID').r.median(); r1 = pf1.to_numpy(float)
     # pooled over both blocks (per function: median of 60 paired ratios)
-    jp = pd.concat([j1[['FunctionID', 'Seed', 'r']], j2[['FunctionID', 'Seed', 'r']]])
+    jp = pd.concat([j1[['FunctionID', 'Seed', 'r', 'dl']], j2[['FunctionID', 'Seed', 'r', 'dl']]])
     pfp = jp.groupby('FunctionID').r.median(); rp = pfp.to_numpy(float)
 
     def block_stats(r, rr, j):
