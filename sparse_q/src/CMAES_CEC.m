@@ -4,7 +4,7 @@ function [Best,T,info]=CMAES_CEC(f,state,~,N,seed)
 %   evaluated; no candidate is inserted into ranking before evaluation.
 clockStart=tic;
 D=size(state.initialPopulation,2); lb=state.lowerBound; ub=state.upperBound;
-budget=state.maxEvaluations; lambda=max(4,round(N)); mu=floor(lambda/2);
+budget=state.maxEvaluations; lambda=max(4,round(N)); if isfield(state,'cmaLambda') && ~isempty(state.cmaLambda), lambda=max(4,round(state.cmaLambda)); end; mu=floor(lambda/2);
 assert(budget>=size(state.initialPopulation,1));
 rng(seed,'twister');
 w=log(mu+0.5)-log(1:mu)'; w=w/sum(w);

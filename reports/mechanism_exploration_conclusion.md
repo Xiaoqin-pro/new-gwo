@@ -1613,3 +1613,82 @@ F1 保住、F13 稍好，但 F4/F20/F24/F30 退化。**STOP_ASR_SOFT_DEV**。至
 2. **LSHADE 在 F13/F30 仍更强**，但静态/动态拼接、pilot、换核、hard/soft CMA restart 都会制造尾部；
 3. 因此下一步不能继续在“两个强核之间搬预算/搬点”。若还要做新机制，应研究 **CMA 自身如何维持多个协方差生态位**（multi-niche CMA），而不是对单核做 restart；
 4. 在 multi-niche CMA 出现明确 P0 正信号前，不进入 100 维、UAV 或场景实验，也不把这轮的 near-miss 写成论文贡献。
+
+
+## 七十八、Multi-Niche CMA：等分和主核 80% 都失败
+
+MN-CMA 3 个独立协方差生态位，固定 50/25/25 与 adaptive 分配，8×2 dev：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 |
+|---|---:|---:|---:|---:|
+| MNC fixed / CMA | 1.509 | 2 | 6 | inf |
+| MNC adaptive / CMA | 1.268 | 2 | 4 | inf |
+
+80/10/10 主核版本仍为 1.058、1/8 胜、3 个尾部。`STOP_MNC_CMA_DEV`。scouts 的协方差样本太少，且主核预算被切碎；多生态位不能靠简单拆种群实现。
+
+## 七十九、Large-Population CMA：P0 失败
+
+λ=100 的独立 8×5 P0（种子 3982–3986）：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 |
+|---|---:|---:|---:|---:|
+| CMA100 / CMA50 | 0.959 | 4 | 3 |>1（F4/F13/F30） |
+
+虽然中位和 F10 有改善，但胜场不够、尾部过多；`STOP_CMA_LARGE_P0`。固定大群体不是主机制。
+
+## 八十、AL-CMA 与 IPOP-CMA：自适应群体/重启仍失败
+
+- AL-CMA（平台后 50→100）：dev 相对 CMA 中位 0.988、4/8 胜、3 个尾部。
+- IPOP-CMA（当前 best 周围重启 50→100）：dev 相对 CMA 中位 1.086、3/8 胜、2 个尾部。
+
+`STOP_ALCMA_DEV`、`STOP_IPOP_CMA_DEV`。增加群体或从当前 best 重启都不能稳定解决 F13/F30。
+
+## 八十一、G1E→CMA：对 G1E 有效，但不是新的强核
+
+8×2 dev：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 |
+|---|---:|---:|---:|---:|
+| G1E30→CMA70 / G1E | 0.164 | 8 | 0 | 0.94 |
+| G1E30→CMA70 / CMA | 1.224 | 2 | 4 | 4.20 |
+| G1E10→CMA90 / CMA | 1.021 | 2 | 3 | 2.11 |
+
+G1E 的多样性确实帮助了 G1E 自身，但会污染 CMA 的初始分布。`STOP_G1E_CMA_DEV`。
+
+## 八十二、LSHADE→CMA：有 near-signal，仍不能替代 CMA
+
+8×2 dev：
+
+| 对比 | 中位比 | 胜/8 | >1.20 |
+|---|---:|---:|---:|
+| LS50→CMA50 / LSHADE | 0.706 | 6 | 0 |
+| LS50→CMA50 / CMA | 1.003 | 3 | 1 |
+| LS70→CMA30 / LSHADE | 0.666 | 6 | 0 |
+| LS70→CMA30 / CMA | 0.991 | 5 | 2 |
+
+补齐 LSHADE 的 archive 到 50 个后，相对 CMA 仍没有稳定优势。`STOP_LS_CMA_DEV`；这是当前最好的“旧框架+CMA”near-miss，但不能进正文。
+
+## 八十三、MM-CMA 与 Sparse CMA：不成立
+
+- MM-CMA（共享协方差、80/10/10 多均值）：相对 CMA 中位 1.214、1/8 胜、5 个尾部，时间 1.2×。
+- Sparse CMA（λ=100、K=50 两势筛选）：相对 CMA 中位 1.295、1/8 胜、6 个尾部，时间 5.4×。
+
+`STOP_MM_CMA_DEV`、`STOP_SCMA_DEV`。共享协方差和稀疏评价都没有解决 CMA 的多模态问题。
+
+## 八十四、当前证据状态与下一步
+
+到目前为止，**没有任何新机制通过 P0/P0b 的完整门槛**；不能让这些 near-miss 进入论文。唯一可信的正面结论是：
+
+- CMA-ES 在 8×5 的混合对照中显著强于 LSHADE：相对 LSHADE 中位 0.6845、7/8 胜；
+- CMA 的弱点是 F13/F30，而 LSHADE 在这两个函数更强；
+- 任何把预算切给 LSHADE、拆成多生态位、重置 CMA、或稀疏评价的变体都会产生尾部。
+
+下一机制应当是 **ACMA（Archive-Covariance CMA）**：
+
+1. 保留完整 CMA 的 mean/sigma 和当前种群轨迹；
+2. 只把真实评价过、空间分离的精英解放入 archive；
+3. 在协方差更新中，用 archive 的精英差方向做低权重 rank-μ 补充，不改变采样均值、不重启、不替换种群；
+4. 消融：CMA base、CMA+archive covariance、CMA+archive injection（已失败）、CMA+hard restart（已失败）；
+5. 先 8×5 P0，目标是在 F13/F30 改善的同时不损伤 F1/F4/F7。
+
+如果 ACMA 仍失败，下一步不应继续在 CMA 上加小模块，而应把 CMA 作为主核重写论文骨架，并寻找一个与 CMA 正交的**结构级**机制（例如多尺度协方差或预算分解），而不是继续做 restart/portfolio/sparse/multi-niche。

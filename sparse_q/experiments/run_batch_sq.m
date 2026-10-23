@@ -132,6 +132,30 @@ end
 if exist(fullfile(sqRoot,'src','ADAPT_CORE_CEC.m'),'file')
     h.ADAPT_CORE_CEC=fileSha256(fullfile(sqRoot,'src','ADAPT_CORE_CEC.m'));
 end
+if exist(fullfile(sqRoot,'src','DAR_CMA_CEC.m'),'file')
+    h.DAR_CMA_CEC=fileSha256(fullfile(sqRoot,'src','DAR_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','MNC_CMA_CEC.m'),'file')
+    h.MNC_CMA_CEC=fileSha256(fullfile(sqRoot,'src','MNC_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','ALCMA_CEC.m'),'file')
+    h.ALCMA_CEC=fileSha256(fullfile(sqRoot,'src','ALCMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','IPOP_CMA_CEC.m'),'file')
+    h.IPOP_CMA_CEC=fileSha256(fullfile(sqRoot,'src','IPOP_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','GWO_CMA_CEC.m'),'file')
+    h.GWO_CMA_CEC=fileSha256(fullfile(sqRoot,'src','GWO_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','MM_CMA_CEC.m'),'file')
+    h.MM_CMA_CEC=fileSha256(fullfile(sqRoot,'src','MM_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','SCMA_CEC.m'),'file')
+    h.SCMA_CEC=fileSha256(fullfile(sqRoot,'src','SCMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','LS_CMA_CEC.m'),'file')
+    h.LS_CMA_CEC=fileSha256(fullfile(sqRoot,'src','LS_CMA_CEC.m'));
+end
 if exist(fullfile(sqRoot,'src','CMAES_RESUME.m'),'file')
     h.CMAES_RESUME=fileSha256(fullfile(sqRoot,'src','CMAES_RESUME.m'));
 end

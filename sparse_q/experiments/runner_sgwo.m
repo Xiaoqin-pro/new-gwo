@@ -156,6 +156,22 @@ switch job.algorithm
         [Best,T,info]=CMA2_CEC(f,state,[],N,job.seedSearch);
     case 'ADAPT_CORE'
         [Best,T,info]=ADAPT_CORE_CEC(f,state,[],N,job.seedSearch);
+    case 'DAR_CMA'
+        [Best,T,info]=DAR_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'MNC_CMA'
+        [Best,T,info]=MNC_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'ALCMA'
+        [Best,T,info]=ALCMA_CEC(f,state,[],N,job.seedSearch);
+    case 'IPOP_CMA'
+        [Best,T,info]=IPOP_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'GWO_CMA'
+        [Best,T,info]=GWO_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'MM_CMA'
+        [Best,T,info]=MM_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'SCMA'
+        [Best,T,info]=SCMA_CEC(f,state,[],N,job.seedSearch);
+    case 'LS_CMA'
+        [Best,T,info]=LS_CMA_CEC(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID'
         [Best,T,info]=SGWO_HYBRID(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID2'
