@@ -1,0 +1,10 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\cde_p0_20261023_104802",
+  "median": 0.9729720209545745,
+  "wins": 5,
+  "cats": 2,
+  "max": 1.5304466924965756,
+  "worst_f": 20,
+  "gate": false,
+  "verdict": "STOP_CDE_P0"
+}
