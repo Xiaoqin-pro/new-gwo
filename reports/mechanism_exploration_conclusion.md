@@ -1768,3 +1768,19 @@ jSO 是当前最强的 LSHADE 系核（相对 LSHADE 0.896），但它仍不能�
 - 保持完整 mean/C/pc/ps 和相同 FE；
 - 消融：CMA base、mirrored sampling、orthogonal sampling、mirrored+orthogonal；
 - 先 8×5 P0，目标是提高 F13/F30 的同时不损伤 F1/F4/F7。
+
+
+## 九十二、jSO 体系的最终结果与 MCMA
+
+- jSO→CMA P1 已失败：相对 jSO 0.844、11/15，但相对 CMA 1.122、5/15、7 个尾部；不能作为最终强核。
+- PilotJSO P0 已失败：相对 jSO 0.508、7/8、0 个尾部，但相对 CMA 1.007、4/8、1 个尾部。
+- SCMA75（λ=100、K=75）相对 CMA 1.213、4/8、4 个尾部、4.6× 慢。
+- Mirror CMA（λ/2 方向 + 反对称镜像）相对 CMA 中位 1.004、3/8 胜、3 个尾部、max 3.97。
+
+`STOP_JSO_CMA_P1`、`STOP_PILOT_JSO_P0`、`STOP_SCMA75_DEV`、`STOP_MIRROR_CMA_DEV`。
+
+## 九十三、下一层：OCMA / Active-CMA
+
+采样镜像没有带来净收益，下一步应改为真正的**正交采样**：先构造相互正交的随机方向块，再生成反对称对，降低 λ 个样本的方向相关性；同时保持 CMA 的均值、协方差和 FE 不变。若正交块仍不行，再测试 **active covariance**（对最差样本加入负权重），但两者都必须先做 8×2 dev，再 8×5 P0，不允许直接进 P1 或 30 种子。
+
+当前论文主线仍不能宣布：G1+E+STEER 不够强，CMA 强但不是新机制，jSO 只是强基线。下一步目标是找到一个能超过完整 CMA 的采样/更新机制；否则应考虑把论文贡献改写为“CMA 主核 + 新应用/新问题建模”，而不是继续伪造算法故事。

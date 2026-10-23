@@ -28,7 +28,12 @@ if n0<mu, xmean=pop(ord(1),:); end
 info.Evaluations=n0; info.Rounds=0; info.InitialCost=Best.Cost;
 while info.Evaluations<budget
     [B,lam]=eig((C+C')/2); lam=max(diag(lam),1e-14); B=B*diag(sqrt(lam));
-    Z=randn(lambda,D); X=repmat(xmean,lambda,1)+sigma*(Z*B');
+    if isfield(state,'cmaMirror') && state.cmaMirror
+        Z=randn(lambda/2,D); Z=[Z;-Z];
+    else
+        Z=randn(lambda,D);
+    end
+    X=repmat(xmean,lambda,1)+sigma*(Z*B');
     X=reflectBounds(X,lb,ub);
     count=min(lambda,budget-info.Evaluations); X=X(1:count,:);
     vals=zeros(count,1);
