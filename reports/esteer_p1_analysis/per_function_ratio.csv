@@ -1,0 +1,91 @@
+comparison,FunctionID,median_ratio
+C/A (E-STEER on top of the final algorithm),1,1.0235579937842236
+C/A (E-STEER on top of the final algorithm),3,1.106387885739752
+C/A (E-STEER on top of the final algorithm),4,1.0365667602594706
+C/A (E-STEER on top of the final algorithm),7,1.0270344134012328
+C/A (E-STEER on top of the final algorithm),10,0.9822776146980299
+C/A (E-STEER on top of the final algorithm),11,0.8960431732270315
+C/A (E-STEER on top of the final algorithm),13,0.7792076651165405
+C/A (E-STEER on top of the final algorithm),14,0.5766590100765344
+C/A (E-STEER on top of the final algorithm),16,0.981196312526051
+C/A (E-STEER on top of the final algorithm),18,1.0799806465447785
+C/A (E-STEER on top of the final algorithm),20,1.1913099078781322
+C/A (E-STEER on top of the final algorithm),22,1.1434293564432485
+C/A (E-STEER on top of the final algorithm),24,0.981683354786331
+C/A (E-STEER on top of the final algorithm),26,0.9991377979717836
+C/A (E-STEER on top of the final algorithm),30,1.0021127771852254
+B/D (E-STEER alone vs frozen G1+E),1,0.8481060761712789
+B/D (E-STEER alone vs frozen G1+E),3,0.5110737729726149
+B/D (E-STEER alone vs frozen G1+E),4,1.1111259710233519
+B/D (E-STEER alone vs frozen G1+E),7,0.9655469983068468
+B/D (E-STEER alone vs frozen G1+E),10,1.7097111901840365
+B/D (E-STEER alone vs frozen G1+E),11,0.8986276508354625
+B/D (E-STEER alone vs frozen G1+E),13,1.8090054466942296
+B/D (E-STEER alone vs frozen G1+E),14,0.9315410557917172
+B/D (E-STEER alone vs frozen G1+E),16,0.9538561717164777
+B/D (E-STEER alone vs frozen G1+E),18,0.9736481430983841
+B/D (E-STEER alone vs frozen G1+E),20,1.1978256865289179
+B/D (E-STEER alone vs frozen G1+E),22,0.6711719609151031
+B/D (E-STEER alone vs frozen G1+E),24,0.9904815175919882
+B/D (E-STEER alone vs frozen G1+E),26,0.9524746434534512
+B/D (E-STEER alone vs frozen G1+E),30,0.8556145568262006
+A/D (G1-STEER alone; validity check) ,1,1.444973242142257
+A/D (G1-STEER alone; validity check) ,3,1.1998663242552117
+A/D (G1-STEER alone; validity check) ,4,1.2569079556374052
+A/D (G1-STEER alone; validity check) ,7,0.9269918746474244
+A/D (G1-STEER alone; validity check) ,10,1.2699962832126226
+A/D (G1-STEER alone; validity check) ,11,1.0563287384715778
+A/D (G1-STEER alone; validity check) ,13,1.65424389634559
+A/D (G1-STEER alone; validity check) ,14,0.7229397979614138
+A/D (G1-STEER alone; validity check) ,16,1.0744960352682726
+A/D (G1-STEER alone; validity check) ,18,1.738291490279372
+A/D (G1-STEER alone; validity check) ,20,1.0186644623186163
+A/D (G1-STEER alone; validity check) ,22,0.3833923421921427
+A/D (G1-STEER alone; validity check) ,24,1.0228130728600848
+A/D (G1-STEER alone; validity check) ,26,1.1096120156222682
+A/D (G1-STEER alone; validity check) ,30,0.8715275731215952
+C/D (both vs frozen G1+E),1,1.2134816513558635
+C/D (both vs frozen G1+E),3,1.1195518197581313
+C/D (both vs frozen G1+E),4,1.303893652063477
+C/D (both vs frozen G1+E),7,0.9546693778682843
+C/D (both vs frozen G1+E),10,1.4596086296215731
+C/D (both vs frozen G1+E),11,0.8446580839163675
+C/D (both vs frozen G1+E),13,1.6470559852509865
+C/D (both vs frozen G1+E),14,0.656775763825515
+C/D (both vs frozen G1+E),16,0.9887123103934927
+C/D (both vs frozen G1+E),18,0.9107712824451903
+C/D (both vs frozen G1+E),20,1.3059855715595603
+C/D (both vs frozen G1+E),22,0.4427556053245417
+C/D (both vs frozen G1+E),24,0.9916284358009535
+C/D (both vs frozen G1+E),26,1.0330568264146134
+C/D (both vs frozen G1+E),30,0.9742347223877506
+C/B (G1-STEER on top of E-STEER),1,1.3655259727653275
+C/B (G1-STEER on top of E-STEER),3,1.7156563002384164
+C/B (G1-STEER on top of E-STEER),4,1.147558906987225
+C/B (G1-STEER on top of E-STEER),7,0.9365417928998176
+C/B (G1-STEER on top of E-STEER),10,1.169961908616
+C/B (G1-STEER on top of E-STEER),11,0.937836450427024
+C/B (G1-STEER on top of E-STEER),13,1.1003236272907964
+C/B (G1-STEER on top of E-STEER),14,0.6410631282670636
+C/B (G1-STEER on top of E-STEER),16,0.9361478764299149
+C/B (G1-STEER on top of E-STEER),18,0.7719969590404363
+C/B (G1-STEER on top of E-STEER),20,1.0169626494839408
+C/B (G1-STEER on top of E-STEER),22,0.9547220711416368
+C/B (G1-STEER on top of E-STEER),24,1.0039230440278322
+C/B (G1-STEER on top of E-STEER),26,1.1059082482431752
+C/B (G1-STEER on top of E-STEER),30,1.1087045685791486
+B/A (stream swap),1,0.6895393497919563
+B/A (stream swap),3,0.4854840931452822
+B/A (stream swap),4,0.9421005523251307
+B/A (stream swap),7,1.0330605407812412
+B/A (stream swap),10,1.2223214820215553
+B/A (stream swap),11,0.8755217659294219
+B/A (stream swap),13,0.8048611828320373
+B/A (stream swap),14,1.0723177543594973
+B/A (stream swap),16,1.0135317600677607
+B/A (stream swap),18,1.4338124215618588
+B/A (stream swap),20,1.3180494623246388
+B/A (stream swap),22,1.2545576464024029
+B/A (stream swap),24,0.9687435611940385
+B/A (stream swap),26,0.865284839334281
+B/A (stream swap),30,0.9205500232167543

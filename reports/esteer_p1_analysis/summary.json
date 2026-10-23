@@ -1,0 +1,81 @@
+{
+  "C/A (E-STEER on top of the final algorithm)": {
+    "median": 1.0021127771852254,
+    "wins": 7,
+    "losses": 8,
+    "cats": 0,
+    "max_ratio": 1.1913099078781322,
+    "worst_f": 20,
+    "wilcoxon_p": 0.7197265625
+  },
+  "B/D (E-STEER alone vs frozen G1+E)": {
+    "median": 0.9538561717164777,
+    "wins": 11,
+    "losses": 4,
+    "cats": 2,
+    "max_ratio": 1.8090054466942296,
+    "worst_f": 13,
+    "wilcoxon_p": 0.42120361328125
+  },
+  "A/D (G1-STEER alone; validity check) ": {
+    "median": 1.0744960352682726,
+    "wins": 4,
+    "losses": 11,
+    "cats": 5,
+    "max_ratio": 1.738291490279372,
+    "worst_f": 18,
+    "wilcoxon_p": 0.22930908203125
+  },
+  "C/D (both vs frozen G1+E)": {
+    "median": 0.9916284358009535,
+    "wins": 8,
+    "losses": 7,
+    "cats": 5,
+    "max_ratio": 1.6470559852509865,
+    "worst_f": 13,
+    "wilcoxon_p": 0.76153564453125
+  },
+  "C/B (G1-STEER on top of E-STEER)": {
+    "median": 1.0169626494839408,
+    "wins": 6,
+    "losses": 9,
+    "cats": 2,
+    "max_ratio": 1.7156563002384164,
+    "worst_f": 3,
+    "wilcoxon_p": 0.389404296875
+  },
+  "B/A (stream swap)": {
+    "median": 0.9687435611940385,
+    "wins": 8,
+    "losses": 7,
+    "cats": 4,
+    "max_ratio": 1.4338124215618588,
+    "worst_f": 18,
+    "wilcoxon_p": 0.67877197265625
+  },
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\esteer_p1_20261022_211024",
+  "interaction_I": -0.0038752561750254877,
+  "interaction_CI": [
+    -0.0717845141263953,
+    0.04079461939744089
+  ],
+  "runtime": {
+    "A": 1.0,
+    "B": 1.087578704663886,
+    "C": 1.062684390925953,
+    "D": 1.0271950279452704
+  },
+  "H1_pass": false,
+  "H3_validity": false,
+  "verdict": "STOP_ESTEER",
+  "esteer_activity": {
+    "B-G1off-Eon": {
+      "EsteerTrigRate": NaN,
+      "EsteerStepMean": NaN
+    },
+    "C-G1on-Eon": {
+      "EsteerTrigRate": NaN,
+      "EsteerStepMean": NaN
+    }
+  }
+}
