@@ -174,6 +174,18 @@ switch job.algorithm
         [Best,T,info]=LS_CMA_CEC(f,state,[],N,job.seedSearch);
     case 'ACMA'
         [Best,T,info]=ACMA_CEC(f,state,[],N,job.seedSearch);
+    case 'HCCMA'
+        [Best,T,info]=HCCMA_CEC(f,state,[],N,job.seedSearch);
+    case 'REHEAT_CMA'
+        [Best,T,info]=REHEAT_CMA_CEC(f,state,[],N,job.seedSearch);
+    case {'JSO','jSO'}
+        [Best,T,info]=jSO_CEC(f,state,[],N,job.seedSearch);
+    case 'PORTFOLIO2'
+        [Best,T,info]=PORTFOLIO2_CEC(f,state,[],N,job.seedSearch);
+    case 'JSO_CMA'
+        [Best,T,info]=JSO_CMA_CEC(f,state,[],N,job.seedSearch);
+    case 'PILOT_JSO'
+        [Best,T,info]=PILOT_JSO_CEC(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID'
         [Best,T,info]=SGWO_HYBRID(f,state,[],N,job.seedSearch);
     case 'SGWO_HYBRID2'

@@ -159,6 +159,24 @@ end
 if exist(fullfile(sqRoot,'src','ACMA_CEC.m'),'file')
     h.ACMA_CEC=fileSha256(fullfile(sqRoot,'src','ACMA_CEC.m'));
 end
+if exist(fullfile(sqRoot,'src','HCCMA_CEC.m'),'file')
+    h.HCCMA_CEC=fileSha256(fullfile(sqRoot,'src','HCCMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','REHEAT_CMA_CEC.m'),'file')
+    h.REHEAT_CMA_CEC=fileSha256(fullfile(sqRoot,'src','REHEAT_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','jSO_CEC.m'),'file')
+    h.jSO_CEC=fileSha256(fullfile(sqRoot,'src','jSO_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','PORTFOLIO2_CEC.m'),'file')
+    h.PORTFOLIO2_CEC=fileSha256(fullfile(sqRoot,'src','PORTFOLIO2_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','JSO_CMA_CEC.m'),'file')
+    h.JSO_CMA_CEC=fileSha256(fullfile(sqRoot,'src','JSO_CMA_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','PILOT_JSO_CEC.m'),'file')
+    h.PILOT_JSO_CEC=fileSha256(fullfile(sqRoot,'src','PILOT_JSO_CEC.m'));
+end
 if exist(fullfile(sqRoot,'src','CMAES_RESUME.m'),'file')
     h.CMAES_RESUME=fileSha256(fullfile(sqRoot,'src','CMAES_RESUME.m'));
 end
