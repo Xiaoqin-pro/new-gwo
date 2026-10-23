@@ -483,6 +483,8 @@ end
 % ==================== 输出 ====================
 Best=struct('Cost',Alpha.Cost,'Vector',Alpha.Vector);
 info=baseInfo(fe,rounds,T,clockStart,opt);
+info.FinalPopulation=Xv; info.FinalFitness=fv;
+info.FinalArchive=Arc(1:ArcN,:); info.FinalArchiveFitness=Arcv(1:ArcN);
 info.QuotaTrace=qTrace;
 info.QTable=Q;
 info.QActionCounts=qActCount;

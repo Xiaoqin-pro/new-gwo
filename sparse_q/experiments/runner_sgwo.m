@@ -131,6 +131,10 @@ switch job.algorithm
         [Best,T,info]=SGWO_DWG(f,state,[],N,job.seedSearch);
     case 'LSHADE'
         [Best,T,info]=LSHADE_CEC(f,state,[],N,job.seedSearch);
+    case 'SGWO_HYBRID'
+        [Best,T,info]=SGWO_HYBRID(f,state,[],N,job.seedSearch);
+    case 'SGWO_HYBRID2'
+        [Best,T,info]=SGWO_HYBRID2(f,state,[],N,job.seedSearch);
     case 'SGWO_VFA'
         [Best,T,info]=SGWO_VFA(f,state,[],N,job.seedSearch);
     case 'SGWO_DLH'

@@ -125,11 +125,12 @@ function [Best,T,info] = LSHADE_CEC(f,state,~,Particle_Number,seed)
         info.PopulationHistory(end+1)=sizepop;
         info.ArchiveSizeHistory(end+1)=size(archive,1);
     end
-    info.Algorithm='LSHADE_CEC';
+    info.Algorithm='LSHADE_CEC'; info.Rounds=max(0,numel(info.PopulationHistory)-1);
     info.Seed=seed;
     info.MemoryF=memoryF;
     info.MemoryCR=memoryCR;
     info.FinalPopulationSize=sizepop;
+    info.FinalPopulation=pop; info.FinalFitness=fitness; info.FinalArchive=archive;
     info.Seconds=toc(clockStart);
 end
 
