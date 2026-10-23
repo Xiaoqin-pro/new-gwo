@@ -1,0 +1,23 @@
+{
+  "results_dir": "D:\\111\\Desktop\\噜噜\\new-gwo-g2tr-branch\\sparse_q\\results\\emix_confirm2_20261023_031944",
+  "base_batch": "steer_robust_20261022_213856",
+  "base_arm": "A-Final-SteerOn",
+  "new_arm": "B-EMIX-Shell25",
+  "n_pairs": 870,
+  "median": 0.9987551702866273,
+  "wins": 15,
+  "losses": 14,
+  "cats": 2,
+  "max_ratio": 1.9976895076816223,
+  "min_ratio": 0.7282703082508052,
+  "worst_f": 6,
+  "best_f": 9,
+  "wilcoxon_p": 0.9321278370916843,
+  "ci95": [
+    0.9647592530995629,
+    1.0199792465093684
+  ],
+  "runtime_B_over_A": 0.8747752191885807,
+  "H_pass": false,
+  "verdict": "STOP_EMIX_CONFIRMED"
+}
