@@ -1862,3 +1862,20 @@ OCMA 的失败说明仅改变采样方向不够。下一步只测试 **Active-CM
 
 1. **LSHADE-cnEpSin 的完整实现**（不是简化旋转）；
 2. 若完整 cnEpSin 仍不能超过 CMA，转向 **CMA 主核 + 应用层结构**，把论文创新放到问题建模/约束处理/真实场景，而不是继续伪造通用优化器改进。
+
+
+## 一百、cnEpSin 近似实现：dev 失败
+
+参考资料：`TwilightArchonYz/APF-LSHADE-cnEpSin`。其核心包含：
+- best-neighborhood 协方差；
+- 特征坐标中的二项交叉（pb≈0.4）；
+- 频率/SF 记忆和 APF 扰动项。
+
+当前实现的 `LSHADE_CNEPSIN_CEC` 复现了前两项，但未包含完整频率/APF 学习。8×2 dev 结果：
+
+| 对比 | 中位比 | 胜/8 | >1.20 | 最大 |
+|---|---:|---:|---:|---:|
+| CNEPSIN / LSHADE | 1.122 | 1 | 4 | 9.18 |
+| CNEPSIN / jSO | 1.051 | 2 | 3 | 78.16 |
+
+`STOP_CNEPSIN_APPROX_DEV`。这说明仅移植特征坐标交叉不够；若继续该家族，必须完整实现参考版的频率/SF 记忆和 APF 项，不能把它当成已完成的新机制。
