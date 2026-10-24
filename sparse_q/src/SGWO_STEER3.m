@@ -69,7 +69,7 @@ opt=struct( ...
     'qEpsStart',0.30, 'qEpsEnd',0.05, 'qInitPrior',0, ...
     'archiveCap',24, 'dSepFrac',0.02, ...
     'succCap',25, 'stagnFrac',0.02, 'stagnBoost',0, 'boostThreshFrac',0.02, ...
-    'steerMode','none', 'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, 'g2Mode','shell', 'g2F',0.5, 'g2Pool','pool', ...
+    'steerMode','none', 'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, 'g2Mode','shell', 'g2F',0.5, 'g2Pool','pool', 'g2MaxStep',inf, 'g2Anchor','any', 'g2Fend',nan, 'g2FendFrac',1.0, 'g2MixDiff',nan, 'g2DiffScale',1.0, ...
     'covSteerSource','wolves', 'covSteerEvery',20, 'covSteerBlend',0, 'covSteerShrink',0.10, ...
     'leaderMode','global', 'qdSepFrac',0.10, 'qdShare',0.5, 'qdRetries',5, ...
     'leaderAgg','equal', 'leaderTemp',0.10, 'spatialConvFrac',0.5, 'leaderTopo','global', 'knnK',10, 'leaderBlend',0.5, 'topoEvery',10, 'eLineMode','two', 'ePathMode','nearest', ...
@@ -465,13 +465,58 @@ while fe<budget
             src(m)=4; ctr(m)=0;
         elseif strcmpi(opt.g2Mode,'diffa')
             % toward-alpha 差分候选：x_r1 + F*(alpha - x_r1) + F*(x_r2 - x_r3)
-            if strcmpi(opt.g2Pool,'wolves'), pG=Xv; else, pG=[Xv;Arc(1:ArcN,:)]; end; nG=size(pG,1);
-            r1=randi(sAux,nG); r2=randi(sAux,nG);
+            if strcmpi(opt.g2Pool,'wolves'), pG=Xv; pf=fv;
+            elseif strcmpi(opt.g2Pool,'archive'), pG=Arc(1:ArcN,:); pf=Arcv(1:ArcN);
+            else, pG=[Xv;Arc(1:ArcN,:)]; pf=[fv; Arcv(1:ArcN)];
+            end
+            if isempty(pG) || size(pG,1)<3
+                pG=Xv; pf=fv;
+            end
+            nG=size(pG,1);
+            g2Feff=opt.g2F;
+            if isfinite(opt.g2Fend)
+                ff=max(0,min(1,(fe/budget-opt.g2FendFrac)/max(1e-9,1-opt.g2FendFrac)));
+                g2Feff=opt.g2F+(opt.g2Fend-opt.g2F)*ff;
+            end
+            if strcmpi(opt.g2Anchor,'best')
+                [~,orG]=sort(pf); nHalf=max(2,floor(nG/2)); pick=orG(1:nHalf);
+                r1=pick(randi(sAux,nHalf));
+            else
+                r1=randi(sAux,nG);
+            end
+            r2=randi(sAux,nG);
             while r2==r1, r2=randi(sAux,nG); end
             r3=randi(sAux,nG);
             while r3==r1 || r3==r2, r3=randi(sAux,nG); end
-            Y(m,:)=min(max(pG(r1,:)+opt.g2F*(Alpha.Vector-pG(r1,:))+opt.g2F*(pG(r2,:)-pG(r3,:)),lb),ub);
+            yA=pG(r1,:)+g2Feff*(Alpha.Vector-pG(r1,:))+g2Feff*opt.g2DiffScale*(pG(r2,:)-pG(r3,:));
+            if isfinite(opt.g2MaxStep) && opt.g2MaxStep>0
+                step=yA-pG(r1,:); sn=norm(step);
+                cap=opt.g2MaxStep*span;
+                if sn>cap && sn>0, step=step*(cap/sn); yA=pG(r1,:)+step; end
+            end
+            Y(m,:)=min(max(yA,lb),ub);
             src(m)=2; ctr(m)=0;
+        elseif strcmpi(opt.g2Mode,'mix')
+            % 混合槽位：前 g2MixDiff 个 α 壳（单峰精化），后 nG2-g2MixDiff 个 toward-alpha 差分（多峰跳出）
+            if isfinite(opt.g2MixDiff), half=max(0,round(opt.g2MixDiff)); else, half=max(1,floor(opt.nG2/2)); end
+            if j<=half
+                Y(m,:)=min(max(Alpha.Vector+sigG2*(2*rand(1,D)-1),lb),ub);
+                src(m)=2;
+            else
+                if strcmpi(opt.g2Pool,'wolves'), pG=Xv; else, pG=[Xv;Arc(1:ArcN,:)]; end; nG=size(pG,1);
+                g2Feff=opt.g2F;
+                if isfinite(opt.g2Fend)
+                    g2Feff=opt.g2F+(opt.g2Fend-opt.g2F)*(fe/budget);
+                end
+                r1=randi(sAux,nG); r2=randi(sAux,nG);
+                while r2==r1, r2=randi(sAux,nG); end
+                r3=randi(sAux,nG);
+                while r3==r1 || r3==r2, r3=randi(sAux,nG); end
+                yA=pG(r1,:)+g2Feff*(Alpha.Vector-pG(r1,:))+g2Feff*opt.g2DiffScale*(pG(r2,:)-pG(r3,:));
+                Y(m,:)=min(max(yA,lb),ub);
+                src(m)=2;
+            end
+            ctr(m)=0;
         elseif strcmpi(opt.g2Mode,'diff')
             % 差分候选：从狼群+已验证档案中取三个不同个体，x_r1 + F*(x_r2 - x_r3)
             if strcmpi(opt.g2Pool,'wolves'), pG=Xv; else, pG=[Xv;Arc(1:ArcN,:)]; end; nG=size(pG,1);

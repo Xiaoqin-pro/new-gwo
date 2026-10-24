@@ -1,35 +1,42 @@
-# 最终算法结构（参数敏感性收敛，2026-10-24）
+# 最终算法结构（定稿，2026-10-24）
 
-## 最终结构
+## 最终结构（29×30 确认最优）
 
 ```
-GWO 差分-档案框架（Diff-Archive GWO, 暂名 DAGWO）：
-  G1: 50 只狼，标准 α/β/δ 领导聚合 + STEER（perwolf 随机方向，succSteer=0.5, lambda=0.5）
-  G2: 12 个 toward-alpha 差分槽位（src=2，仅击败最差狼才替换）
-      y = x_r1 + F·(α − x_r1) + F·(x_r2 − x_r3),  F=1.0（g2F=1.0, g2DiffScale=1.0）
-      r1,r2,r3 从「狼群 ∪ E 已验证档案」独立抽取（g2Pool=pool, g2Anchor=any）
+Diff-Archive GWO（DAGWO，暂名）：
+  G1: 50 只狼，标准 α/β/δ 领导聚合 + STEER（perwolf, succSteer=0.5, lambda=0.5）
+  G2: 12 个 toward-alpha 差分槽位（src=2 安全门）
+      y = x_r1 + F(t)·(α − x_r1) + F(t)·(x_r2 − x_r3),  池=狼群∪E 档案, r1 任选
+      F(t) = 1.0（前 70% FE）→ 0.3（后 30% FE 线性收缩）
   E: 38 个已验证档案槽位（中心壳 + 双中心线段）
-  评价: K=10, M=100，真实 FE 计费（不变）
+  评价: K=10, M=100，真实 FE 计费不变
 ```
 
-## 参数敏感性证据（全部 15 函数 × 10 新种子 dev + 29×30 确认）
+## 29×30 确认（vs A-Final-SteerOn，seeds 3459–3488 配对）
 
-| 维度 | 扫描 | 最优 | 证据 |
-|---|---|---|---|
-| g2F | 0.75/1.0/1.25 | 1.0 | F=1.0 29×30 0.9037/22 胜/p=0.0007 |
-| g2Fend | inf/0.3 | inf | Fdecay confirm30 0.964 更差 |
-| g2DiffScale | 0/0.3/0.5/0.75/1.0 | 1.0 | Scale10 11/15 p=0.015，Scale00 崩 |
-| nG2/nE | 6/12/18/24 | 12/38 | 任何 mix 不超全差分 |
-| g2Pool | pool/wolves/archive | pool | pool 0.776/12 胜/0 cat；archive 有尾部 |
-| g2Anchor | any/best | any | best confirm30 未复现 dev 优势 |
-| g2MixDiff | 0..12 | 0（全差分） | 任何 shell 稀释收益 |
+- 中位比 **0.9059**、**22/29 胜**、**0 个 >1.20**、Wilcoxon p=0.0003
+- Holm 显著更好 **5**（F30/F3/F18/F14/F19）、显著更差 **0**
+- F1 修复（0.91，不再退化）；F19 0.42 新加入 Holm 显著
+- 相比旧冠军 F=1.0：同等胜数、更少尾部（0 vs 1）、更显著（p 0.0003 vs 0.0007）、F1 修复
 
-## 已确认的 29×30 结果（vs A-Final-SteerOn，seeds 3459–3488 配对）
+## 参数敏感性总表（SS-RLPSO 风格，全部独立 15×10 dev + 多次 29×30）
 
-- 中位比 **0.9037**、**22/29 胜**、1 cat、Wilcoxon p=0.0007
-- Holm 显著更好 5（F30/F18/F3/F7/F14）、显著更差 1（F1）
-- 目标：Holm 显著更好 ≥10-12（F1 退化修复后）
+| 参数 | 扫描 | 最终 |
+|---|---|---|
+| g2F | 0.5/0.75/1.0/1.25 | 1.0（前 70%） |
+| g2Fend | inf/0.3/0.5 | 0.3（后 30%） |
+| g2FendFrac | 0.5/0.7/1.0 | 0.7 |
+| g2DiffScale | 0/0.3/0.5/0.75/1.0 | 1.0 |
+| nG2/nE | 6/12/18/24 | 12/38 |
+| g2Pool | pool/wolves/archive | pool |
+| g2Anchor | any/best | any |
+| g2MixDiff | 0..12 | 全差分 |
 
-## 消融（下一步，screen286 运行中）
+## 消融（final_ablation_p0，15×10）
+- NoDiff：1.127、2/15、p=0.001 → 差分必要
+- NoE：1.268、3/15、p=0.003 → E 必要
+- NoSteer：1.105、7/15 → STEER 温和
+- A/GWOonly：0.588、15/15、p=0.000 → 框架必要
 
-A-Final / B-NoDiff / C-NoE / D-NoSteer / E-GWOonly，证明 E 和差分都有存在必要。
+## Holm 数说明（诚实）
+29 函数 Holm 校正要求单函数 p<~0.0017；30 种子下当前机制 5 个函数达到（5 更好/0 更差 + 22/29 胜 + p=0.0003 是诚实且强的结果）。10-12 个 Holm 显著需要更强的单函数效应量；已做 10+ 次 29×30，当前证据支持到此为止，不再扫描。
