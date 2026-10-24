@@ -69,7 +69,7 @@ opt=struct( ...
     'qEpsStart',0.30, 'qEpsEnd',0.05, 'qInitPrior',0, ...
     'archiveCap',24, 'dSepFrac',0.02, ...
     'succCap',25, 'stagnFrac',0.02, 'stagnBoost',0, 'boostThreshFrac',0.02, ...
-    'steerMode','none', 'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, ...
+    'steerMode','none', 'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, 'g2Mode','shell', 'g2F',0.5, 'g2Pool','pool', ...
     'covSteerSource','wolves', 'covSteerEvery',20, 'covSteerBlend',0, 'covSteerShrink',0.10, ...
     'leaderMode','global', 'qdSepFrac',0.10, 'qdShare',0.5, 'qdRetries',5, ...
     'leaderAgg','equal', 'leaderTemp',0.10, 'spatialConvFrac',0.5, 'leaderTopo','global', 'knnK',10, 'leaderBlend',0.5, 'topoEvery',10, 'eLineMode','two', 'ePathMode','nearest', ...
@@ -162,6 +162,7 @@ gen1Src=[NaN NaN NaN NaN];
 steerTriggers=0; steerApplied=0;
 opNow=opt.opFixed; opMask=false(N,1); nbrCache=[]; opQ=zeros(9,numel(opt.opActions)); opActCount=zeros(1,numel(opt.opActions)); opStateCount=zeros(1,9); opAct=1; opState=1; opEps=opt.opEpsStart; opTrace=zeros(0,5); topoQ=zeros(6,numel(opt.topoActions)); if opt.topoInitPrior~=0, topoQ(:,1)=opt.topoInitPrior; end; topoActCount=zeros(1,numel(opt.topoActions)); topoStateCount=zeros(1,6); topoAct=1; topoState=1; topoEps=opt.topoEpsStart; topoTrace=zeros(0,5);
 covB=[]; covD=[]; covUpdates=0; covCondTrace=zeros(0,1);
+whB=[]; whInv=[]; whEvery=max(5,round(opt.covSteerEvery));
 stjGateGens=0; stjApplied=0;
 daLastArc=0; daLastGB=0; daDualFE=0; daFirstDualFE=-1; daArcGapMax=0; daArcImpCnt=0;
 
@@ -295,6 +296,16 @@ while fe<budget
     end
     aA=2-2*(fe/budget);      % 与标准 GWO 相同的线性衰减（按真实 FE）
 
+    % 白化差分缓存：每 whEvery 代用当前种群上半部估计协方差，供 opDiffMode='whiten' 使用
+    if (rounds==1 || mod(rounds-1,whEvery)==0)
+        [~,wo]=sort(fv); mw=min(N,max(2,round(0.5*N))); Xw=Xv(wo(1:mw),:);
+        xmw=mean(Xw,1); Xwc=Xw-repmat(xmw,size(Xw,1),1); Cw=(Xwc'*Xwc)/(size(Xw,1)-1); Cw=(Cw+Cw')/2;
+        [whB,Lw]=eig(Cw); Lw=max(diag(Lw),1e-12);
+        if all(isfinite(Lw)) && all(isfinite(whB(:)))
+            whInv=1./sqrt(Lw);
+        else, whB=[]; whInv=[]; end
+    end
+
     % ---- 1) 生成候选池（廉价；不消耗真实 FE） ----
     Y=zeros(M,D); src=zeros(M,1); par=zeros(M,1); ctr=zeros(M,1);
     m=0;
@@ -382,13 +393,22 @@ while fe<budget
             if strcmpi(opt.opDiffMode,'random')
                 u1=lb+rand(sOp,1,D).*(ub-lb); u2=lb+rand(sOp,1,D).*(ub-lb); dv=u1-u2;
             end
+            if strcmpi(opt.opDiffMode,'whiten') && ~isempty(whB) && ~isempty(whInv)
+                dv=dv*(whB*diag(whInv)*whB');
+            elseif strcmpi(opt.opDiffMode,'rot') && ~isempty(whB)
+                dv=dv*whB*whB';
+            end
             xg=Xv(i,:)+opt.opF*(Alpha.Vector-Xv(i,:))+opt.opF*dv;
+        elseif opNow==5
+            r1=randi(sOp,N); while r1==i, r1=randi(sOp,N); end
+            r2=randi(sOp,N); while r2==i || r2==r1, r2=randi(sOp,N); end
+            xg=xg+opt.opF*(Xv(r1,:)-Xv(r2,:));
         elseif opNow==3
             sigOp=opt.opGaussianFrac*(1-fe/budget)*span/sqrt(D); xg=Alpha.Vector+sigOp*randn(sOp,1,D);
         elseif opNow==4
             xg=lb+ub-Xv(i,:)+opt.opOppNoise*span/sqrt(D)*randn(sOp,1,D);
         end
-        succEff=opt.succSteer; if opNow>=3, succEff=0; end
+        succEff=opt.succSteer; if opNow==3 || opNow==4, succEff=0; end
         if isStj && ~stjGateNow, succEff=0; end
         if isDsAudit, succEff=0; end
         if isCovSteer
@@ -443,6 +463,24 @@ while fe<budget
             iw=mod(j-1,size(Xv,1))+1;                      % 消融：标准 GWO 候选填补槽位
             Y(m,:)=gwoMove(aA,Alpha,Beta,Delta,Xv(iw,:),lb,ub);
             src(m)=4; ctr(m)=0;
+        elseif strcmpi(opt.g2Mode,'diffa')
+            % toward-alpha 差分候选：x_r1 + F*(alpha - x_r1) + F*(x_r2 - x_r3)
+            if strcmpi(opt.g2Pool,'wolves'), pG=Xv; else, pG=[Xv;Arc(1:ArcN,:)]; end; nG=size(pG,1);
+            r1=randi(sAux,nG); r2=randi(sAux,nG);
+            while r2==r1, r2=randi(sAux,nG); end
+            r3=randi(sAux,nG);
+            while r3==r1 || r3==r2, r3=randi(sAux,nG); end
+            Y(m,:)=min(max(pG(r1,:)+opt.g2F*(Alpha.Vector-pG(r1,:))+opt.g2F*(pG(r2,:)-pG(r3,:)),lb),ub);
+            src(m)=2; ctr(m)=0;
+        elseif strcmpi(opt.g2Mode,'diff')
+            % 差分候选：从狼群+已验证档案中取三个不同个体，x_r1 + F*(x_r2 - x_r3)
+            if strcmpi(opt.g2Pool,'wolves'), pG=Xv; else, pG=[Xv;Arc(1:ArcN,:)]; end; nG=size(pG,1);
+            r1=randi(sAux,nG); r2=randi(sAux,nG);
+            while r2==r1, r2=randi(sAux,nG); end
+            r3=randi(sAux,nG);
+            while r3==r1 || r3==r2, r3=randi(sAux,nG); end
+            Y(m,:)=min(max(pG(r1,:)+opt.g2F*(pG(r2,:)-pG(r3,:)),lb),ub);
+            src(m)=2; ctr(m)=0;
         elseif opt.g2Subset>0
             nd=max(1,round(opt.g2Subset*D));
             dims=randperm(sAux,D,nd);
