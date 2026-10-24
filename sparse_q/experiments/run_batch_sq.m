@@ -111,6 +111,21 @@ end
 if exist(fullfile(sqRoot,'src','CMAES_CEC.m'),'file')
     h.CMAES_CEC=fileSha256(fullfile(sqRoot,'src','CMAES_CEC.m'));
 end
+if exist(fullfile(sqRoot,'src','CMA_DE_CEC.m'),'file')
+    h.CMA_DE_CEC=fileSha256(fullfile(sqRoot,'src','CMA_DE_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','CMA_TAIL_CEC.m'),'file')
+    h.CMA_TAIL_CEC=fileSha256(fullfile(sqRoot,'src','CMA_TAIL_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','CMA_JSO_CEC.m'),'file')
+    h.CMA_JSO_CEC=fileSha256(fullfile(sqRoot,'src','CMA_JSO_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','CMA_GATED_CEC.m'),'file')
+    h.CMA_GATED_CEC=fileSha256(fullfile(sqRoot,'src','CMA_GATED_CEC.m'));
+end
+if exist(fullfile(sqRoot,'src','SPACMA_CEC.m'),'file')
+    h.SPACMA_CEC=fileSha256(fullfile(sqRoot,'src','SPACMA_CEC.m'));
+end
 if exist(fullfile(sqRoot,'src','PORTFOLIO_CEC.m'),'file')
     h.PORTFOLIO_CEC=fileSha256(fullfile(sqRoot,'src','PORTFOLIO_CEC.m'));
 end
@@ -292,7 +307,20 @@ switch name
         N=30;
     case 'CLPSO'
         N=50;   % 主表统一协议 N=50（N=40 为作者原设置版本，已存档不再使用）
+    case 'SPACMA100'
+        N=100;
+    case 'SGWO100'
+        N=100;
+    case 'SPACMA200'
+        N=200;
+    case 'SPACMA400'
+        N=400;
+    case 'SPACMA600'
+        N=600;
+    case 'SPACMA900'
+        N=900;
     otherwise
         N=50;
 end
 end
+

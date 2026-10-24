@@ -61,7 +61,7 @@ function [Best,T,info]=SGWO_STEER3(f,state,~,N,seed)
 % ==================== 选项 ====================
 opt=struct( ...
     'mode','sparse', ...
-    'K',50, 'nG2',NaN, 'nE',NaN, ...
+    'K',50, 'kSchedule','fixed', 'kEnd',50, 'nG2',NaN, 'nE',NaN, ...
     'screenPolicy','directed', 'g1Share',0.5, 'stratG1','rotate', 'stratE','credit', 'debugSel',false, ...
     'quotaPolicy','fixed','quotaFixed',0.5, ...
     'quotaActions',[0.25 0.50 0.75], ...
@@ -70,6 +70,11 @@ opt=struct( ...
     'archiveCap',24, 'dSepFrac',0.02, ...
     'succCap',25, 'stagnFrac',0.02, 'stagnBoost',0, 'boostThreshFrac',0.02, ...
     'steerMode','none', 'succSteer',0, 'succDirCap',20, 'steerLambda',0.5, 'g2Subset',0, ...
+    'covSteerSource','wolves', 'covSteerEvery',20, 'covSteerBlend',0, 'covSteerShrink',0.10, ...
+    'leaderMode','global', 'qdSepFrac',0.10, 'qdShare',0.5, 'qdRetries',5, ...
+    'leaderAgg','equal', 'leaderTemp',0.10, 'spatialConvFrac',0.5, 'leaderTopo','global', 'knnK',10, 'leaderBlend',0.5, 'topoEvery',10, 'eLineMode','two', 'ePathMode','nearest', ...
+    'topoPolicy','fixed', 'topoActions',[0 5 10 20], 'topoAlpha',0.1, 'topoGamma',0.9, 'topoEpsStart',0.30, 'topoEpsEnd',0.05, 'topoEpsDecay',0.995, 'topoInitPrior',0, ...
+    'opPolicy','fixed', 'opFixed',1, 'opActions',[1 2 3 4], 'opAlpha',0.1, 'opGamma',0.9, 'opEpsStart',0.30, 'opEpsEnd',0.05, 'opEpsDecay',0.995, 'opExploreBonus',0.1, 'opF',0.5, 'opGaussianFrac',0.10, 'opOppNoise',0.05, 'opShare',0.5, 'opPhaseFrac',0.5, 'opDiffMode','arc', ...
     'stjTauFrac',0.02, 'stjTauMin',500, ...
     'sdirSource','mixed', ...   % mixed | g1 | g2e | random（方向归因审计用；默认 mixed = 冻结行为）
     'ablateG2',0, 'ablateE',0, 'alphaSingleE',0, 'sigmaFixFrac',0, ...  % 消融开关（默认全关 = 冻结行为）
@@ -80,7 +85,7 @@ for k=1:numel(fn)
         opt.(fn{k})=state.(fn{k});
     end
 end
-assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf','stj','dsaudit'})),'Unknown steerMode.');
+assert(any(strcmpi(opt.steerMode,{'none','vec','rand','dir','perwolf','stj','dsaudit','cov'})),'Unknown steerMode.');
 isDsAudit=strcmpi(opt.steerMode,'dsaudit');   % passive: frozen behaviour + DSE premise logging
 isStj=strcmpi(opt.steerMode,'stj');
 if isStj
@@ -88,6 +93,8 @@ if isStj
 end
 assert(opt.succSteer>=0 && opt.succSteer<=1,'succSteer out of range.');
 isRandDir=strcmp(opt.sdirSource,'random');
+isCovSteer=strcmpi(opt.steerMode,'cov');
+isQD=~strcmpi(opt.leaderMode,'global');
 recG1 = ~strcmp(opt.sdirSource,'g2e') && ~isRandDir;
 recG2E= ~strcmp(opt.sdirSource,'g1')  && ~isRandDir;
 
@@ -110,13 +117,18 @@ end
 if strcmp(opt.mode,'dense-async')
     K=0; M=0;            % dense-async 模式不使用候选池
 else
-    K=opt.K; M=N+opt.nG2+opt.nE;
+    K=opt.K; M=N+opt.nG2+opt.nE; Kgen=K;
     assert(K<=M && K>=1,'K must be in [1, M]');
 end
 
 % ==================== RNG 与状态 ====================
 rng(seed,'twister');                       % 基流：候选生成
 sAux=RandStream('mt19937ar','Seed',seed+424242);  % 筛选随机 / Q 探索（与基流分离）
+sCov=RandStream('mt19937ar','Seed',seed+999001);  % 协方差控制专用流（不扰动主搜索）
+sLead=RandStream('mt19937ar','Seed',seed+888777);  % QD 领导控制流（不扰动主搜索）
+sPolicy=RandStream('mt19937ar','Seed',seed+666777);  % 领导拓扑动作流
+sOp=RandStream('mt19937ar','Seed',seed+555777);  % G1 算子控制流
+sOpPolicy=RandStream('mt19937ar','Seed',seed+444777);  % G1 算子选择流
 clockStart=tic;
 T=nan(budget,1);
 Alpha=struct('Cost',inf,'Vector',zeros(1,D));
@@ -148,6 +160,8 @@ qStateCount=zeros(1,6);
 qTrace=zeros(0,6);   % [fe, qE, action, stateStart, reward, gbImproved]
 gen1Src=[NaN NaN NaN NaN];
 steerTriggers=0; steerApplied=0;
+opNow=opt.opFixed; opMask=false(N,1); nbrCache=[]; opQ=zeros(9,numel(opt.opActions)); opActCount=zeros(1,numel(opt.opActions)); opStateCount=zeros(1,9); opAct=1; opState=1; opEps=opt.opEpsStart; opTrace=zeros(0,5); topoQ=zeros(6,numel(opt.topoActions)); if opt.topoInitPrior~=0, topoQ(:,1)=opt.topoInitPrior; end; topoActCount=zeros(1,numel(opt.topoActions)); topoStateCount=zeros(1,6); topoAct=1; topoState=1; topoEps=opt.topoEpsStart; topoTrace=zeros(0,5);
+covB=[]; covD=[]; covUpdates=0; covCondTrace=zeros(0,1);
 stjGateGens=0; stjApplied=0;
 daLastArc=0; daLastGB=0; daDualFE=0; daFirstDualFE=-1; daArcGapMax=0; daArcImpCnt=0;
 
@@ -162,6 +176,14 @@ if strcmp(opt.quotaPolicy,'q') || strcmp(opt.quotaPolicy,'random')
     sPrev=stateIndex(fe,budget,lastGB,stagnThresh);
     [qE,aPrev]=chooseAction(opt,fe,budget,Q,sPrev,sAux);
 end
+if strcmpi(opt.topoPolicy,'q') || strcmpi(opt.topoPolicy,'random')
+    topoState=stateIndex(fe,budget,lastGB,stagnThresh);
+    if strcmpi(opt.topoPolicy,'q'), [topoAct,topoEps]=chooseTopoAction(opt,topoQ,topoState,sPolicy,topoEps); else, topoAct=randi(sPolicy,numel(opt.topoActions)); end
+end
+if strcmpi(opt.opPolicy,'q') || strcmpi(opt.opPolicy,'random')
+    opState=stateIndex9(fe,budget,lastGB,stagnThresh);
+    if strcmpi(opt.opPolicy,'q'), [opAct,opEps]=chooseOpAction(opt,opQ,opState,sOpPolicy,opEps); else, opAct=randi(sOpPolicy,numel(opt.opActions)); end
+end
 
 % ==================== dense-async：标准 GWO 语义（审计用） ====================
 if strcmp(opt.mode,'dense-async')
@@ -173,7 +195,7 @@ if strcmp(opt.mode,'dense-async')
             A1=2*a*rand(1,D)-a;  C1=2*rand(1,D);
             A2=2*a*rand(1,D)-a;  C2=2*rand(1,D);
             A3=2*a*rand(1,D)-a;  C3=2*rand(1,D);
-            X1=Alpha.Vector-A1.*abs(C1.*Alpha.Vector-Xv(i,:));
+            X1=alphaUse(i,:)-A1.*abs(C1.*alphaUse(i,:)-Xv(i,:));
             X2=Beta.Vector -A2.*abs(C2.*Beta.Vector -Xv(i,:));
             X3=Delta.Vector-A3.*abs(C3.*Delta.Vector -Xv(i,:));
             xn=(X1+X2+X3)/3;
@@ -193,6 +215,84 @@ end
 % ==================== 主循环（dense-sync / sparse） ====================
 while fe<budget
     rounds=rounds+1;
+    if strcmpi(opt.kSchedule,'up'), Kgen=round(K+(opt.kEnd-K)*fe/budget); elseif strcmpi(opt.kSchedule,'down'), Kgen=round(opt.kEnd+(K-opt.kEnd)*fe/budget); else, Kgen=K; end
+    Kgen=max(1,min(M,Kgen));
+    alphaUse=repmat(Alpha.Vector,N,1); if strcmpi(opt.opPolicy,'hybrid'), opMask=rand(sOp,N,1)<opt.opShare; elseif strcmpi(opt.opPolicy,'early'), opMask=repmat(fe<=opt.opPhaseFrac*budget,N,1); elseif strcmpi(opt.opPolicy,'late'), opMask=repmat(fe>opt.opPhaseFrac*budget,N,1); elseif strcmpi(opt.opPolicy,'rank'), [~,orank]=sort(fv,'ascend'); nd=round(opt.opShare*N); opMask=false(N,1); if nd>0, opMask(orank(max(1,N-nd+1):N))=true; end; end
+    betaUse=repmat(Beta.Vector,N,1); deltaUse=repmat(Delta.Vector,N,1); qdBetaDist=NaN; qdDeltaDist=NaN; qdActive=0;
+    if isQD
+        pool=[Xv;Arc(1:ArcN,:)]; poolF=[fv;Arcv(1:ArcN)]; good=isfinite(poolF); pool=pool(good,:); poolF=poolF(good);
+        if size(pool,1)>=3
+            [~,po]=sort(poolF); sep=max(0,opt.qdSepFrac)*span; bi=[]; di=[]; sepEff=sep;
+            for att=1:max(1,opt.qdRetries)
+                dA=sqrt(sum((pool-repmat(pool(po(1),:),size(pool,1),1)).^2,2)); cand=po(dA(po)>=sepEff);
+                if ~isempty(cand), bi=cand(1); break; end
+                sepEff=sepEff/2;
+            end
+            if isempty(bi), bi=po(min(2,numel(po))); end
+            sepEff=sep;
+            for att=1:max(1,opt.qdRetries)
+                dA=sqrt(sum((pool-repmat(pool(po(1),:),size(pool,1),1)).^2,2)); dB=sqrt(sum((pool-repmat(pool(bi,:),size(pool,1),1)).^2,2)); cand=po(min(dA,dB)>=sepEff);
+                if ~isempty(cand), di=cand(1); break; end
+                sepEff=sepEff/2;
+            end
+            if isempty(di), di=po(min(3,numel(po))); end
+            if strcmpi(opt.leaderMode,'qdrand')
+                dA=sqrt(sum((pool-repmat(pool(po(1),:),size(pool,1),1)).^2,2)); cb=po(dA(po)>=sep); if isempty(cb), cb=po(min(2,numel(po))); end; bi=cb(randi(sLead,numel(cb)));
+                dB=sqrt(sum((pool-repmat(pool(bi,:),size(pool,1),1)).^2,2)); dA=sqrt(sum((pool-repmat(pool(po(1),:),size(pool,1),1)).^2,2)); cd=po(min(dA,dB)>=sep); if isempty(cd), cd=po(min(3,numel(po))); end; di=cd(randi(sLead,numel(cd)));
+            end
+            if strcmpi(opt.leaderMode,'qdhalf'), sel=rand(sLead,N,1)<=opt.qdShare; else, sel=true(N,1); end
+            qdActive=sum(sel); betaUse(sel,:)=repmat(pool(bi,:),sum(sel),1); deltaUse(sel,:)=repmat(pool(di,:),sum(sel),1);
+            qdBetaDist=norm(pool(bi,:)-pool(po(1),:)); qdDeltaDist=min(norm(pool(di,:)-pool(po(1),:)),norm(pool(di,:)-pool(bi,:)));
+        end
+    end
+    if strcmpi(opt.topoPolicy,'q') || strcmpi(opt.topoPolicy,'random')
+        topoK=opt.topoActions(topoAct);
+        if topoK>0, effTopo='knn'; effK=topoK; else, effTopo='global'; effK=0; end
+    else
+        effTopo=opt.leaderTopo; effK=opt.knnK;
+    end
+    if any(strcmpi(effTopo,{'knn','knnall','knnrand','featknn','featknnall','featknnrand','featknnrandall'}))
+        kk=min(N-1,max(2,round(effK)));
+        if strcmpi(effTopo,'featknnrand') || strcmpi(effTopo,'featknnrandall')
+            nbrOrd=zeros(N,kk); for i=1:N, cand=setdiff(1:N,i); nbrOrd(i,:)=cand(randperm(sLead,N-1,kk)); end
+        elseif any(strcmpi(effTopo,{'featknn','featknnall'}))
+            if isempty(nbrCache) || size(nbrCache,2)~=kk || mod(rounds-1,max(1,round(opt.topoEvery)))==0
+                fr=zeros(N,1); [~,fo]=sort(fv); fr(fo)=(1:N)'/max(N,1); st=gensSince/max(1,max(gensSince)); da=sqrt(sum((Xv-repmat(Alpha.Vector,N,1)).^2,2))/span; dm=sqrt(sum((Xv-repmat(mean(Xv,1),N,1)).^2,2))/span; Ff=[fr,st,da,dm]; Ff=(Ff-repmat(mean(Ff,1),N,1))./max(repmat(std(Ff,0,1),N,1),1e-12); Dmat=sqrt(max(0,sum(Ff.^2,2)+sum(Ff.^2,2)'-2*(Ff*Ff'))); Dmat(1:N+1:end)=inf; [~,nbrCache]=sort(Dmat,2,'ascend');
+            end
+            nbrOrd=nbrCache;
+        else
+            Dmat=sqrt(max(0,sum(Xv.^2,2)+sum(Xv.^2,2)'-2*(Xv*Xv'))); Dmat(1:N+1:end)=inf; [~,nbrOrd]=sort(Dmat,2,'ascend');
+        end
+        for i=1:N
+            if strcmpi(effTopo,'knnrand'), cand=setdiff(1:N,i); nb=cand(randperm(sLead,N-1,kk)); elseif strcmpi(effTopo,'featknnrand'), nb=nbrOrd(i,1:kk); else, nb=nbrOrd(i,1:kk); end
+            [~,bo]=sort(fv(nb)); nb=nb(bo); bb=Xv(nb(1),:); dd=Xv(nb(min(2,numel(nb))),:); zz=max(0,min(1,opt.leaderBlend)); if strcmpi(opt.topoPolicy,'q') || strcmpi(opt.topoPolicy,'random'), zz=1; end
+            if any(strcmpi(effTopo,{'knnall','featknnall','featknnrandall'})), alphaUse(i,:)=(1-zz)*Alpha.Vector+zz*bb; betaUse(i,:)=(1-zz)*Beta.Vector+zz*Xv(nb(min(2,numel(nb))),:); deltaUse(i,:)=(1-zz)*Delta.Vector+zz*Xv(nb(min(3,numel(nb))),:); else, betaUse(i,:)=(1-zz)*Beta.Vector+zz*bb; deltaUse(i,:)=(1-zz)*Delta.Vector+zz*dd; end
+        end
+        qdActive=N;
+    end
+    if isCovSteer && (rounds==1 || mod(rounds-1,opt.covSteerEvery)==0)
+        switch lower(opt.covSteerSource)
+            case 'archive'
+                if ArcN>=2
+                    [~,ao]=sort(Arcv(1:ArcN)); Xc=Arc(ao(1:min(ArcN,max(2,ArcN))),:);
+                else, Xc=Xv; end
+            case 'mixed'
+                [~,wo]=sort(fv); mw=min(N,max(2,round(0.5*N))); Xc=[Xv(wo(1:mw),:); Arc(1:ArcN,:)];
+                Xc=unique(Xc,'rows','stable');
+            case 'wolves_random'
+                mw=min(N,max(2,round(0.5*N))); rp=randperm(sCov,N); Xc=Xv(rp(1:mw),:);
+            otherwise
+                [~,wo]=sort(fv); mw=min(N,max(2,round(0.5*N))); Xc=Xv(wo(1:mw),:);
+        end
+        if size(Xc,1)>=2
+            xm=mean(Xc,1); Xcc=Xc-repmat(xm,size(Xc,1),1); Cc=(Xcc'*Xcc)/(size(Xc,1)-1); Cc=(Cc+Cc')/2;
+            sc=mean(diag(Cc)); if isfinite(sc) && sc>0
+                Cc=(1-opt.covSteerShrink)*Cc+opt.covSteerShrink*sc*eye(D); [covB,L]=eig(Cc); L=max(diag(L),1e-12); covD=sqrt(L)';
+                if strcmpi(opt.covSteerSource,'shuffled'), perm=randperm(sCov,D); covB=covB(:,perm); covD=covD(perm); end
+                covUpdates=covUpdates+1; covCondTrace(end+1,1)=max(L)/min(L);
+            else, covB=[]; covD=[]; end
+        else, covB=[]; covD=[]; end
+    end
     aA=2-2*(fe/budget);      % 与标准 GWO 相同的线性衰减（按真实 FE）
 
     % ---- 1) 生成候选池（廉价；不消耗真实 FE） ----
@@ -250,14 +350,61 @@ while fe<budget
         A1=2*aA*R6(1:D)-aA;         C1=2*R6(D+1:2*D);
         A2=2*aA*R6(2*D+1:3*D)-aA;   C2=2*R6(3*D+1:4*D);
         A3=2*aA*R6(4*D+1:5*D)-aA;   C3=2*R6(5*D+1:6*D);
-        X1=Alpha.Vector-A1.*abs(C1.*Alpha.Vector-Xv(i,:));
-        X2=Beta.Vector -A2.*abs(C2.*Beta.Vector -Xv(i,:));
-        X3=Delta.Vector-A3.*abs(C3.*Delta.Vector-Xv(i,:));
-        xg=(X1+X2+X3)/3;
-        succEff=opt.succSteer;
+        X1=alphaUse(i,:)-A1.*abs(C1.*alphaUse(i,:)-Xv(i,:));
+        X2=betaUse(i,:)-A2.*abs(C2.*betaUse(i,:)-Xv(i,:));
+        X3=deltaUse(i,:)-A3.*abs(C3.*deltaUse(i,:)-Xv(i,:));
+        if strcmpi(opt.leaderAgg,'dist')
+            d1=sqrt(sum((X1-Xv(i,:)).^2,2)); d2=sqrt(sum((X2-Xv(i,:)).^2,2)); d3=sqrt(sum((X3-Xv(i,:)).^2,2));
+            wg=exp(-[d1 d2 d3]/max(1e-12,opt.leaderTemp*span)); wg=wg/sum(wg); xg=wg(1)*X1+wg(2)*X2+wg(3)*X3;
+        elseif strcmpi(opt.leaderAgg,'fit')
+            cf=[Alpha.Cost Beta.Cost Delta.Cost]; rel=(cf-min(cf))/max(1,abs(min(cf))); wg=exp(-rel/max(1e-12,opt.leaderTemp)); wg=wg/sum(wg); xg=wg(1)*X1+wg(2)*X2+wg(3)*X3;
+        elseif strcmpi(opt.leaderAgg,'random')
+            wg=rand(sLead,1,3); wg=wg/sum(wg); xg=wg(1)*X1+wg(2)*X2+wg(3)*X3;
+        else
+            xg=(X1+X2+X3)/3;
+        end
+        if strcmpi(opt.opPolicy,'q') || strcmpi(opt.opPolicy,'random')
+            opNow=opt.opActions(opAct);
+        elseif any(strcmpi(opt.opPolicy,{'hybrid','early','late','rank'}))
+            if opMask(i), opNow=2; else, opNow=1; end
+        elseif strcmpi(opt.opPolicy,'fixed')
+            opNow=opt.opFixed;
+        end
+        if opNow==2
+            r1=randi(sOp,N); while r1==i, r1=randi(sOp,N); end
+            if strcmpi(opt.opDiffMode,'nowarc')
+                pOp=Xv; r2=randi(sOp,N); while r2==i || r2==r1, r2=randi(sOp,N); end
+            else
+                pOp=[Xv;Arc(1:ArcN,:)]; r2=randi(sOp,size(pOp,1)); while r2==i || r2==r1, r2=randi(sOp,size(pOp,1)); end
+            end
+            dv=Xv(r1,:)-pOp(r2,:);
+            if strcmpi(opt.opDiffMode,'shuffle'), dv=dv(randperm(sOp,D)); end
+            if strcmpi(opt.opDiffMode,'random')
+                u1=lb+rand(sOp,1,D).*(ub-lb); u2=lb+rand(sOp,1,D).*(ub-lb); dv=u1-u2;
+            end
+            xg=Xv(i,:)+opt.opF*(Alpha.Vector-Xv(i,:))+opt.opF*dv;
+        elseif opNow==3
+            sigOp=opt.opGaussianFrac*(1-fe/budget)*span/sqrt(D); xg=Alpha.Vector+sigOp*randn(sOp,1,D);
+        elseif opNow==4
+            xg=lb+ub-Xv(i,:)+opt.opOppNoise*span/sqrt(D)*randn(sOp,1,D);
+        end
+        succEff=opt.succSteer; if opNow>=3, succEff=0; end
         if isStj && ~stjGateNow, succEff=0; end
         if isDsAudit, succEff=0; end
-        if isRandDir
+        if isCovSteer
+            if succEff>0 && trigR(i)<succEff
+                sd=randn(1,D);
+                if ~isempty(covB) && norm(sd)>0
+                    iso=sd/norm(sd); sdc=(sd.*covD)*covB'; sdc=sdc/max(norm(sdc),1e-300);
+                    beta=max(0,min(1,opt.covSteerBlend)); sd=(1-beta)*iso+beta*sdc;
+                end
+                nrm=norm(sd);
+                if nrm>0
+                    stepv=norm(xg-Xv(i,:)); xg=xg+opt.steerLambda*(sd/nrm)*stepv;
+                    if isStj, stjApplied=stjApplied+1; else, steerApplied=steerApplied+1; end
+                end
+            end
+        elseif isRandDir
             if succEff>0 && trigR(i)<succEff
                 sd=randn(1,D); nrm=norm(sd);
                 if nrm>0
@@ -309,6 +456,7 @@ while fe<budget
     end
     if ArcN>0
         ww=(1+ArcCred(1:ArcN)); cwCache=cumsum(ww/sum(ww));   % 每代一次（ArcCred 在池生成期间不变）
+        if strcmpi(opt.eLineMode,'graph') && ArcN>=2, DArc=sqrt(max(0,sum(Arc(1:ArcN,:).^2,2)+sum(Arc(1:ArcN,:).^2,2)'-2*(Arc(1:ArcN,:)*Arc(1:ArcN,:)'))); DArc(1:ArcN+1:end)=inf; end
     else
         cwCache=[];
     end
@@ -334,10 +482,17 @@ while fe<budget
             Y(m,:)=min(max(Arc(c,:)+sigB*(0.5+RR(1))*(2*RR(2:end)-1),lb),ub);
             src(m)=3; ctr(m)=c;
         else
-            [c1,c2]=pickTwoCenters(ArcN,sAux);
-            lam=0.15+0.7*rand(sAux);
-            Y(m,:)=min(max(Arc(c1,:)+lam*(Arc(c2,:)-Arc(c1,:)) ...
-                +0.25*sigB*(2*rand(1,D)-1),lb),ub);
+            if strcmpi(opt.eLineMode,'graph') && ArcN>=3
+                c1=find(rand(sAux)<=cwCache,1); if isempty(c1), c1=ArcN; end
+                [~,ord1]=sort(DArc(c1,1:ArcN),'ascend'); c2=ord1(1); if c2==c1, c2=ord1(2); end
+                [~,ord2]=sort(DArc(c2,1:ArcN),'ascend'); c3=ord2(find(ord2~=c1 & ord2~=c2,1));
+                lam=0.15+0.7*rand(sAux); path=(1-lam)^2*Arc(c1,:)+2*(1-lam)*lam*Arc(c2,:)+lam^2*Arc(c3,:);
+            elseif strcmpi(opt.eLineMode,'randompath') && ArcN>=3
+                cc=randperm(sAux,ArcN,3); c1=cc(1); lam=0.15+0.7*rand(sAux); path=(1-lam)^2*Arc(cc(1),:)+2*(1-lam)*lam*Arc(cc(2),:)+lam^2*Arc(cc(3),:);
+            else
+                [c1,c2]=pickTwoCenters(ArcN,sAux); lam=0.15+0.7*rand(sAux); path=Arc(c1,:)+lam*(Arc(c2,:)-Arc(c1,:));
+            end
+            Y(m,:)=min(max(path+0.25*sigB*(2*rand(1,D)-1),lb),ub);
             src(m)=3; ctr(m)=c1;
         end
     end
@@ -347,7 +502,7 @@ while fe<budget
     if strcmp(opt.mode,'dense-sync')
         sel=1:M;
     else
-        [sel,nd]=selectCandidates(opt,qE,K,Y,src,par,ctr,Alpha,Arc,ArcN,ArcCred,span,sAux,gensSince);
+        [sel,nd]=selectCandidates(opt,qE,Kgen,Y,src,par,ctr,Alpha,Arc,ArcN,ArcCred,span,sAux,gensSince);
         nDistOps=nDistOps+nd;
     end
     sel=sort(sel(:))';
@@ -476,6 +631,31 @@ while fe<budget
                 qTrace(end+1,:)=[fe,qE,0,0,rew,gbFlag]; %#ok<AGROW>
             end
             winEnd=fe+opt.qWindow; winGBStart=Alpha.Cost; winRecImp=0; winEvals=0;
+            if strcmpi(opt.topoPolicy,'q') || strcmpi(opt.topoPolicy,'random')
+                sNowT=stateIndex(fe,budget,lastGB,stagnThresh);
+                if strcmpi(opt.topoPolicy,'q')
+                    topoQ(topoState,topoAct)=topoQ(topoState,topoAct)+opt.topoAlpha*(rew+opt.topoGamma*max(topoQ(sNowT,:))-topoQ(topoState,topoAct));
+                    topoStateCount(topoState)=topoStateCount(topoState)+1; topoActCount(topoAct)=topoActCount(topoAct)+1;
+                    topoTrace(end+1,:)=[fe,topoAct,topoState,rew,gbFlag];
+                    [topoAct,topoEps]=chooseTopoAction(opt,topoQ,sNowT,sPolicy,topoEps);
+                else
+                    topoStateCount(topoState)=topoStateCount(topoState)+1; topoActCount(topoAct)=topoActCount(topoAct)+1;
+                    topoTrace(end+1,:)=[fe,topoAct,topoState,rew,gbFlag]; topoAct=randi(sPolicy,numel(opt.topoActions));
+                end
+                topoState=sNowT;
+            end
+            if strcmpi(opt.opPolicy,'q') || strcmpi(opt.opPolicy,'random')
+                sNowO=stateIndex9(fe,budget,lastGB,stagnThresh);
+                rwO=rew; if opt.opActions(opAct)>=3, rwO=rwO+opt.opExploreBonus; end
+                if strcmpi(opt.opPolicy,'q')
+                    opQ(opState,opAct)=opQ(opState,opAct)+opt.opAlpha*(rwO+opt.opGamma*max(opQ(sNowO,:))-opQ(opState,opAct));
+                    opStateCount(opState)=opStateCount(opState)+1; opActCount(opAct)=opActCount(opAct)+1; opTrace(end+1,:)=[fe,opAct,opState,rwO,gbFlag];
+                    [opAct,opEps]=chooseOpAction(opt,opQ,sNowO,sOpPolicy,opEps);
+                else
+                    opStateCount(opState)=opStateCount(opState)+1; opActCount(opAct)=opActCount(opAct)+1; opTrace(end+1,:)=[fe,opAct,opState,rwO,gbFlag]; opAct=randi(sOpPolicy,numel(opt.opActions));
+                end
+                opState=sNowO;
+            end
         end
     end
 end
@@ -493,7 +673,7 @@ info.NCandidateGenerated=nCandGen;
 info.NDistanceOps=nDistOps;
 info.NArchiveInserts=nArcIns;
 info.ArchiveSize=ArcN;
-info.K=opt.K;
+info.K=opt.K; info.KSchedule=opt.kSchedule; info.KEnd=opt.kEnd;
 info.Gen1SrcCounts=gen1Src;
 info.FarN=FarN;
 info.FarE=opt.farE;
@@ -516,6 +696,12 @@ info.SteerProb=opt.succSteer;
 info.SteerLambda=opt.steerLambda;
 info.SteerTriggers=steerTriggers;
 info.SteerApplied=steerApplied;
+info.CovSteerOn=double(isCovSteer); info.CovSteerSource=opt.covSteerSource; info.CovSteerEvery=opt.covSteerEvery;
+info.CovSteerBlend=opt.covSteerBlend; info.CovSteerUpdates=covUpdates; info.CovSteerCondMedian=median(covCondTrace);
+info.OpPolicy=opt.opPolicy; info.OpFixed=opt.opFixed; info.OpNow=opNow; info.OpShare=opt.opShare; info.OpPhaseFrac=opt.opPhaseFrac; info.OpQ=opQ; info.OpActCounts=opActCount; info.OpStateVisits=opStateCount; info.OpTrace=opTrace; info.OpActPct=opActCount/max(sum(opActCount),1); info.OpQMean=mean(opQ,1);
+info.OpDiffMode=opt.opDiffMode; info.OpF=opt.opF;
+info.LeaderMode=opt.leaderMode; info.QDSepFrac=opt.qdSepFrac; info.QDShare=opt.qdShare; info.QDActiveMean=qdActive; info.QDBetaDist=qdBetaDist; info.QDDeltaDist=qdDeltaDist;
+info.LeaderAgg=opt.leaderAgg; info.LeaderTemp=opt.leaderTemp; info.SpatialConvFrac=opt.spatialConvFrac; info.LeaderTopo=opt.leaderTopo; info.KNNK=opt.knnK; info.LeaderBlend=opt.leaderBlend; info.TopoPolicy=opt.topoPolicy; info.TopoQ=topoQ; info.TopoActCounts=topoActCount; info.TopoStateVisits=topoStateCount; info.TopoTrace=topoTrace; info.TopoActPct=topoActCount/max(sum(topoActCount),1); info.TopoQMean=mean(topoQ,1); info.TopoEvery=opt.topoEvery; info.ELineMode=opt.eLineMode; info.EPathMode=opt.ePathMode;
 info.SteerRate=steerApplied/max(N*rounds,1);
 end
 
@@ -532,6 +718,18 @@ if (fe-lastGB)<stagnThresh, g=1; else, g=2; end
 s=(p-1)*2+g;
 end
 
+function [a,eps]=chooseOpAction(opt,Q,s,sOpPolicy,eps)
+if rand(sOpPolicy)<eps, a=randi(sOpPolicy,numel(opt.opActions)); else, [~,a]=max(Q(s,:)); end
+eps=max(opt.opEpsEnd,eps*opt.opEpsDecay);
+end
+function s=stateIndex9(fe,budget,lastGB,stagnThresh)
+prog=min(3,floor(3*fe/max(budget,1))+1); st=fe-lastGB; if st<stagnThresh, sb=1; elseif st<2*stagnThresh, sb=2; else, sb=3; end
+s=(prog-1)*3+sb;
+end
+function [a,eps]=chooseTopoAction(opt,Q,s,sPolicy,eps)
+if rand(sPolicy)<eps, a=randi(sPolicy,numel(opt.topoActions)); else, [~,a]=max(Q(s,:)); end
+eps=max(opt.topoEpsEnd,eps*opt.topoEpsDecay);
+end
 function [qE,ai]=chooseAction(opt,fe,budget,Q,s,sAux)
 epsNow=opt.qEpsStart+(opt.qEpsEnd-opt.qEpsStart)*min(1,fe/budget);
 if strcmp(opt.quotaPolicy,'random')
@@ -584,6 +782,24 @@ function [sel,nd]=selectCandidates(opt,qE,K,Y,src,par,ctr,Alpha,Arc,ArcN,ArcCred
 nd=0; M=numel(src);
 if strcmp(opt.screenPolicy,'random')
     sel=randperm(sAux,M,K)'; return
+end
+if strcmp(opt.screenPolicy,'spatial')
+    Kc=max(0,min(K,round(opt.spatialConvFrac*K))); Kd=K-Kc;
+    dA=sqrt(sum((Y-repmat(Alpha.Vector,M,1)).^2,2))/span; [~,ordA]=sort(dA,'ascend'); selC=ordA(1:Kc);
+    rem=setdiff((1:M)',selC); selD=zeros(0,1);
+    for qd=1:Kd
+        if isempty(rem), break; end
+        refs=[Y([selC;selD],:);Alpha.Vector]; dmin=inf(numel(rem),1);
+        for rr=1:size(refs,1)
+            dr=sqrt(sum((Y(rem,:)-repmat(refs(rr,:),numel(rem),1)).^2,2))/span; dmin=min(dmin,dr);
+        end
+        [~,mi]=max(dmin); selD(end+1,1)=rem(mi); rem(mi)=[];
+    end
+    sel=[selC;selD]; nd=nd+M+numel(selD);
+    if numel(sel)<K
+        rest=setdiff((1:M)',sel); sel=[sel;rest(randperm(sAux,numel(rest),K-numel(sel)))];
+    end
+    sel=sel(1:K); return
 end
 if strcmp(opt.screenPolicy,'directed')
     gIdx=find(src<=2); eIdx=find(src==3);
@@ -740,3 +956,8 @@ X2=B.Vector -A2.*abs(C2.*B.Vector -xw);
 X3=Dl.Vector-A3.*abs(C3.*Dl.Vector-xw);
 y=min(max((X1+X2+X3)/3,lb),ub);
 end
+
+
+
+
+
