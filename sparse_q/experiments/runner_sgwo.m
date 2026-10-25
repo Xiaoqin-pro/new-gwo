@@ -86,6 +86,11 @@ switch job.algorithm
         [Best,T,info]=SGWO_STEER(f,state,[],N,job.seedSearch);
     case 'SGWO_STEER3'
         [Best,T,info]=SGWO_STEER3(f,state,[],N,job.seedSearch);
+    case 'SVADGWO'
+        [Best,T,info]=SVADGWO(f,state,[],N,job.seedSearch);
+    case 'SVADGWO_AB'
+        var='full'; if isfield(job.state,'ablationVariant') && ~isempty(job.state.ablationVariant), var=job.state.ablationVariant; end
+        [Best,T,info]=SVADGWO_ablate(f,state,var,N,job.seedSearch);
     case 'SGWO_ESTEER'
         [Best,T,info]=SGWO_ESTEER(f,state,[],N,job.seedSearch);
     case 'SGWO_MSE'
