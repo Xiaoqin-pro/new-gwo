@@ -1,4 +1,4 @@
-function [Best,T,info]=SVADGWO_core(f,state,N,seed,g2Mode,ablateE,pSteerOn)
+function [Best,T,info]=SVADGWO_core(f,state,N,seed,g2Mode,ablateE,pSteerOn,opts)
 %SVADGWO_CORE  Reference implementation shared by SVADGWO.m and the ablation harness.
 %   The three trailing arguments (g2Mode, ablateE, pSteerOn) are ablation hooks and are
 %   always set to their proposed values by SVADGWO.m.  Do not treat them as tuning knobs.
@@ -61,6 +61,21 @@ assert(size(state.initialPopulation,1)>=N && budget>=N);
 rng(seed,'twister');
 sAux = RandStream('mt19937ar','Seed',seed+424242);   % screening / secondary draws
 
+% ---- factorial ablation switches (default = the proposed algorithm) ----
+%   useE      : 1 = verified archive exists, feeds E slots and the DiffA pool;
+%               0 = no archive at all (no admission, no credit, no E slots from it,
+%                   DiffA pool = wolves only).
+%   useDiff   : 1 = 12 differential slots; 0 = 12 filler slots (opts.diffFiller).
+% Legacy positional arguments are preserved: ablateE=1 means 'E slots replaced by
+% fillers but the archive still exists and still feeds DiffA' (the NoE-Slots arm).
+if nargin<8 || isempty(opts), opts=struct(); end
+useE    = fieldOr(opts,'useE',1);
+useDiff = fieldOr(opts,'useDiff',1);
+diffFiller = char(fieldOr(opts,'diffFiller','shell'));   % 'shell' | 'gwo'
+eSlotsOn   = useE && ~ablateE;        % E slots generated from the archive
+fixedF     = fieldOr(opts,'fixedF',NaN); % if finite, F(t) is pinned to this value
+diffPool   = char(fieldOr(opts,'diffPool','joint'));  % 'joint' | 'wolves'
+
 Xv = state.initialPopulation(1:N,:);
 fv = inf(N,1);
 fe = 0;
@@ -95,7 +110,11 @@ Ftrace = zeros(0,2);      % [FE, F(t)]
 while fe < budget
     rounds = rounds + 1;
     t   = fe/budget;
-    F   = F0 - (F0-F1)*max(0,(t-tc)/max(1e-9,1-tc));
+    if isfinite(fixedF)
+        F = fixedF;                            % auxiliary arm: no late contraction
+    else
+        F = F0 - (F0-F1)*max(0,(t-tc)/max(1e-9,1-tc));
+    end
     aA  = 2-2*t;                              % standard GWO convergence factor
     sig = shellSigma(succ,span,D);            % adaptive shell radius
     Ftrace(end+1,:) = [fe F];
@@ -119,11 +138,16 @@ while fe < budget
         X2 = Beta.Vector  - A2.*abs(C2.*Beta.Vector  - Xv(i,:));
         X3 = Delta.Vector - A3.*abs(C3.*Delta.Vector - Xv(i,:));
         xg = (X1+X2+X3)/3;
-        if trig(i) < pSteerOn
-            sd = randn(1,D); nrm = norm(sd);
-            if nrm>0
-                stepv = norm(xg-Xv(i,:));
-                xg = xg + lamSteer*(sd/nrm)*stepv;
+        % DRAW schedule is fixed at the design probability pSteer, so switching the
+        % perturbation off does not shift the random stream consumed downstream.
+        if trig(i) < pSteer
+            sd = randn(1,D);
+            if pSteerOn >= pSteer          % APPLY gate (mechanism switch)
+                nrm = norm(sd);
+                if nrm>0
+                    stepv = norm(xg-Xv(i,:));
+                    xg = xg + lamSteer*(sd/nrm)*stepv;
+                end
             end
         end
         Y(m,:) = min(max(xg,lb),ub);
@@ -131,7 +155,9 @@ while fe < budget
     end
 
     % --- (2) differential slots (DiffA) ---
-    if ArcN>0
+    % The pool is the joint set of wolves and verified elites, but only when the
+    % archive mechanism exists.  With useE=0 there is no archive to draw from.
+    if useE && ArcN>0 && strcmpi(diffPool,'joint')
         pool = [Xv; Arc(1:ArcN,:)];
     else
         pool = Xv;
@@ -139,6 +165,16 @@ while fe < budget
     nP = size(pool,1);
     for j=1:nG2
         m = m+1;
+        if ~useDiff
+            % 12 filler slots occupy the differential budget; the pool is unchanged
+            if strcmpi(diffFiller,'gwo')
+                iw = mod(j-1,N)+1;
+                Y(m,:) = gwoMove(aA,Alpha,Beta,Delta,Xv(iw,:),lb,ub);
+            else
+                Y(m,:) = min(max(Alpha.Vector + sig*(2*rand(1,D)-1),lb),ub);
+            end
+            src(m) = 2; continue;
+        end
         if strcmpi(g2Mode,'shell')
             Y(m,:) = min(max(Alpha.Vector + sig*(2*rand(1,D)-1),lb),ub);
             src(m) = 2; continue;
@@ -158,7 +194,7 @@ while fe < budget
     end
     for j=1:nE
         m = m+1;
-        if ablateE
+        if ~eSlotsOn
             iw = mod(j-1,N)+1;
             Y(m,:) = gwoMove(aA,Alpha,Beta,Delta,Xv(iw,:),lb,ub);
             src(m) = 3; continue;
@@ -218,8 +254,12 @@ while fe < budget
         end
 
         % ---- archive admission: verified, strictly better, spatially separated ----
+        % With useE=0 no archive is maintained at all (no admissions, no credit);
+        % this is what makes the E factor genuinely off rather than merely idle.
         arcImp = false;
-        if ArcN==0
+        if ~useE
+            % archive disabled: nothing is admitted, nothing is credited
+        elseif ArcN==0
             ArcN = 1; Arc(1,:) = y; Arcv(1) = v;
             nIns = nIns+1; arcImp = true;
         elseif ArcN<arcCap
@@ -248,7 +288,7 @@ while fe < budget
         end
 
         % archive credit: a verified improvement credited to the source centre
-        if src(j)==3 && ctr(j)>0 && arcImp
+        if useE && src(j)==3 && ctr(j)>0 && arcImp
             ArcCred(ctr(j)) = ArcCred(ctr(j))+1;
         end
     end
@@ -269,14 +309,24 @@ info.EvalBySource    = nEvalG;    % [G1 G2 E]
 info.ImpBySource     = nImpG;     % [G1 G2 E]
 info.FTrace          = Ftrace;
 info.Parameters      = struct('K',K,'nG2',nG2,'nE',nE,'F0',F0,'F1',F1, ...
-                              'tc',tc,'pSteer',pSteer,'lamSteer',lamSteer, ...
+                              'tc',tc,'pSteer',pSteerOn,'pSteerDesign',pSteer, ...
+                              'lamSteer',lamSteer, ...
                               'arcCap',arcCap,'dSep',dSep);
+info.Ablation        = struct('useE',useE,'useDiff',useDiff,'fixedF',fixedF, ...
+                              'diffPool',diffPool, ...
+                              'eSlotsOn',eSlotsOn,'steerOn',pSteerOn>=pSteer, ...
+                              'diffFiller',diffFiller,'g2Mode',g2Mode, ...
+                              'archiveAdmission',useE);
 info.Seconds = toc(clockStart);
 assert(fe==budget && numel(T)==budget && abs(T(end)-Best.Cost)<1e-12, ...
     'SVAD-GWO evaluation contract violated.');
 end
 
 % ==================== helpers ====================
+function v=fieldOr(s,name,default)
+if isfield(s,name) && ~isempty(s.(name)), v=s.(name); else, v=default; end
+end
+
 function s=pushSucc(s,d,cap)
 if numel(s)<cap, s(end+1,1)=d; else, s(1)=[]; s(end+1,1)=d; end
 end

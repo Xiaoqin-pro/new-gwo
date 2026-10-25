@@ -1,0 +1,6 @@
+arm,label,W,T,L,med_ratio,paired_W,paired_L,paired_T
+B-Base,NoE+NoDiff,20,8,1,1.2685173627478845,21,1,7
+C-Eonly,E only,7,22,0,1.0267915372276037,9,1,19
+D-Diffonly,DiffA only,20,9,0,1.232290954978829,21,0,8
+E-NoSteer,NoSteer,4,22,3,1.02235340015612,4,2,23
+F-FixedDiff,FixedDiff,1,27,1,0.9992302408172389,3,5,21

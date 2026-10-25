@@ -16,6 +16,7 @@ if isempty(readyPaths)
     addpath(fullfile(cfg.root,'data','cec2017'));
     addpath(fullfile(sqRoot,'src'));
     addpath(fullfile(cfg.wolfDir,'src'));            % IGWO（审计只读对照）
+    addpath(fullfile(sqRoot,'src','ablation'));   % ablation harnesses
     addpath(fullfile(sqRoot,'src'),'-begin');     % our new algorithm wins conflicts
     readyPaths=true;
 end
@@ -88,6 +89,9 @@ switch job.algorithm
         [Best,T,info]=SGWO_STEER3(f,state,[],N,job.seedSearch);
     case 'SVADGWO'
         [Best,T,info]=SVADGWO(f,state,[],N,job.seedSearch);
+    case 'SVADGWO_AB2'
+        var='full'; if isfield(job.state,'ablationVariant') && ~isempty(job.state.ablationVariant), var=job.state.ablationVariant; end
+        [Best,T,info]=SVADGWO_ablate2(f,state,var,N,job.seedSearch);
     case 'SVADGWO_AB'
         var='full'; if isfield(job.state,'ablationVariant') && ~isempty(job.state.ablationVariant), var=job.state.ablationVariant; end
         [Best,T,info]=SVADGWO_ablate(f,state,var,N,job.seedSearch);

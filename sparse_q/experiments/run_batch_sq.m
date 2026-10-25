@@ -285,6 +285,11 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_TSDR.m'),'file')
     h.SGWO_TSDR=fileSha256(fullfile(sqRoot,'src','SGWO_TSDR.m'));
 end
+for nm={'MENGWO_CEC','IAGWO_CEC','SVADGWO','SVADGWO_core','SVADGWO_ablate2'}
+    fp=fullfile(sqRoot,'src',[nm{1} '.m']);
+    if ~exist(fp,'file'), fp=fullfile(sqRoot,'src','ablation',[nm{1} '.m']); end
+    if exist(fp,'file'), h.(nm{1})=fileSha256(fp); end
+end
 for nm={'MENGWO_CEC','IAGWO_CEC'}
     fp=fullfile(sqRoot,'src',[nm{1} '.m']);
     if exist(fp,'file'), h.(nm{1})=fileSha256(fp); end
