@@ -8,6 +8,7 @@ cma=ic.FinalCMAState; [V,L]=eig((cma.C+cma.C')/2); L=max(diag(L),1e-14);
 Z=randn(N,size(cma.Mean,2)); X=repmat(cma.Mean,N,1)+cma.Sigma*(Z*(V*diag(sqrt(L)))');
 mixFrac=0; if isfield(state,'cmaLsMix') && ~isempty(state.cmaLsMix), mixFrac=min(1,max(0,state.cmaLsMix)); end
 nMix=round(mixFrac*N); if nMix>0, X(1:nMix,:)=-100+200*rand(nMix,size(X,2)); end
+if nMix>=N, X(1,:)=BcBest.Vector; else, X(end,:)=BcBest.Vector; end
 X=reflectBounds(X,state.lowerBound,state.upperBound);
 s2=state; s2.maxEvaluations=Bl; s2.initialPopulation=X; s2.initialBest=BcBest;
 [BlBest,Tl,il]=LSHADE_CEC(f,s2,[],N,seed+777777);
