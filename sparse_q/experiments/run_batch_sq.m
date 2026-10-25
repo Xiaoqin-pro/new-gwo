@@ -285,6 +285,10 @@ end
 if exist(fullfile(sqRoot,'src','SGWO_TSDR.m'),'file')
     h.SGWO_TSDR=fileSha256(fullfile(sqRoot,'src','SGWO_TSDR.m'));
 end
+for nm={'MENGWO_CEC','IAGWO_CEC'}
+    fp=fullfile(sqRoot,'src',[nm{1} '.m']);
+    if exist(fp,'file'), h.(nm{1})=fileSha256(fp); end
+end
 h.runner_sgwo=fileSha256(fullfile(sqRoot,'experiments','runner_sgwo.m'));
 h.ANGWO_frozen=fileSha256(fullfile(cfg.root,'src','ANGWO.m'));
 h.GWO_frozen=fileSha256(fullfile(cfg.root,'src','GWO.m'));

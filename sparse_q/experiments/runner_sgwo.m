@@ -235,6 +235,12 @@ switch job.algorithm
         [Best,T,info]=AOGWO_CEC(f,state,[],N,job.seedSearch);
     case 'EDGWO'
         [Best,T,info]=EDGWO_CEC(f,state,[],N,job.seedSearch);
+    case 'MENGWO'
+        [Best,T,info]=MENGWO_CEC(f,state,[],N,job.seedSearch);
+    case 'IAGWO'
+        [Best,T,info]=IAGWO_CEC(f,state,[],N,job.seedSearch);
+    case 'DEElimGWO'
+        [Best,T,info]=DEElimGWO_CEC(f,state,[],N,job.seedSearch);
     case 'PSO'
         [Best,T,info]=PSO_CEC(f,state,[],N,job.seedSearch);
     case 'CLPSO'
