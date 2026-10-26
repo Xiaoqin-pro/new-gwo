@@ -33,9 +33,14 @@ switch lower(variant)
     case 'fixeddiff', o.useE=1; o.useDiff=1; o.fixedF=1.0;
     case 'noeslots',  o.useE=1; o.useDiff=1; o.eSlots=0;
     case 'noeref',    o.useE=1; o.useDiff=1; o.diffPool='wolves';
+    % --- uniform-filler variants: the 12 differential-budget slots are filled
+    % with plain GWO moves instead of alpha shells, so switching DiffA off means
+    % "replace DiffA by ordinary GWO", not "replace it by a local operator".
+    case 'baseg',     o.useE=0; o.useDiff=0; o.diffFiller='gwo';
+    case 'eonlyg',    o.useE=1; o.useDiff=0; o.diffFiller='gwo';
     otherwise, error('SVADGWO_ablate2: unknown variant %s',variant);
 end
-o.diffFiller='shell';
+if ~isfield(o,'diffFiller'), o.diffFiller='shell'; end
 p=1.0; if isfield(o,'pSteerOn'), p=o.pSteerOn; end
 e=0;  if isfield(o,'eSlots') && o.eSlots==0, e=1; end
 [Best,T,info]=SVADGWO_core(f,state,N,seed,'diff',e,p,o);

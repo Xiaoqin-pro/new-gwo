@@ -277,8 +277,9 @@ for i=1:n
             row.VGAAcceptRate=S.VGAAcceptRate; row.VGASuccessRate=S.VGASuccessRate;
             row.VGAPReplaceMean=S.VGAPReplaceMean;
         end
-        row.ImpCnt1=ic(1); row.ImpCnt2=ic(2); row.ImpCnt3=ic(3); row.ImpCnt4=ic(4);
-            row.ImpMag1=im(1); row.ImpMag2=im(2); row.ImpMag3=im(3); row.ImpMag4=im(4);
+        ic=double(ic(:))'; im=double(im(:))';
+            for q=1:min(4,numel(ic)), row.(sprintf('ImpCnt%d',q))=ic(q); end
+            for q=1:min(4,numel(im)), row.(sprintf('ImpMag%d',q))=im(q); end
         end
         row.K=S.K;
         if isfield(S,'KSchedule'), row.KSchedule=S.KSchedule; row.KEnd=S.KEnd; end

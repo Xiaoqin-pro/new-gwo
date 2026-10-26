@@ -32,7 +32,7 @@ MASTER = SQ/'reports'/'integrated_3001'/'master_3001.csv'
 ALPHA = 0.05
 
 ARMS = [
-    ('D-SVAD-GWO',            'SVAD-GWO', 'proposed'),
+    ('D-SVAD-GWO',            'SVAD-GWO', 'proposed'),   # v1 (STEER on), kept for comparison
     ('GWO',                   'GWO',      '2014'),
     ('IGWO',                  'IGWO',     '2021'),
     ('B-MENGWO',              'MENGWO',   '2025'),
@@ -45,8 +45,20 @@ ARMS = [
 PROPOSED = 'D-SVAD-GWO'
 
 def main():
+    import argparse
+    ap=argparse.ArgumentParser()
+    ap.add_argument('--v2', action='store_true',
+                    help='replace the SVAD row with the STEER-free v2 batch')
+    ap.add_argument('--v2batch', default=str(SQ/'results'/'svadgwo2_main3001_20261025_074539'/'runs.csv'))
+    args=ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     m = pd.read_csv(MASTER, index_col=[0,1])
+    if args.v2:
+        v2=pd.read_csv(args.v2batch, low_memory=False)
+        v2=v2[v2.Status=='ok'].set_index(['FunctionID','Seed'])['FinalError']
+        m=m.drop(columns=['D-SVAD-GWO'])
+        m['D-SVAD-GWO']=v2.reindex(m.index)
+        print('SVAD row replaced with the v2 (STEER-free) batch:', args.v2batch)
     cols = [a for a,_ ,_ in ARMS]
     missing = [c for c in cols if c not in m.columns]
     assert not missing, missing
